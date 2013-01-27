@@ -30,7 +30,7 @@ $app->get('/', function() use ($sqlConnection, $dbPassword) {
   echo gettype($dbPassword);
 })->name('index');
 
-//require 'users.php';
+require 'users.php';
 require 'music-engine.php';
 
 $app->run();
