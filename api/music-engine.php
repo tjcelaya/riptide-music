@@ -27,26 +27,22 @@ $app->get('/GETposts', function() use ($sqlConnection) {
 //backend post method to create a new post
 $app->post('/POSTnew', function() use ($app, $sqlConnection) {
     //turn the post string into a hash
-    // parse_str($app->request()->getBody(), $requestBody);
+    parse_str($app->request()->getBody(), $requestBody);
 
-    // //create insert query using values from hash
-    // $insertQuery = 'INSERT INTO microposts (body, name, created) ' . // append the next line
-    //   "VALUES ( '{$requestBody['comment']}', '{$requestBody['name']}', NOW() );";
+    //create insert query using values from hash
+    $insertQuery = 'INSERT INTO microposts (body, name, created) ' . // append the next line
+      "VALUES ( '{$requestBody['comment']}', '{$requestBody['name']}', NOW() );";
       
-    // //attempt query
-    // $sqlSuccess = mysqli_query(
-    //   $sqlConnection,
-    //   $insertQuery
-    //   );
+    //attempt query
+    $sqlSuccess = mysqli_query(
+      $sqlConnection,
+      $insertQuery
+      );
 
-    // had to remove the final slash(thats what substr is for) 
-    // for the redirect to be captured by slim
-    // and rendered properly
-    // The urlFor method simply returns the url of 
-    // the named route supplied to it
     $app->response()->redirect(
       "http://ww2.cs.fsu.edu/~celaya/",
-      // substr($app->urlFor('index'), 0, -1),
+    //   // substr($app->urlFor('index'), 0, -1),
       302);
-    // var_dump($insertQ . '///////' . $sqlSuccess . mysqli_error($sqlConnection));
+    // var_dump($requestBody);
+    // var_dump( $sqlSuccess .'///////' . mysqli_error($sqlConnection));
 });

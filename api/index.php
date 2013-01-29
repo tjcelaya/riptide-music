@@ -1,11 +1,9 @@
 <?php
 require 'vendor/autoload.php';
-// require 'libsmarty/Smarty.class.php';
-//SmartyView::$smartyDirectory = 'libsmarty';
-//SmartyView::$templatesDirectory = 'templates';
 
+//file include
 ob_start();
-require 'db';
+require 'dbPassFileUnguessableName';
 $dbPassword = ob_get_clean();
 
 $sqlConnection = mysqli_connect(
