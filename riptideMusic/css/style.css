@@ -86,12 +86,14 @@ label input {
   padding:1.5em;
 }
 
-.inner-row-div {
-  margin-top:150px;
+@media (min-width: 767px) {
+  .inner-row-div {
+    margin-top:10em;
+  }
 }
 
 .main-body, .rec {
-  background-color: rgba(255,255,255,0.5);
+  background-color: rgba(255,255,255,0.8);
 }
 
 .main-body hr {
