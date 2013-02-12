@@ -2,7 +2,7 @@
 <div class="full-album-listing">
     <img width="150px" height="150px" src="{$imageSrc}"/>
     <h1>{$albumName}</h1>
-    <a href="/~celaya/riptideMusic/artist?name={$artistName|escape:'url'}">
+    <a href="/~celaya/riptideMusic/artist.php?name={$artistName|escape:'url'}">
         <p class="artistName">{$artistName}</p>
     </a>
     <p>{$year}</p>
