@@ -6,7 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Twig_Extensions_' => $vendorDir . '/slim/extras/Views/Extension/',
-    'Slim\\Extras' => $vendorDir . '/slim/extras/.',
     'Slim' => $vendorDir . '/slim/slim/.',
+    'Discogs' => $vendorDir . '/ricbra/php-discogs-api/lib/',
+    'Buzz' => $vendorDir . '/kriswallsmith/buzz/lib/',
 );

@@ -1,28 +1,28 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2013-02-09 01:06:02
+<?php /* Smarty version Smarty-3.1.13, created on 2013-02-12 22:29:25
          compiled from "album-template.tpl" */ ?>
-<?php /*%%SmartyHeaderCode:561320907510d8fb42b1e13-02754603%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /*%%SmartyHeaderCode:442836463511b08512a46d1-90512686%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
     '862023fa9ab5ebb8476826773f542c3406d69b8a' => 
     array (
       0 => 'album-template.tpl',
-      1 => 1360389827,
+      1 => 1360726165,
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '561320907510d8fb42b1e13-02754603',
+  'nocache_hash' => '442836463511b08512a46d1-90512686',
   'function' => 
   array (
   ),
   'version' => 'Smarty-3.1.13',
-  'unifunc' => 'content_510d8fb4315f13_82355608',
+  'unifunc' => 'content_511b0851313a21_73440346',
   'variables' => 
   array (
-    'imageSrc' => 0,
+    'imageURL' => 0,
     'albumName' => 0,
     'artistName' => 0,
-    'year' => 0,
+    'released' => 0,
     'genre' => 0,
     'avgRating' => 0,
     'tags' => 0,
@@ -32,9 +32,9 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   ),
   'has_nocache_code' => false,
 ),false); /*/%%SmartyHeaderCode%%*/?>
-<?php if ($_valid && !is_callable('content_510d8fb4315f13_82355608')) {function content_510d8fb4315f13_82355608($_smarty_tpl) {?><!-- album display -->
+<?php if ($_valid && !is_callable('content_511b0851313a21_73440346')) {function content_511b0851313a21_73440346($_smarty_tpl) {?><!-- album display -->
 <div class="full-album-listing">
-    <img width="150px" height="150px" src="<?php echo $_smarty_tpl->tpl_vars['imageSrc']->value;?>
+    <img width="150px" height="150px" src="<?php echo htmlspecialchars($_smarty_tpl->tpl_vars['imageURL']->value, ENT_QUOTES, 'ISO-8859-1', true);?>
 "/>
     <h1><?php echo $_smarty_tpl->tpl_vars['albumName']->value;?>
 </h1>
@@ -43,9 +43,9 @@ $_valid = $_smarty_tpl->decodeProperties(array (
         <p class="artistName"><?php echo $_smarty_tpl->tpl_vars['artistName']->value;?>
 </p>
     </a>
-    <p><?php echo $_smarty_tpl->tpl_vars['year']->value;?>
+    <p><?php echo $_smarty_tpl->tpl_vars['released']->value;?>
 </p>
-    <a href="#/<?php echo $_smarty_tpl->tpl_vars['genre']->value;?>
+    <a href="genre/<?php echo $_smarty_tpl->tpl_vars['genre']->value;?>
 ">
         <p><?php echo $_smarty_tpl->tpl_vars['genre']->value;?>
 </p>
@@ -58,7 +58,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 foreach ($_from as $_smarty_tpl->tpl_vars['tag']->key => $_smarty_tpl->tpl_vars['tag']->value){
 $_smarty_tpl->tpl_vars['tag']->_loop = true;
 ?>
-            <a href="#tag/<?php echo $_smarty_tpl->tpl_vars['tag']->value;?>
+            <a href="/~celaya/riptideMusic/tag.php?searchTags=<?php echo $_smarty_tpl->tpl_vars['tag']->value;?>
 ">
                 <span><?php echo $_smarty_tpl->tpl_vars['tag']->value;?>
 </span>

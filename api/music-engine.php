@@ -1,55 +1,53 @@
 <?php
 
-//retrieve album body thing
-$app->get('/album/:artist/:album/listing', function() use($sqlConnection) {
-  echo "success";
-});
+//route returns album info
+//if given artist, gets all albums by that artist, 
+//if given artist+album(expressed as /albuminfo/SOMEARTIST/SOMEALBUM[/], 
+//    gets that album info 
+//captures /api/albuminfo/x0/x1/x2... as
+// $params[0] => x0
+// $params[1] => x1 etc
+$app->get('/albuminfo/:parameters+', 
+  function($parameters) use ($sqlConnection) {
+  //first parameter is artist name  
+  //second parameter is album
 
-
-// backend api call to retrieve posts
-$app->get('/GETposts', function() use ($sqlConnection) {
-
-  //perform a mysqli query
-  $postResult = mysqli_query(
-        $sqlConnection,
-        "SELECT name, body, created FROM microposts;"
-    );
-  
-  //prepare a hashmap/dictionary/whatever to put the results into
-  $postsObject = array();
-
-  //get them record by record into the result object
-  if($postResult->num_rows > 0) {
-      while($row = $postResult->fetch_assoc()) {
-          array_unshift($postsObject, $row);
-      }
-  }
-  else {
-      echo json_encode(array('err' =>'NO RESULTS'));
+  // var_dump($parameters); 
+  //make sure there is at least one param
+  if(!isset($parameters[0]))
+  {
+    echo json_encode(array('err'=>'NO params'));
+    return;
   }
 
-  echo json_encode($postsObject);
-});
+  $queryDetails = array();
 
-//backend post method to create a new post
-$app->post('/POSTnew', function() use ($app, $sqlConnection) {
-    //turn the post string into a hash
-    parse_str($app->request()->getBody(), $requestBody);
-
-    //create insert query using values from hash
-    $insertQuery = 'INSERT INTO microposts (body, name, created) ' . // append the next line
-      "VALUES ( '{$requestBody['comment']}', '{$requestBody['name']}', NOW() );";
-      
-    //attempt query
-    $sqlSuccess = mysqli_query(
+  $sqlSuccess =
+    get_sql_results(
+      $queryDetails,
       $sqlConnection,
-      $insertQuery
+      "select albumName, released, avgRating, tracklist, imageURL from Albums ".
+      "where artistID in ".
+        "(select artistID from Artists where ". 
+          "artistName='{$parameters[0]}'".
+          ");"
       );
 
-    $app->response()->redirect(
-      "http://ww2.cs.fsu.edu/~celaya/",
-    //   // substr($app->urlFor('index'), 0, -1),
-      302);
-    // var_dump($requestBody);
-    // var_dump( $sqlSuccess .'///////' . mysqli_error($sqlConnection));
+  $queryDetails['tags'] = array();
+
+  $tagQuerySuccess =
+    get_sql_results(
+      $queryDetails['tags'],
+      $sqlConnection,
+      "select tagName from AlbumTags ".
+      "where albumID in ".
+        "(select artistID from Artists where ".
+          "artistName='{$parameters[0]}')"
+    );
+
+  if ($sqlSuccess or $tagQuerySuccess)
+    echo json_encode($queryDetails);
+  else
+    echo json_encode(array('err'=>'SQLerr'));
+
 });

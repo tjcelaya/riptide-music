@@ -7,6 +7,9 @@ $smarty->template_dir = "templates";
 $smarty->compile_dir = "templates/compiled";
 $smarty->cache_dir = "templates/cached";
 $smarty->config_dir = "smarty-config";
+$smarty->error_unassigned = false;
+// $smarty->debugging = true;
+
 
 ?>
 <html lang="en"><head>
@@ -31,7 +34,7 @@ $smarty->config_dir = "smarty-config";
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">riptide music</a>
+          <a class="brand" href="/~celaya/riptideMusic/">riptide music</a>
           <div class="nav-collapse collapse">
             <ul class="nav pull-right">
               <li><input type="text"/></li>

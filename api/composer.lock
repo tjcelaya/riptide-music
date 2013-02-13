@@ -1,31 +1,31 @@
 {
-    "hash": "4fd4147f6a1584174c88e10ba6c4bdf0",
+    "hash": "b1c09049ca7920816b5c04a4447aeafd",
     "packages": [
         {
-            "name": "slim/extras",
-            "version": "2.0.3",
-            "target-dir": "Slim/Extras",
+            "name": "kriswallsmith/buzz",
+            "version": "v0.8",
             "source": {
                 "type": "git",
-                "url": "https://github.com/codeguy/Slim-Extras",
-                "reference": "2.0.3"
+                "url": "http://github.com/kriswallsmith/Buzz.git",
+                "reference": "v0.8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/codeguy/Slim-Extras/archive/2.0.3.zip",
-                "reference": "2.0.3",
+                "url": "https://api.github.com/repos/kriswallsmith/Buzz/zipball/v0.8",
+                "reference": "v0.8",
                 "shasum": ""
             },
             "require": {
-                "slim/slim": ">=2.0.0",
                 "php": ">=5.3.0"
             },
-            "time": "2013-01-07 17:56:10",
+            "suggest": {
+                "ext-curl": "*"
+            },
+            "time": "2013-01-14 16:07:06",
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "Twig_Extensions_": "Views/Extension/",
-                    "Slim\\Extras": "."
+                    "Buzz": "lib/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -34,22 +34,57 @@
             ],
             "authors": [
                 {
-                    "name": "Andrew Smith",
-                    "email": "a.smith@silentworks.co.uk",
-                    "homepage": "http://www.silentworks.co.uk/"
-                },
-                {
-                    "name": "Josh Lockhart",
-                    "email": "info@joshlockhart.com",
-                    "homepage": "http://www.joshlockhart.com/"
+                    "name": "Kris Wallsmith",
+                    "email": "kris.wallsmith@gmail.com",
+                    "homepage": "http://kriswallsmith.net/"
                 }
             ],
-            "description": "Extras package for the Slim Framework",
-            "homepage": "http://github.com/codeguy/Slim-Extras",
+            "description": "Lightweight HTTP client",
+            "homepage": "https://github.com/kriswallsmith/Buzz",
             "keywords": [
-                "templating",
-                "extensions",
-                "middleware"
+                "curl",
+                "http client"
+            ]
+        },
+        {
+            "name": "ricbra/php-discogs-api",
+            "version": "v0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ricbra/php-discogs-api",
+                "reference": "v0.5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/ricbra/php-discogs-api/archive/v0.5.zip",
+                "reference": "v0.5",
+                "shasum": ""
+            },
+            "require": {
+                "kriswallsmith/buzz": ">=0.5",
+                "php": ">=5.3.0"
+            },
+            "time": "2012-12-19 21:27:20",
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Discogs": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Richard van den Brand",
+                    "email": "richard@vandenbrand.org"
+                }
+            ],
+            "description": "The Discogs API makes it easy for developers to communicate with the Discogs platform",
+            "keywords": [
+                "api",
+                "discogs"
             ]
         },
         {
