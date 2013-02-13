@@ -1,0 +1,43 @@
+~~~Basic SQL Queries~~~
+
+!!!Remember to "quote" your strings!!!
+
+
+~ADDING A REVIEW FOR AN ALBUM~
+
+The review is inserted into the Reviews table, which has schema:
+memName - albumID - review
+
+Because this schema calls for albumID, rather than albumName,
+you can use this nested SQL query to find the albumID using the
+albumName.
+
+You will need:
+1. The name of the member submitting the review.
+2. The name of the album they are reviewing.
+3. The review represented as a string.
+
+  INSERT INTO Reviews
+  VALUES ("<memName>", (SELECT albumID
+                      FROM Albums 
+                      WHERE albumName = "<albumName>"),
+          "<Review text>");
+
+~ADDING A RATING FOR AN ALBUM
+
+The rating is inserted into the Rates table, which has schema:
+memName - albumID - rating
+
+This query is implemented just like the other one, only the
+integer rating will replace the text review.
+
+You will need:
+1. The name of the member submitting the rating.
+2. The name of the album they are rating.
+3. The rating represented as an integer.
+
+  INSERT INTO Rates
+  VALUES ("<memName>", (SELECT albumID
+                      FROM Albums
+                      WHERE albumName = "<albumName>"),
+          <rating>);
