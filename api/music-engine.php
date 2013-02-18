@@ -51,3 +51,46 @@ $app->get('/albuminfo/:parameters+',
     echo json_encode(array('err'=>'SQLerr'));
 
 });
+
+// get album review test -- rick
+$app->get('/review/:parameters+',
+  function($parameters) use ($sqlConnection)
+  {
+    if(!isset($parameters[0]))
+    { echo json_encode(array('err'=>'NO params'));
+      return;
+    }
+    $queryDetails = array();
+    // maybe select 5 at a time, index selections
+    $sqlSuccess = get_sql_results($queryDetails, $sqlConnection,
+//    "select * from Reviews");
+ //   $sqlSuccess = get_sql_results($queryDetails, $sqlConnection,
+    "select R.* from Reviews R, Albums A, Artists B ".
+    "where B.artistName = '{$parameters[0]}' ".
+    "AND A.albumName = '{$parameters[1]}' ".
+    "AND A.artistID = B.artistID ".
+    "AND R.albumID = A.albumID");
+    if ($sqlSuccess)
+      echo json_encode($queryDetails);
+    else
+      echo json_encode(array('err'=>'SQLerr'));
+});
+
+// get album review test -- rick
+$app->get('/blah/:parameters+',
+  function($parameters) use ($sqlConnection)
+  {
+    if(!isset($parameters[0]))
+    { echo json_encode(array('err'=>'NO params'));
+      return;
+    }
+    $queryDetails = array();
+    // maybe select 5 at a time, index selections
+    $sqlSuccess = get_sql_results($queryDetails, $sqlConnection,
+    "select * from Albums B, Artists A");
+    if ($sqlSuccess)
+      echo json_encode($queryDetails);
+    else
+      echo json_encode(array('err'=>'SQLerr'));
+});
+

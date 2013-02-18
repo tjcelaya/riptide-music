@@ -3,6 +3,28 @@ require 'vendor/autoload.php';
 // use this to send json explicitly if the browser isnt interpreting the response correctly
 // header("Content-Type: application/json");
 
+
+/*
+methods of returned object from a master
+"getArtists"
+"getDataQuality"
+"getGenres"
+"getId"
+"getImages"
+"getMainRelease"
+"getMainReleaseUrl"
+"getResourceUrl"
+"getStyles"
+"getTitle"
+"getTracklist"
+"getUri"
+"getVersionsUrl"
+"getYear"
+"getVideos",
+"toArray"
+*/
+
+
 //file include
 ob_start();
 require 'dbPassFileUnguessableName';
@@ -55,7 +77,6 @@ function get_sql_results(&$arrayToAppendResults, $sqlC, $query) {
   }
 };
 
-http://ww2.cs.fsu.edu/~celaya/riptideMusic/api/d/Pink+Floyd/Dark+Side+of+the+Moon
 //this is a debugging route
 $app->get('/', function() use ($dbPassword) {
   // this is actually /~celaya/api/ (or w/o the slash)
@@ -68,42 +89,61 @@ $app->get('/', function() use ($dbPassword) {
 
 //this route currently returns all the album art an artist has,
 //its just 90px thumbnails though, working on that
-$app->get('/d/:artist/:album', function($artist, $album) use ($discogs) {
+$app->get('/d/:artist(/:album)', function($artist, $album = '') use ($discogs) {
   
+  $foundMaster = array();
+
   $dReq = $discogs->search(array(
-      'artist' => $artist,
-      'title' => $album,
-      'type' => 'master'
-    ));
+        'artist' => $artist,
+        'q' => $album,
+        'type' => 'master'
+      ));
+  echo count($dReq);
 
   foreach ($dReq as $v) {
-    // echo "<BR>";
-    // echo "<BR>";
-
+    //convert current result to hashmap
     $albumDetails = $v->toArray();
-
+    echo json_encode($albumDetails);
     $masterName = $v->getTitle();
     $requestedName = $artist." - ".$album;
     
-    if ($masterName == $requestedName)
+    if (is_array($albumDetails['format']) 
+      && 
+        (in_array("Album", $albumDetails['format']) ||
+        in_array("LP", $albumDetails['format']) ||
+        in_array("EP", $albumDetails['format']) || 
+        in_array("Vinyl", $albumDetails['format'])
+          )
+      )
     {
-      // echo "<h1>perfectMATCH</h1>";
-      echo json_encode($albumDetails);
-      break;
-    }
-    elseif (levenshtein($masterName, $requestedName,
-      2, 0, 10)/strlen($masterName) < 0.4) 
-    {
-      // echo "<h2>partialMATCH</h2>";
-      echo json_encode($albumDetails);
-      break;
-    }
-    // else
-      // echo json_encode(array('err' => 'noMATCH'));
+      if ($masterName == $requestedName || 
+          levenshtein($masterName, $requestedName)/strlen($masterName) < 2
+          )
+      {
+        echo "<BR>";
+        echo $masterName."<BR>";
+        echo "lev:".levenshtein($masterName, $requestedName)."<BR>";
+        echo "len:".strlen($masterName)."<BR>";
+        echo "ratio:".levenshtein($masterName, $requestedName)/strlen($masterName)."<BR>";
+        $masterReq = $discogs->getMaster($v->getId());
 
+        if (is_null($masterReq))
+        {
+          echo json_encode(array('err' => 'no master found'));
+          exit;
+        }
+
+        $foundMaster = $masterReq->getImages();
+
+          echo "<BR>";
+          var_dump($foundMaster[0]);
+          echo "<BR>";
+          echo "<img src='".$foundMaster[0]->getUri150()."'/>";
+
+        break;
+      }
+    }
   }
-  exit;
-
 });
 
 
