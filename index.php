@@ -8,12 +8,6 @@
         </div>
         <div class='span2 rec'>
           <p>recommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommend</p>
-          <p>recommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommend</p>
-          <p>recommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommend</p>
-          <p>recommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommend</p>
-          <p>recommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommend</p>
-          <p>recommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommend</p>
-          <p>recommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommend</p>
         </div>
       </div>
     </div>

@@ -8,20 +8,34 @@ $smarty->compile_dir = "templates/compiled";
 $smarty->cache_dir = "templates/cached";
 $smarty->config_dir = "smarty-config";
 $smarty->error_unassigned = false;
-// $smarty->debugging = true;
+$smarty->debugging = true;
 
 
 ?>
 <html lang="en"><head>
   <head>
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oxygen:700,300,400">
+  <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
+  <link rel="stylesheet/less" href="css/style.less" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=Oxygen:700,300,400" rel="stylesheet">
   <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700italic' rel='stylesheet' type='text/css'>  
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-  <script src="js/agility.js"></script>
+  <!-- // <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script> -->
+  <!-- // <script src="js/agility.js"></script> -->
+  <script src="js/less.js"></script>
+  <style>
+    body { 
+      background: url("img/bg/<?php 
+        echo array_rand(
+            array_slice(
+                scandir(
+                    dirname(__FILE__)."/img/bg"
+                )
+                ,2));
+      ?>.jpg"); 
+      background-size: cover;
+      background-attachment: fixed;
 
+    }
+  </style>
 
   </head>
   
@@ -29,17 +43,15 @@ $smarty->error_unassigned = false;
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
           <a class="brand" href="/~celaya/riptideMusic/">riptide music</a>
-          <div class="nav-collapse collapse">
-            <ul class="nav pull-right">
-              <li><input type="text"/></li>
-            </ul>
-          </div><!--/.nav-collapse -->
+          <div class='pull-right'>
+            <form action="search.php" method='GET'>
+                <input tabindex='1' name='q' type="text"/>
+                <button tabindex='1' value='!' type="submit" class='search-button'>
+                  <i class="icon-search icon-white"></i>
+                </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>

@@ -1,0 +1,163 @@
+@import "bootstrap-responsive.min.css";
+@import "less/accordion.less";
+@import "less/alerts.less";
+@import "less/bootstrap.less";
+@import "less/breadcrumbs.less";
+@import "less/button-groups.less";
+@import "less/buttons.less";
+@import "less/carousel.less";
+@import "less/close.less";
+@import "less/code.less";
+@import "less/component-animations.less";
+@import "less/dropdowns.less";
+@import "less/forms.less";
+@import "less/grid.less";
+@import "less/hero-unit.less";
+@import "less/labels-badges.less";
+@import "less/layouts.less";
+@import "less/media.less";
+@import "less/mixins.less";
+@import "less/modals.less";
+@import "less/navbar.less";
+@import "less/navs.less";
+@import "less/pager.less";
+@import "less/pagination.less";
+@import "less/popovers.less";
+@import "less/progress-bars.less";
+@import "less/reset.less";
+@import "less/responsive-1200px-min.less";
+@import "less/responsive-767px-max.less";
+@import "less/responsive-768px-979px.less";
+@import "less/responsive.less";
+@import "less/responsive-navbar.less";
+@import "less/responsive-utilities.less";
+@import "less/scaffolding.less";
+@import "less/sprites.less";
+@import "less/tables.less";
+@import "less/thumbnails.less";
+@import "less/tooltip.less";
+@import "less/type.less";
+@import "less/utilities.less";
+@import "less/variables.less";
+@import "less/wells.less";
+
+body {
+  font-family: "Oxygen";
+  background-size: 100% auto;
+  background-attachment: fixed;
+}
+
+a {
+  color: #00B7FF;
+}
+
+label {
+  min-height: 2em;
+}
+
+label input {
+  float: right;
+  margin-bottom: 1em;
+}
+
+.message .body {
+    font-size: 2em;
+    margin-bottom:0.3em;
+}
+
+.message em {
+    float: right;
+}
+
+.full-album-listing {
+    float: left; 
+    margin: 1.5em;
+    width: 100%;
+}
+
+.full-album-listing h1 {
+    font-size: 3em;
+    line-height: 1em;
+    clear: none;
+}
+
+.full-album-listing p {
+  clear: none;
+  line-height: 1em;
+}
+.full-album-listing img {
+    float: left;
+    margin: 0em 1em 1em 0em;
+}
+
+.full-album-listing table {
+    width: 100%;
+}
+
+.full-album-listing tr td:first-child {
+    width: 80%;
+}
+
+.navbar.navbar-fixed-top > div {
+  background: #ffff00; /* Old browsers */
+  background: -moz-linear-gradient(top, #ffff00 0%, #febf01 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffff00), color-stop(100%,#febf01)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ffff00 0%,#febf01 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ffff00 0%,#febf01 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ffff00 0%,#febf01 100%); /* IE10+ */
+  background: linear-gradient(to bottom, #ffff00 0%,#febf01 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffff00', endColorstr='#febf01',GradientType=0 ); /* IE6-9 */
+}
+
+.navbar .brand {
+  font-style: italic;
+  font-family: "Ubuntu", sans-serif;
+  text-transform: uppercase;
+  font-size: 2.3em;
+  letter-spacing: 0.2em;
+  color: white;
+}
+
+.navbar input {
+  margin-top: 0.7em;
+  border-radius: 10em;
+}
+
+.space-div {
+  /*.span2;*/
+}
+
+.main-body {
+  /*.span7;*/
+}
+
+.rec {
+  /*.span2;*/
+  padding:1.5em;
+}
+
+@media (min-width: 767px) {
+  .inner-row-div {
+    margin-top:10em;
+  }
+}
+
+.main-body, .rec {
+  background-color: rgba(255,255,255,0.8);
+  padding: 1.5em;
+}
+
+.main-body hr {
+  border-top: 1px solid #222;
+  width: 90%;
+}
+
+.rec,.full-album-listing * {
+  word-wrap:break-word;
+}
+
+.search-button {
+  background: none;
+  border: none;
+}
+
