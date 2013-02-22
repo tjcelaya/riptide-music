@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2013-02-12 22:29:25
+<?php /* Smarty version Smarty-3.1.13, created on 2013-02-21 20:23:37
          compiled from "album-template.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:442836463511b08512a46d1-90512686%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '862023fa9ab5ebb8476826773f542c3406d69b8a' => 
     array (
       0 => 'album-template.tpl',
-      1 => 1360726165,
+      1 => 1361496208,
       2 => 'file',
     ),
   ),
@@ -24,6 +24,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'artistName' => 0,
     'released' => 0,
     'genre' => 0,
+    'g' => 0,
     'avgRating' => 0,
     'tags' => 0,
     'tag' => 0,
@@ -45,26 +46,28 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     </a>
     <p><?php echo $_smarty_tpl->tpl_vars['released']->value;?>
 </p>
-    <a href="genre/<?php echo $_smarty_tpl->tpl_vars['genre']->value;?>
-">
-        <p><?php echo $_smarty_tpl->tpl_vars['genre']->value;?>
-</p>
-    </a>
+    <?php  $_smarty_tpl->tpl_vars['g'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['g']->_loop = false;
+ $_from = $_smarty_tpl->tpl_vars['genre']->value; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
+foreach ($_from as $_smarty_tpl->tpl_vars['g']->key => $_smarty_tpl->tpl_vars['g']->value){
+$_smarty_tpl->tpl_vars['g']->_loop = true;
+?>
+        <a style="margin-right:0.2em" href="genre/<?php echo $_smarty_tpl->tpl_vars['g']->value;?>
+"><?php echo $_smarty_tpl->tpl_vars['g']->value;?>
+</a>
+    <?php } ?>
     <p><?php echo $_smarty_tpl->tpl_vars['avgRating']->value;?>
 </p>
-    <p class="tags">
+    <div class="tags">
         <?php  $_smarty_tpl->tpl_vars['tag'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['tag']->_loop = false;
  $_from = $_smarty_tpl->tpl_vars['tags']->value; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
 foreach ($_from as $_smarty_tpl->tpl_vars['tag']->key => $_smarty_tpl->tpl_vars['tag']->value){
 $_smarty_tpl->tpl_vars['tag']->_loop = true;
 ?>
             <a href="/~celaya/riptideMusic/tag.php?searchTags=<?php echo $_smarty_tpl->tpl_vars['tag']->value;?>
-">
-                <span><?php echo $_smarty_tpl->tpl_vars['tag']->value;?>
-</span>
-            </a>
+"><?php echo $_smarty_tpl->tpl_vars['tag']->value;?>
+</a>
         <?php } ?>
-    </p>
+    </div>
     <table>
         <?php  $_smarty_tpl->tpl_vars['track'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['track']->_loop = false;
  $_from = $_smarty_tpl->tpl_vars['tracks']->value; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
@@ -72,9 +75,11 @@ foreach ($_from as $_smarty_tpl->tpl_vars['track']->key => $_smarty_tpl->tpl_var
 $_smarty_tpl->tpl_vars['track']->_loop = true;
 ?>
             <tr>
-                <td><?php echo $_smarty_tpl->tpl_vars['track']->value['name'];?>
+                <td><?php echo $_smarty_tpl->tpl_vars['track']->value[1];?>
 </td>
-                <td><?php echo $_smarty_tpl->tpl_vars['track']->value['duration'];?>
+                <td><?php echo $_smarty_tpl->tpl_vars['track']->value[2];?>
+</td>
+                <td><?php echo $_smarty_tpl->tpl_vars['track']->value[0];?>
 </td>
             </tr>
         <?php } ?>

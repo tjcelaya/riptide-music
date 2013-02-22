@@ -7,6 +7,7 @@
           </a>
         </div>
         <div class='span2 rec'>
+          <p>try out the search bar!</p>
           <p>recommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommend</p>
         </div>
       </div>

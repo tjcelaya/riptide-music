@@ -6,22 +6,21 @@
         <p class="artistName">{$artistName}</p>
     </a>
     <p>{$released}</p>
-    <a href="genre/{$genre}">
-        <p>{$genre}</p>
-    </a>
+    {foreach $genre as $g}
+        <a style="margin-right:0.2em" href="genre/{$g}">{$g}</a>
+    {/foreach}
     <p>{$avgRating}</p>
-    <p class="tags">
+    <div class="tags">
         {foreach $tags as $tag}
-            <a href="/~celaya/riptideMusic/tag.php?searchTags={$tag}">
-                <span>{$tag}</span>
-            </a>
+            <a href="/~celaya/riptideMusic/tag.php?searchTags={$tag}">{$tag}</a>
         {/foreach}
-    </p>
+    </div>
     <table>
         {foreach $tracks as $track}
             <tr>
-                <td>{$track.name}</td>
-                <td>{$track.duration}</td>
+                <td>{$track[1]}</td>
+                <td>{$track[2]}</td>
+                <td>{$track[0]}</td>
             </tr>
         {/foreach}
     </table>

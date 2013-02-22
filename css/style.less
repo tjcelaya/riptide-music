@@ -110,6 +110,7 @@ label input {
 }
 
 .navbar .brand {
+  text-shadow: 7px 7px 15px black;
   font-style: italic;
   font-family: "Ubuntu", sans-serif;
   text-transform: uppercase;
@@ -119,8 +120,19 @@ label input {
 }
 
 .navbar input {
+  text-shadow: 7px 7px 15px black;
   margin-top: 0.7em;
   border-radius: 10em;
+}
+.navbar button {
+  text-shadow: 7px 7px 15px black;
+
+}
+
+@media screen and (max-width: 767px) {
+  .navbar .pull-right {
+    float:left !important;
+  }
 }
 
 .space-div {

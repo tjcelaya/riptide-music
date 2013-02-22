@@ -1,16 +1,18 @@
+
 body {
   font-family: "Oxygen";
-  background: url('../img/beach-photo0.jpg');
-  background-repeat: no-repeat;
+  background-size: 100% auto;
   background-attachment: fixed;
 }
 
 a {
   color: #00B7FF;
 }
+
 label {
   min-height: 2em;
 }
+
 label input {
   float: right;
   margin-bottom: 1em;
@@ -32,7 +34,7 @@ label input {
 }
 
 .full-album-listing h1 {
-    font-size: 3em;
+    font-size: 1.5em;
     line-height: 1em;
     clear: none;
 }
@@ -50,39 +52,68 @@ label input {
     width: 100%;
 }
 
+.full-album-listing tr td {
+    width: 40%;
+}
+
 .full-album-listing tr td:first-child {
-    width: 80%;
-    /*background-color:red;*/
+    width: 5%;
 }
 
-
-.navbar.navbar-fixed-top div {
-  background: #ffff00; /* Old browsers */
-  background: -moz-linear-gradient(top, #ffff00 0%, #febf01 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffff00), color-stop(100%,#febf01)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, #ffff00 0%,#febf01 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, #ffff00 0%,#febf01 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, #ffff00 0%,#febf01 100%); /* IE10+ */
-  background: linear-gradient(to bottom, #ffff00 0%,#febf01 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffff00', endColorstr='#febf01',GradientType=0 ); /* IE6-9 */
+.full-album-listing tr td:last-child {
+    width: 10%;
 }
 
+.navbar {
+  /*background: #ffff00; *//* Old browsers */
+  /*background: -moz-linear-gradient(top, #ffff00 0%, #febf01 100%); *//* FF3.6+ */
+  /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffff00), color-stop(100%,#febf01)); *//* Chrome,Safari4+ */
+  /*background: -webkit-linear-gradient(top, #ffff00 0%,#febf01 100%); *//* Chrome10+,Safari5.1+ */
+  /*background: -o-linear-gradient(top, #ffff00 0%,#febf01 100%); *//* Opera 11.10+ */
+  /*background: -ms-linear-gradient(top, #ffff00 0%,#febf01 100%); *//* IE10+ */
+  /*background: linear-gradient(to bottom, #ffff00 0%,#febf01 100%); *//* W3C */
+  /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffff00', endColorstr='#febf01',GradientType=0 );*/ /* IE6-9 */
+}
 
 .navbar .brand {
+  text-shadow: 7px 7px 15px rgba(0,0,0,0.5);
   font-style: italic;
   font-family: "Ubuntu", sans-serif;
   text-transform: uppercase;
-  font-size: 1.7em;
-  letter-spacing: 0.3em;
+  font-size: 2.3em;
+  letter-spacing: 0.2em;
   color: white;
 }
 
 .navbar input {
+  box-shadow: 7px 7px 15px rgba(0,0,0,0.5);
   margin-top: 0.7em;
   border-radius: 10em;
+  width: 20em;
+  /*height:auto;*/
+  /*font-size: 1.25em;*/
+}
+.navbar button {
+  box-shadow: 7px 7px 15px rgba(0,0,0,0.5);
+
+}
+
+@media screen and (max-width: 767px) {
+  .navbar .pull-right {
+    float:left !important;
+  }
+}
+
+.space-div {
+  /*.span2;*/
+}
+
+.main-body {
+  /*.span7;*/
 }
 
 .rec {
+  /*.span2;*/
   padding:1.5em;
 }
 
@@ -106,3 +137,19 @@ label input {
   word-wrap:break-word;
 }
 
+.search-button {
+  background: none;
+  border: none;
+}
+
+.tags {
+  clear:both;
+  margin-bottom:0.5em;
+}
+.tags a {
+  display: inline-block;
+  height: 1.5em;
+  width: auto;
+  padding: 0.2em 1em;
+  background-color: rgba(255,255,255,0.9);
+}
