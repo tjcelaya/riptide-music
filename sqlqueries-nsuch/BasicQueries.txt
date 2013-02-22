@@ -2,6 +2,28 @@
 
 !!!Remember to "quote" your strings!!!
 
+~ADDING AN ARTIST~
+
+Artists are inserted into the Artists table, which has schema:
+artistID - artistName - artistGenres
+
+  INSERT INTO Artists
+  VALUES (<artistID>, "<artistName", <genre>);
+
+Albums are inserted into the Albums table with schema:
+albumID - artistID - albumName - released - avgRating - tracklist - imageURL
+
+Since you may not always have all this information upon initial insertion,
+you can specify which fields you are including in the insertion.
+For example, if you only had the album's name and artist...
+
+  INSERT INTO Albums (albumID, artistID, albumName)
+  VALUES (<albumID>, <artistID>, "<albumName>");
+
+*NOTE*
+For now, if you're adding a new album or artist, just add it as the next
+sequential ID. I'm pretty sure there's a way to automate this, so I'll be
+looking into that.
 
 ~ADDING A REVIEW FOR AN ALBUM~
 
@@ -23,7 +45,7 @@ You will need:
                       WHERE albumName = "<albumName>"),
           "<Review text>");
 
-~ADDING A RATING FOR AN ALBUM
+~ADDING A RATING FOR AN ALBUM~
 
 The rating is inserted into the Rates table, which has schema:
 memName - albumID - rating
