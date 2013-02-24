@@ -164,6 +164,7 @@ $app->get('/go/:params+', function($params) use ($discogs, $sqlConnection) {
       // echo "<BR>".$k."<BR>";
       $masterName = $albumDetails['title'];
       $requestedName = $artist." - ".$album;
+//
 
       // result is a valid format
       if (is_array($albumDetails['format'])
