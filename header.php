@@ -46,7 +46,8 @@ $smarty->debugging = true;
   </head>
   
   <body>
-    <div class="navbar navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class='navbar-inner'>
         <div class="container">
           <a class="brand" href="/~celaya/riptideMusic/">riptide music</a>
           <div class='pull-right'>
@@ -62,5 +63,6 @@ $smarty->debugging = true;
             </form>
           </div>
         </div>
+      </div>
     </div>
     <div class="container-fluid main-container">

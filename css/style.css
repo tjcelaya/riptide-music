@@ -85,6 +85,10 @@ label input {
   color: white;
 }
 
+.navbar form {
+  margin:0;
+}
+
 .navbar input {
   box-shadow: 7px 7px 15px rgba(0,0,0,0.5);
   margin-top: 0.7em;
@@ -94,7 +98,7 @@ label input {
   /*font-size: 1.25em;*/
 }
 .navbar button {
-  box-shadow: 7px 7px 15px rgba(0,0,0,0.5);
+  /*box-shadow: 7px 7px 15px rgba(0,0,0,0.5);*/
 
 }
 
