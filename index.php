@@ -5,6 +5,7 @@
           <a href="/~celaya/riptideMusic/artist.php?name=Michael Jackson">
             <p>albums by Mike</p>
           </a>
+	// test
         </div>
         <div class='span2 rec'>
           <p>try out the search bar!</p>
@@ -16,3 +17,4 @@
     <script src="js/moment.js"></script>
   </body>
 </html>
+
