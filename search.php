@@ -1,25 +1,26 @@
 <?php require "header.php"; ?>
     <!-- div container -->
       <div class="row-fluid inner-row-div">
-        <div class='main-body span7 offset2'>
+        <div class='main-body span5 offset1'>
+          <h1>Search Results</h1>
           <?php
             if (isset($_GET["q"]))
             {
-              echo "<pre><code>";
   
               $_GET['q'] = urldecode($_GET['q']);
 
-              $APIrequestURL = 
+              echo $APIrequestURL = 
                 str_replace(
                   "%2F",
                   "/",
                   str_replace(
                     "search.php?q=", 
-                    "api/d/",
+                    "api/dget/",
                     "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"
                     )
                   ).'/';
 
+              echo "<pre><code>";
                echo "<BR>";
                print_r(
                 $APIresponse = 
@@ -31,15 +32,7 @@
                           )
                 ;
                echo "<BR>";
-
-              // $smarty->assign('imgURL',"http://api.discogs.com/image/R-150-694551-1301387402.jpeg");
-              // $smarty->assign('albumName',"TransDerp");
-              // $smarty->assign('genre',"lame");
-              // $smarty->assign('avgRating',"2");
-              // $smarty->display('album-template.tpl');
-
               echo "</pre></code>" ;
-
             } 
             else
             {
@@ -47,7 +40,7 @@
             }
           ?>
         </div>
-        <div class='main-body span2'>
+        <div class='main-body span5'>
           <?php
         
             for($i = 0; $i < count($APIresponse); $i++) {
@@ -59,7 +52,7 @@
                 // echo "<BR>";
                 // echo ($kk).": ".gettype($vv)."<BR>";
               }
-              $smarty->display('album-template.tpl');
+              $smarty->display('album-create.tpl');
             }
 
           ?>

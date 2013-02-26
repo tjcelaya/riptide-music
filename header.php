@@ -21,10 +21,12 @@ $smarty->debugging = true;
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
   <link rel="stylesheet" href="css/style.css" type="text/css">
+  <link rel="stylesheet" href="hook/hook.css" type="text/css" />
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  <script src="hook/hook.js" type="text/javascript"></script>
   <!-- <link rel="stylesheet/less" href="css/style.less" type="text/css"> -->
   <link href="http://fonts.googleapis.com/css?family=Oxygen:700,300,400" rel="stylesheet">
   <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700italic' rel='stylesheet' type='text/css'>  
-  <!-- // <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script> -->
   <!-- // <script src="js/agility.js"></script> -->
   <!-- // <script src="js/less.js"></script> -->
   <style>
@@ -46,7 +48,14 @@ $smarty->debugging = true;
   </head>
   
   <body>
+
     <div class="navbar navbar-inverse navbar-fixed-top">
+  <div id="hook">
+    <div id="loader">
+      <div class="spinner"></div>
+    </div>
+    <span id="hook-text">Reloading...</span>
+  </div>
       <div class='navbar-inner'>
         <div class="container">
           <a class="brand" href="/~celaya/riptideMusic/">riptide music</a>
