@@ -2,8 +2,8 @@
 require 'vendor/autoload.php';
 // use this to send json explicitly if the browser isnt interpreting the response correctly
 // header("Content-Type: application/json");
-// error_reporting(E_ALL);
-// ini_set("display_errors", 1);
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
 
 //file include
 ob_start();
@@ -68,9 +68,10 @@ function get_discogs_albumdata(&$arrayToAppendResults, &$discogsMaster) {
     'released' => $discogsMaster->getYear(),
     'genre' => count($genreReq = array_merge((array)$discogsMaster->getGenres(), (array)$discogsMaster->getStyles())) ? ($genreReq) : null,
     'imageURL' => count($imgReq = $discogsMaster->getImages()) ? $imgReq[0]->getUri150() : null,
-    'avgRating' => 2, 
+    'avgRating' => 0, 
     'tags' => array_merge((array)$discogsMaster->getGenres(), (array)$discogsMaster->getStyles()), 
-    'tracks' => count($tracksReq = $discogsMaster->getTracklist()) ? array() : null
+    'tracks' => count($tracksReq = $discogsMaster->getTracklist()) ? array() : null,
+    'dID' => $discogsMaster->getID()
     );
 
   // $tempResult['tracks'] = array_values($tempResult['tracks']);
@@ -83,7 +84,7 @@ function get_discogs_albumdata(&$arrayToAppendResults, &$discogsMaster) {
   // var_dump($tempResult);
   array_push($arrayToAppendResults, $tempResult);
   return;
-}
+};
 
 //this is a debugging route
 $app->get('/', function() use ($dbPassword) {
@@ -95,9 +96,8 @@ $app->get('/', function() use ($dbPassword) {
   echo gettype($dbPassword);
 })->name('index');
 
-//this route currently returns all the album art an artist has,
-//its just 90px thumbnails though, working on that
-$app->get('/d/:params+', function($params) use ($discogs) {
+//this route adds 
+$app->get('/dget/:params+', function($params) use ($discogs, $sqlConnection) {
 
   $artist = $params[0];
 
@@ -106,22 +106,11 @@ $app->get('/d/:params+', function($params) use ($discogs) {
   else
     $album = null;
 
-  // echo "you sent:<BR>";
-  // print_r($params);
-  // echo "<BR>";
-  
   $result = array();
+  $sqlQueryResult = array();
 
-  //do req
-  if ($album == '')
-  {
-    $result[0] = 'empty';
-    $discogsRequestParams = array(
-        'q' => $artist,
-        'type' => 'master'
-      );
-  }
-  else
+  //album was specified, look for ours
+  if ($album != '')
   {
     $result[0] = 'specified';
     $discogsRequestParams = array(
@@ -130,97 +119,180 @@ $app->get('/d/:params+', function($params) use ($discogs) {
         'type' => 'master'
       );
   }
+  else
+  {
+    $result[0] = 'empty';
+    $discogsRequestParams = array(
+        'q' => $artist,
+        'type' => 'master'
+      );
+  }
 
   $resultFound = false;
-  $maxTries = 3;
   $maxDiscogsRetrieves = 5;
   
-  // while (!$resultFound && --$maxTries != 0 )
-  // {
-    $dReq = $discogs->search($discogsRequestParams);
+  $dReq = $discogs->search($discogsRequestParams);
 
-    // echo count($dReq)."<BR>";
-    // echo "alb:".$result[0]."<BR>";
-    // echo "try:".$maxTries."<BR>";
+  foreach ($dReq as $k => $v) {
+    if ($k > $maxDiscogsRetrieves)
+      break;
 
-    foreach ($dReq as $k => $v) {
-      if ($k > $maxDiscogsRetrieves)
-        break;
-
-      // echo "<BR>".$k."<BR>";
-      //convert current result to hashmap
-      // var_dump(
-      $albumDetails = $v->toArray()
-      //   )
-      ;
-      // echo "<BR>".$k."<BR>";
-      $masterName = $albumDetails['title'];
-      $requestedName = $artist." - ".$album;
-      
-      // result is a valid format
-      if (is_array($albumDetails['format']) 
-        && 
-          (in_array("Album", $albumDetails['format']) ||
-          in_array("LP", $albumDetails['format']) ||
-          in_array("EP", $albumDetails['format']) || 
-          in_array("CD", $albumDetails['format']) || 
-          in_array("Vinyl", $albumDetails['format'])
-            )
-        &&
-          (!in_array("Unofficial Release", $albumDetails['format']) ||
-            !in_array("Single", $albumDetails['format']) ||
-            !in_array("Compilation", $albumDetails['format'])
-            )
+    //convert current result to hashmap
+    $albumDetails = $v->toArray();
+    $masterName = $albumDetails['title'];
+    $requestedName = $artist." - ".$album;
+    
+    // result is a valid format
+    if (is_array($albumDetails['format']) 
+      && 
+        (in_array("Album", $albumDetails['format']) ||
+        in_array("LP", $albumDetails['format']) ||
+        in_array("EP", $albumDetails['format']) || 
+        in_array("CD", $albumDetails['format']) || 
+        in_array("Vinyl", $albumDetails['format'])
+          )
+      &&
+        (!in_array("Unofficial Release", $albumDetails['format']) ||
+          !in_array("Single", $albumDetails['format']) ||
+          !in_array("Compilation", $albumDetails['format'])
+          )
+      )
+    {
+      if ($result[0] == 'specified' && 
+            ($masterName == $requestedName 
+              || 
+              levenshtein($masterName, $requestedName)/strlen($masterName) < 0.2
+              )
         )
       {
-        if ($result[0] == 'specified' && 
-              ($masterName == $requestedName 
-                || 
-                levenshtein($masterName, $requestedName)/strlen($masterName) < 0.2
-                )
-          )
-        {
-          // found matching name 
+        $foundMaster = $discogs->getMaster($v->getId());
 
-          // if($D) {
-            // echo "<BR>";
-            // echo "album:".$album."<BR>";
-            // echo "artist:".$artist."<BR>";
-            // echo "master:".$masterName."<BR>";
-            // echo "reques:".$requestedName."<BR>";
-            // echo "lev:".levenshtein($masterName, $requestedName)."<BR>";
-            // echo "len:".strlen($masterName)."<BR>";
-            // echo "ratio:<h1>".levenshtein($masterName, $requestedName)/strlen($masterName)."</h1><BR>";
-          // }
-          // */
+        if (is_null($foundMaster))
+          continue;
 
-          $foundMaster = $discogs->getMaster($v->getId());
-
-          if (is_null($foundMaster))
-          {
-            continue;
-          }
-
-          get_discogs_albumdata($result, $foundMaster);
-          echo json_encode(array_slice($result,1));
-          return;
-          // exit with matched result
-        }
-        else
-        {//returned from result but name doesnt match
-          //add to results and continue
-          $foundMaster = $discogs->getMaster($v->getId());
-          get_discogs_albumdata($result, $foundMaster);
-        }
+        get_discogs_albumdata($result, $foundMaster);
+       
+        echo json_encode(array_merge(array_slice($result,1), $sqlQueryResult));
+        return;
+        // exit with matched result
       }
+      else
+      {//returned from result but name doesnt match
+        //add to results and continue
+        $foundMaster = $discogs->getMaster($v->getId());
+        get_discogs_albumdata($result, $foundMaster);
+      }
+    }
   }
   echo json_encode(array_slice($result,1));
-  //no direct match, return all
+  
 
 });
 
+$app->post('/found/:discogsID', function ($discogsID) use ($app, $sqlConnection, $discogs) {
+
+  $albumInfo = array('supplied' => array());
+
+  // get discogs data
+  get_discogs_albumdata($albumInfo['supplied'], $discogs->getMaster($discogsID));
+  assert(0 < count($albumInfo['supplied']));
+
+  $albumInfo['supplied'] = $albumInfo['supplied'][0];
+
+  // assign meaningful names
+  $artistName = $albumInfo['supplied']['artistName'];
+  $fullAlbumTitle = $albumInfo['supplied']['artistName']." - ".$albumInfo['supplied']['albumName'];
+  $tracks = implode("|", 
+    array_map(function($a) {
+      return implode('~', $a);
+    }, 
+      $albumInfo['supplied']['tracks']));
+
+  $genreString = implode('|', $albumInfo['supplied']['genre']);
+  $remoteImageURL = $albumInfo['supplied']['imageURL'];
+
+  // quick way of getting correct file destination,
+  // always make sure to chdir back
+  chdir('..');
+  $localImageURL = getcwd()."/img/$fullAlbumTitle.jpg";
+  chdir('api');  
+
+  if(!file_exists($localImageURL))
+  {//get album art since we dont have it
+    copy($remoteImageURL, $localImageURL);
+  }
+
+  //check if we have the artist in our db
+  $internalArtistSearch = "select artistID from Artists where ". 
+                            "artistName='{$artistName}';";
+  $artistCheck = array();
+
+  get_sql_results(
+    $artistCheck,
+    $sqlConnection,
+    $internalArtistSearch
+    );
+
+  if(!count($artistCheck))
+  {//insert artist since we dont have them
+    $artistInsert = "INSERT INTO Artists (artistName, artistGenres) VALUES ('{$artistName}', '{$genreString}');";
+    mysqli_real_query($sqlConnection, $artistInsert);
+
+    //get their ID to use in the album insert
+    get_sql_results(
+      $artistCheck,
+      $sqlConnection,
+      $internalArtistSearch
+      );
+  }
+  
+  $internalArtistID = $artistCheck[0]['artistID'];
+
+  echo $internalAlbumSearch = "select albumID from Albums where ".
+                          "albumName='{$albumInfo['supplied']['albumName']}' and ".
+                          "artistID='$internalArtistID';";
+                          // "artistID='1'";
+  $albumCheck = array();
+  get_sql_results(
+    $albumCheck,
+    $sqlConnection,
+    $internalAlbumSearch
+    );
+  echo json_encode($albumCheck);
+
+  if(!count($albumCheck))
+  {//new album, insert into Albums and AlbumGenres
+    $albumInsert = 'INSERT INTO Albums '.
+      '(albumName, released, tracklist, imageURL, artistID ) '.
+      'VALUES '.
+      "('{$albumInfo['supplied']['albumName']}', {$albumInfo['supplied']['released']}, '$tracks', '$localImageURL', $internalArtistID )";
+
+    echo "albuminsert: ".json_encode(mysqli_real_query($sqlConnection, $albumInsert));
+
+    get_sql_results(
+      $albumCheck,
+      $sqlConnection,
+      $internalAlbumSearch
+      );
+
+    array_walk($albumInfo['supplied']['genre'],
+      function ($g) use ($albumCheck, $sqlConnection) {
+        $albumGenresInsert = 'INSERT INTO AlbumGenres '.
+            '(albumID, genreName)'.
+            'VALUES '.
+            "({$albumCheck[0]['albumID']},'$g');";
+        mysqli_real_query($sqlConnection, $albumGenresInsert);
+    });
+
+  }
+  
+  $app->redirect(
+    "http://$_SERVER[HTTP_HOST]/~celaya/riptideMusic/artist.php?name=$artistName"
+  );
+});
 
 require 'users.php';
 require 'music-engine.php';
+
 
 $app->run();

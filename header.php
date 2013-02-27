@@ -1,6 +1,5 @@
 <?php
 header('Cache-Control: max-age=28800');
-// header('Content-Encoding: gzip');
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 // NOTE: Smarty has a capital 'S'
@@ -12,8 +11,7 @@ $smarty->compile_dir = "templates/compiled";
 $smarty->cache_dir = "templates/cached";
 $smarty->config_dir = "smarty-config";
 $smarty->error_unassigned = false;
-$smarty->debugging = true;
-
+// $smarty->debugging = true;
 
 ?>
 <html lang="en"><head>
@@ -48,14 +46,13 @@ $smarty->debugging = true;
   </head>
   
   <body>
-
-    <div class="navbar navbar-inverse navbar-fixed-top">
   <div id="hook">
     <div id="loader">
       <div class="spinner"></div>
     </div>
     <span id="hook-text">Reloading...</span>
   </div>
+    <div class="navbar navbar-inverse navbar-fixed-top">
       <div class='navbar-inner'>
         <div class="container">
           <a class="brand" href="/~celaya/riptideMusic/">riptide music</a>

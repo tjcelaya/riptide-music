@@ -7,7 +7,6 @@
         <i class='icon-plus'></i><i class='icon-pencil'></i> Be a founding writer!
     </button>
     </form>
-    <br/>
     <a href="/~celaya/riptideMusic/artist.php?name={$artistName|escape:'url'}">
         <p class="artistName">{$artistName}</p>
     </a>
@@ -30,6 +29,5 @@
             </tr>
         {/foreach}
     </table>
-
     <hr>
 </div>
