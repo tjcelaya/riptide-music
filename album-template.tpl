@@ -1,6 +1,6 @@
 <!-- album display -->
 <div class="full-album-listing">
-    <img width="150px" height="150px" src="{$imageURL|escape}"/>
+    <img width="150px" height="150px" src="/~celaya/riptideMusic/img/{$imageURL|escape} - {$albumName|escape}({$released}).jpg"/>
     <h1>{$albumName}</h1>
     <a href="/~celaya/riptideMusic/artist.php?name={$artistName|escape:'url'}">
         <p class="artistName">{$artistName}</p>

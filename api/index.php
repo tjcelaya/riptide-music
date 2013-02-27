@@ -191,38 +191,41 @@ $app->get('/dget/:params+', function($params) use ($discogs, $sqlConnection) {
 
 $app->post('/found/:discogsID', function ($discogsID) use ($app, $sqlConnection, $discogs) {
 
-  $albumInfo = array('supplied' => array());
+  $albumInfo = array();
 
   // get discogs data
-  get_discogs_albumdata($albumInfo['supplied'], $discogs->getMaster($discogsID));
-  assert(0 < count($albumInfo['supplied']));
+  get_discogs_albumdata($albumInfo, $discogs->getMaster($discogsID));
+  assert(0 < count($albumInfo));
 
-  $albumInfo['supplied'] = $albumInfo['supplied'][0];
+  $albumInfo = $albumInfo[0];
 
   // assign meaningful names
-  $artistName = $albumInfo['supplied']['artistName'];
-  $fullAlbumTitle = $albumInfo['supplied']['artistName']." - ".$albumInfo['supplied']['albumName'];
+  $artistName = $albumInfo['artistName'];
+  $fullAlbumTitle = $albumInfo['artistName']." - ".$albumInfo['albumName'];
+  $genreString = implode('|', $albumInfo['genre']);
+  $remoteImageURL = $albumInfo['imageURL'];
   $tracks = implode("|", 
     array_map(function($a) {
       return implode('~', $a);
     }, 
-      $albumInfo['supplied']['tracks']));
+      $albumInfo['tracks']));
 
-  $genreString = implode('|', $albumInfo['supplied']['genre']);
-  $remoteImageURL = $albumInfo['supplied']['imageURL'];
-
+  //////////////////////////////////
+  // IMAGE - check if we have the 
   // quick way of getting correct file destination,
   // always make sure to chdir back
   chdir('..');
-  $localImageURL = getcwd()."/img/$fullAlbumTitle.jpg";
+  $localImageDir = getcwd()."/img/$fullAlbumTitle({$albumInfo['released']}).jpg";
   chdir('api');  
 
-  if(!file_exists($localImageURL))
+  if(!file_exists($localImageDir))
   {//get album art since we dont have it
-    copy($remoteImageURL, $localImageURL);
+    copy($remoteImageURL, $localImageDir);
   }
+  $localImageName = $fullAlbumTitle;
 
-  //check if we have the artist in our db
+  //////////////////////////////////
+  //ARTIST - check if we have the artist in our db
   $internalArtistSearch = "select artistID from Artists where ". 
                             "artistName='{$artistName}';";
   $artistCheck = array();
@@ -249,9 +252,9 @@ $app->post('/found/:discogsID', function ($discogsID) use ($app, $sqlConnection,
   $internalArtistID = $artistCheck[0]['artistID'];
 
   echo $internalAlbumSearch = "select albumID from Albums where ".
-                          "albumName='{$albumInfo['supplied']['albumName']}' and ".
-                          "artistID='$internalArtistID';";
-                          // "artistID='1'";
+                          "albumName='{$albumInfo['albumName']}' and ".
+                          "artistID='$internalArtistID' and ".
+                          "released={$albumInfo['released']};";
   $albumCheck = array();
   get_sql_results(
     $albumCheck,
@@ -259,13 +262,14 @@ $app->post('/found/:discogsID', function ($discogsID) use ($app, $sqlConnection,
     $internalAlbumSearch
     );
   echo json_encode($albumCheck);
+  echo "<BR>insert: ";
 
   if(!count($albumCheck))
   {//new album, insert into Albums and AlbumGenres
-    $albumInsert = 'INSERT INTO Albums '.
-      '(albumName, released, tracklist, imageURL, artistID ) '.
+    echo $albumInsert = 'INSERT INTO Albums '.
+      '(albumName, released, tracklist, artistID ) '.
       'VALUES '.
-      "('{$albumInfo['supplied']['albumName']}', {$albumInfo['supplied']['released']}, '$tracks', '$localImageURL', $internalArtistID )";
+      "('{$albumInfo['albumName']}', {$albumInfo['released']}, '$tracks', $internalArtistID )";
 
     echo "albuminsert: ".json_encode(mysqli_real_query($sqlConnection, $albumInsert));
 
@@ -275,7 +279,10 @@ $app->post('/found/:discogsID', function ($discogsID) use ($app, $sqlConnection,
       $internalAlbumSearch
       );
 
-    array_walk($albumInfo['supplied']['genre'],
+  echo json_encode($albumCheck);
+  echo "<BR>";
+  
+    array_walk($albumInfo['genre'],
       function ($g) use ($albumCheck, $sqlConnection) {
         $albumGenresInsert = 'INSERT INTO AlbumGenres '.
             '(albumID, genreName)'.
@@ -286,9 +293,9 @@ $app->post('/found/:discogsID', function ($discogsID) use ($app, $sqlConnection,
 
   }
   
-  $app->redirect(
-    "http://$_SERVER[HTTP_HOST]/~celaya/riptideMusic/artist.php?name=$artistName"
-  );
+  // $app->redirect(
+  //   "http://$_SERVER[HTTP_HOST]/~celaya/riptideMusic/artist.php?name=$artistName"
+  // );
 });
 
 require 'users.php';

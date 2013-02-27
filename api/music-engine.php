@@ -26,7 +26,7 @@ $app->get('/albuminfo/:parameters+',
     get_sql_results(
       $queryDetails,
       $sqlConnection,
-      "select albumName, released, avgRating, tracklist, imageURL from Albums ".
+      "select albumName, released, avgRating, tracklist from Albums ".
       "where artistID in ".
         "(select artistID from Artists where ". 
           "artistName='{$parameters[0]}'".
@@ -92,7 +92,7 @@ $app->get('/go/:params+', function($params) use ($discogs, $sqlConnection) {
     get_sql_results(
       $queryDetails,
       $sqlConnection,
-      "select albumName, released, avgRating, tracklist, imageURL from Albums ".
+      "select albumName, released, avgRating, tracklist from Albums ".
       "where albumName = '{$params[1]}' AND artistID in ".
         "(select artistID from Artists where ". 
           "artistName='{$params[0]}'".
