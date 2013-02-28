@@ -49,19 +49,23 @@ label input {
 }
 
 .full-album-listing table {
-    width: 100%;
+    width: 90%;
 }
 
 .full-album-listing tr td {
-    width: 40%;
+    width: 80%;
 }
 
 .full-album-listing tr td:first-child {
-    width: 5%;
+    width: 10%;
+    padding-right: 1em;
+    text-align: right;
 }
 
 .full-album-listing tr td:last-child {
     width: 10%;
+    padding-right: 1em;
+    /*text-align: right;*/
 }
 
 .navbar {

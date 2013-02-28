@@ -13,33 +13,37 @@ require "header.php";
             {
                 $apiUrl = 
                     "http://ww2.cs.fsu.edu/~celaya/".
-                    "riptideMusic/api/albuminfo/".urlencode($_GET['name']);
+                    "riptideMusic/api/albumsByArtist/".urlencode($_GET['name']);
                 
                 echo "<p>this page calls: \n".$apiUrl."</p>";
 
-                $artistRequest = json_decode(file_get_contents($apiUrl));
+                $artistRequest = json_decode(file_get_contents($apiUrl), true);
                 
-                // $smarty->assign('artistName', $_GET['name']);
+                $smarty->assign('artistName', $artistRequest['artist']);
+                unset($artistRequest['artist']);
                 
-                foreach ($artistRequest as $key => $anAlbum)
+                foreach ($artistRequest as $anAlbum)
                 {
-                    // foreach ($anAlbum as $k => $v)
-                    // {   
-                    //     $smarty->assign($k,$v);     
-                    //         // echo "<pre><code>\n";
-                    //         // var_dump($k.":\n".$v);
-                    //         // echo "</code></pre>\n";
-                    // }
-                    // $smarty->display('album-template.tpl');
+                    // $test = explode("|", $anAlbum['tracklist']);
+                    foreach ($anAlbum as $k => $v)
+                    {   
+                        if($k == 'tracklist') {
+                            $tracksArray = array();
+                            foreach (explode('|', $v) as $piece) {
+                                $tracksArray[] = explode('~', $piece);
+                            }
+                            $v = $tracksArray;
+                        }
+                        $smarty->assign($k,$v);     
+                    }
+                    $smarty->display('album-template.tpl');
                 }
             }
-
         ?>
         </div>
         <div class="main-body span6">
             <p>pointless</p>
             <?php
-
                 echo "<pre><code>\n";
                     var_dump($artistRequest);
                 echo "</code></pre>\n";

@@ -43,6 +43,9 @@ function get_sql_results(&$arrayToAppendResults, $sqlC, $query) {
     exit('Connect failed: '. mysqli_connect_error());
   }
 
+  if(!$queryResult)
+    return false;
+      
   //retrieve results into array
   if($queryResult->num_rows > 0) {
       while($row = $queryResult->fetch_assoc()) {
@@ -96,9 +99,8 @@ $app->get('/', function() use ($dbPassword) {
   echo gettype($dbPassword);
 })->name('index');
 
-//this route adds 
+//this route retrieves search results from discogs
 $app->get('/dget/:params+', function($params) use ($discogs, $sqlConnection) {
-
   $artist = $params[0];
 
   if(isset($params[1]))
@@ -185,8 +187,6 @@ $app->get('/dget/:params+', function($params) use ($discogs, $sqlConnection) {
     }
   }
   echo json_encode(array_slice($result,1));
-  
-
 });
 
 $app->post('/found/:discogsID', function ($discogsID) use ($app, $sqlConnection, $discogs) {
@@ -198,15 +198,17 @@ $app->post('/found/:discogsID', function ($discogsID) use ($app, $sqlConnection,
   assert(0 < count($albumInfo));
 
   $albumInfo = $albumInfo[0];
+  $albumInfo['albumName'] = mysqli_escape_string($sqlConnection, $albumInfo['albumName']);
 
   // assign meaningful names
-  $artistName = $albumInfo['artistName'];
+  $artistName = mysqli_escape_string($sqlConnection, $albumInfo['artistName']);
   $fullAlbumTitle = $albumInfo['artistName']." - ".$albumInfo['albumName'];
   $genreString = implode('|', $albumInfo['genre']);
   $remoteImageURL = $albumInfo['imageURL'];
+  $localImageName = $fullAlbumTitle.'('.$albumInfo['released'].')';
   $tracks = implode("|", 
-    array_map(function($a) {
-      return implode('~', $a);
+    array_map(function($a) use ($sqlConnection) {
+      return mysqli_escape_string($sqlConnection, implode('~', $a));
     }, 
       $albumInfo['tracks']));
 
@@ -215,14 +217,13 @@ $app->post('/found/:discogsID', function ($discogsID) use ($app, $sqlConnection,
   // quick way of getting correct file destination,
   // always make sure to chdir back
   chdir('..');
-  $localImageDir = getcwd()."/img/$fullAlbumTitle({$albumInfo['released']}).jpg";
+  $localImageDir = getcwd()."/img/$localImageName.jpg";
   chdir('api');  
 
   if(!file_exists($localImageDir))
   {//get album art since we dont have it
     copy($remoteImageURL, $localImageDir);
   }
-  $localImageName = $fullAlbumTitle;
 
   //////////////////////////////////
   //ARTIST - check if we have the artist in our db
@@ -293,13 +294,14 @@ $app->post('/found/:discogsID', function ($discogsID) use ($app, $sqlConnection,
 
   }
   
-  // $app->redirect(
-  //   "http://$_SERVER[HTTP_HOST]/~celaya/riptideMusic/artist.php?name=$artistName"
-  // );
+  $app->redirect(
+    "http://$_SERVER[HTTP_HOST]/~celaya/riptideMusic/artist.php?name=$artistName"
+  );
 });
 
 require 'users.php';
 require 'music-engine.php';
+require 'albumsByArtist.php';
 
 
 $app->run();

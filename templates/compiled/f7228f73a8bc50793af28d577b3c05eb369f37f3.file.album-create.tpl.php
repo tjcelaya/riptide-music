@@ -1,45 +1,52 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2013-02-27 21:24:15
-         compiled from "album-template.tpl" */ ?>
-<?php /*%%SmartyHeaderCode:442836463511b08512a46d1-90512686%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /* Smarty version Smarty-3.1.13, created on 2013-02-27 12:51:26
+         compiled from "album-create.tpl" */ ?>
+<?php /*%%SmartyHeaderCode:717180421512beaca7251a2-37132186%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
-    '862023fa9ab5ebb8476826773f542c3406d69b8a' => 
+    'f7228f73a8bc50793af28d577b3c05eb369f37f3' => 
     array (
-      0 => 'album-template.tpl',
-      1 => 1362018253,
+      0 => 'album-create.tpl',
+      1 => 1361945712,
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '442836463511b08512a46d1-90512686',
+  'nocache_hash' => '717180421512beaca7251a2-37132186',
   'function' => 
   array (
   ),
   'version' => 'Smarty-3.1.13',
-  'unifunc' => 'content_511b0851313a21_73440346',
+  'unifunc' => 'content_512beaca7a1ee1_06225171',
   'variables' => 
   array (
-    'artistName' => 0,
+    'imageURL' => 0,
     'albumName' => 0,
+    'dID' => 0,
+    'artistName' => 0,
     'released' => 0,
-    'genres' => 0,
+    'genre' => 0,
     'g' => 0,
     'avgRating' => 0,
     'tags' => 0,
     'tag' => 0,
-    'tracklist' => 0,
+    'tracks' => 0,
     'track' => 0,
   ),
   'has_nocache_code' => false,
 ),false); /*/%%SmartyHeaderCode%%*/?>
-<?php if ($_valid && !is_callable('content_511b0851313a21_73440346')) {function content_511b0851313a21_73440346($_smarty_tpl) {?><!-- album display -->
+<?php if ($_valid && !is_callable('content_512beaca7a1ee1_06225171')) {function content_512beaca7a1ee1_06225171($_smarty_tpl) {?><!-- album display -->
 <div class="full-album-listing">
-    <img width="150px" height="150px" src="/~celaya/riptideMusic/img/<?php echo htmlspecialchars($_smarty_tpl->tpl_vars['artistName']->value, ENT_QUOTES, 'ISO-8859-1', true);?>
- - <?php echo htmlspecialchars($_smarty_tpl->tpl_vars['albumName']->value, ENT_QUOTES, 'ISO-8859-1', true);?>
-(<?php echo $_smarty_tpl->tpl_vars['released']->value;?>
-).jpg"/>
+    <img width="150px" height="150px" src="<?php echo htmlspecialchars($_smarty_tpl->tpl_vars['imageURL']->value, ENT_QUOTES, 'ISO-8859-1', true);?>
+"/>
     <h1><?php echo $_smarty_tpl->tpl_vars['albumName']->value;?>
 </h1>
+    <form action='/~celaya/riptideMusic/api/found/<?php echo $_smarty_tpl->tpl_vars['dID']->value;?>
+' method='POST'>
+    <button  value='<?php echo $_smarty_tpl->tpl_vars['dID']->value;?>
+' type='submit'>
+        <i class='icon-plus'></i><i class='icon-pencil'></i> Be a founding writer!
+    </button>
+    </form>
     <a href="/~celaya/riptideMusic/artist.php?name=<?php echo rawurlencode($_smarty_tpl->tpl_vars['artistName']->value);?>
 ">
         <p class="artistName"><?php echo $_smarty_tpl->tpl_vars['artistName']->value;?>
@@ -48,7 +55,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     <p><?php echo $_smarty_tpl->tpl_vars['released']->value;?>
 </p>
     <?php  $_smarty_tpl->tpl_vars['g'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['g']->_loop = false;
- $_from = $_smarty_tpl->tpl_vars['genres']->value; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
+ $_from = $_smarty_tpl->tpl_vars['genre']->value; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
 foreach ($_from as $_smarty_tpl->tpl_vars['g']->key => $_smarty_tpl->tpl_vars['g']->value){
 $_smarty_tpl->tpl_vars['g']->_loop = true;
 ?>
@@ -71,7 +78,7 @@ $_smarty_tpl->tpl_vars['tag']->_loop = true;
     </div>
     <table>
         <?php  $_smarty_tpl->tpl_vars['track'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['track']->_loop = false;
- $_from = $_smarty_tpl->tpl_vars['tracklist']->value; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
+ $_from = $_smarty_tpl->tpl_vars['tracks']->value; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
 foreach ($_from as $_smarty_tpl->tpl_vars['track']->key => $_smarty_tpl->tpl_vars['track']->value){
 $_smarty_tpl->tpl_vars['track']->_loop = true;
 ?>
@@ -85,7 +92,6 @@ $_smarty_tpl->tpl_vars['track']->_loop = true;
             </tr>
         <?php } ?>
     </table>
-
     <hr>
 </div>
 <?php }} ?>

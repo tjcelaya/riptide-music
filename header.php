@@ -11,7 +11,7 @@ $smarty->compile_dir = "templates/compiled";
 $smarty->cache_dir = "templates/cached";
 $smarty->config_dir = "smarty-config";
 $smarty->error_unassigned = false;
-// $smarty->debugging = true;
+$smarty->debugging = true;
 
 ?>
 <html lang="en"><head>
@@ -46,13 +46,13 @@ $smarty->error_unassigned = false;
   </head>
   
   <body>
-  <div id="hook">
-    <div id="loader">
-      <div class="spinner"></div>
-    </div>
-    <span id="hook-text">Reloading...</span>
-  </div>
     <div class="navbar navbar-inverse navbar-fixed-top">
+    <div id="hook">
+      <div id="loader">
+        <div class="spinner"></div>
+      </div>
+      <span id="hook-text">Reloading...</span>
+    </div>
       <div class='navbar-inner'>
         <div class="container">
           <a class="brand" href="/~celaya/riptideMusic/">riptide music</a>
