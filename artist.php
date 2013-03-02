@@ -4,7 +4,7 @@ require "header.php";
 ?>
 <div class='inner-row-div row-fluid'>
     <div class='row-fluid'>
-        <div class='main-body span6'>
+        <div class='main-body span5 offset2'>
             <p>Artist</p>
             <hr/>
             <h1><?php echo $_GET['name'] ?></h1>
@@ -15,7 +15,7 @@ require "header.php";
                     "http://ww2.cs.fsu.edu/~celaya/".
                     "riptideMusic/api/albumsByArtist/".urlencode($_GET['name']);
                 
-                echo "<p>this page calls: \n".$apiUrl."</p>";
+                //echo "<p>this page calls: \n".$apiUrl."</p>";
 
                 $artistRequest = json_decode(file_get_contents($apiUrl), true);
                 
@@ -24,7 +24,6 @@ require "header.php";
                 
                 foreach ($artistRequest as $anAlbum)
                 {
-                    // $test = explode("|", $anAlbum['tracklist']);
                     foreach ($anAlbum as $k => $v)
                     {   
                         if($k == 'tracklist') {
@@ -41,13 +40,8 @@ require "header.php";
             }
         ?>
         </div>
-        <div class="main-body span6">
-            <p>pointless</p>
-            <?php
-                echo "<pre><code>\n";
-                    var_dump($artistRequest);
-                echo "</code></pre>\n";
-            ?>
+        <div class="main-body span2">
+            <p>recommendations will go here</p>
         </div>
     </div>
 </div>
