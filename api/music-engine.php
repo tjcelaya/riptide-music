@@ -25,6 +25,7 @@ $app->get('/review/:parameters+',
 });
 
 // get album grabber test -- rick
+// grabs from mySQL, or if missing album, looks at discogs
 $app->get('/go/:params+', function($params) use ($discogs, $sqlConnection) {
 
 
