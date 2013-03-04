@@ -35,23 +35,22 @@
 				   <div id='name' class='outerDiv'>
 					<label for="name">Full name:</label>
 					<input type="text" name="name" required  />
-					<div class='message' id='nameDiv'> Enter your first and last name. </div>
-				   </div>
+
 				   <div id='username' class='outerDiv'>
 					<label for="number">Username:</label>
 					<input type="text" name="username" required  />
-					<div class='message' id='usernameDiv'> Pick a unique name on Riptide. </div>
-				   </div>
+
 				   <div id='password' class='outerDiv'>
 					<label for="password">Password:</label>
 					<input type="password" name="password" required />
-					<div class='message' id='websiteDiv'>6 characters or more.</div>
-				   </div>
+
 				   <div id='email' class='outerDiv'>
 					<label for="email">Email:</label>
 					<input type="email" name="email" required />
-					<div class='message' id='emailDiv'> We'll send you a confirmation.</div>
+					<br>
+					<div class='message' id='emailDiv'> We'll send you a confirmation. </div>
 				   </div>
+				   <br>
 				   <div id='submit' class='outerDiv'>
 				        <input type="submit" value="Create my account" />
 				   </div>
