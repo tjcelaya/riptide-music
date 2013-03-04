@@ -2,6 +2,7 @@
 header('Cache-Control: max-age=28800');
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
+date_default_timezone_set('America/New_York'); 
 // NOTE: Smarty has a capital 'S'
 require_once('../../libsmarty/Smarty.class.php');
 $smarty = new Smarty();
@@ -15,50 +16,44 @@ $smarty->debugging = true;
 
 ?>
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
   <head>
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
-  <link rel="stylesheet" href="css/style.css" type="text/css">
-  <link rel="stylesheet" href="hook/hook.css" type="text/css" />
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-  <script src="hook/hook.js" type="text/javascript"></script>
-  <script src="js/login.js" type="text/javascript"></script>
-  <!-- <link rel="stylesheet/less" href="css/style.less" type="text/css"> -->
-  <link href="http://fonts.googleapis.com/css?family=Oxygen:700,300,400" rel="stylesheet">
-  <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700italic' rel='stylesheet' type='text/css'>  
-  <!-- // <script src="js/agility.js"></script> -->
-  <!-- // <script src="js/less.js"></script> -->
-  <style>
-    body { 
-      background: url("img/bg/<?php 
-        echo array_rand(
-            array_slice(
-                scandir(
-                    dirname(__FILE__)."/img/bg"
-                )
-                ,2));
-      ?>.jpg"); 
-      background-size: cover;
-      background-attachment: fixed;
+    <title>Riptide Music</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="hook/hook.css" type="text/css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="js/login.js" type="text/javascript"></script>
+    <!-- <link rel="stylesheet/less" href="css/style.less" type="text/css"> -->
+    <link href="http://fonts.googleapis.com/css?family=Oxygen:700,300,400" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700italic' rel='stylesheet' type='text/css'>  
+    <!-- // <script src="js/agility.js"></script> -->
+    <!-- // <script src="js/less.js"></script> -->
+    <style>
+      body { 
+        background: url("img/bg/<?php 
+          echo array_rand(
+              array_slice(
+                  scandir(
+                      dirname(__FILE__)."/img/bg"
+                  )
+                  ,2));
+        ?>.jpg"); 
+        background-size: cover;
+        background-attachment: fixed;
 
-    }
-  </style>
+      }
+    </style>
 
   </head>
   
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
-    <div id="hook">
-      <div id="loader">
-        <div class="spinner"></div>
-      </div>
-      <span id="hook-text">Reloading...</span>
-    </div>
 
 <!--Login dropdown begin-->
 
-      <nav>
+    <nav>
       <ul class= "login-nav">
         <li id="login">
           <a id="login-trigger" href="#">
@@ -83,7 +78,7 @@ $smarty->debugging = true;
       </ul>
     </nav>
 
-    <!--Login dropdown end-->
+<!--Login dropdown end-->
 
 
       <div class='navbar-inner'>

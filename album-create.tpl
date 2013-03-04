@@ -1,6 +1,6 @@
 <!-- album display -->
 <div class="full-album-listing">
-    <img width="150px" height="150px" src="{$imageURL|escape}"/>
+    <img width="150" height="150" src="{$imageURL|escape}"/>
     <h1>{$albumName}</h1>
     <form action='/~celaya/riptideMusic/api/found/{$dID}' method='POST'>
     <button  value='{$dID}' type='submit'>

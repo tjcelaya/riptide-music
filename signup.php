@@ -1,6 +1,9 @@
 <?php require "header.php"; ?>
-    
 	<style type="text/css">
+      body {
+        background: url("img/bg/4.jpg"); 
+      }
+
 			#signup input:not(:focus){
 				opacity:0.6;
 			}

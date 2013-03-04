@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2013-03-03 23:51:45
+<?php /* Smarty version Smarty-3.1.13, created on 2013-03-04 12:16:39
          compiled from "album-template.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:442836463511b08512a46d1-90512686%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '862023fa9ab5ebb8476826773f542c3406d69b8a' => 
     array (
       0 => 'album-template.tpl',
-      1 => 1362372701,
+      1 => 1362417370,
       2 => 'file',
     ),
   ),
@@ -34,8 +34,8 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_511b0851313a21_73440346')) {function content_511b0851313a21_73440346($_smarty_tpl) {?><!-- album display -->
 <div class="full-album-listing">
-    <img width="150px" height="150px" src="img/<?php echo htmlspecialchars($_smarty_tpl->tpl_vars['artistName']->value, ENT_QUOTES, 'ISO-8859-1', true);?>
- - <?php echo htmlspecialchars($_smarty_tpl->tpl_vars['albumName']->value, ENT_QUOTES, 'ISO-8859-1', true);?>
+    <img width="150" height="150" src="img/<?php echo rawurlencode($_smarty_tpl->tpl_vars['artistName']->value);?>
+%20-%20<?php echo rawurlencode($_smarty_tpl->tpl_vars['albumName']->value);?>
 (<?php echo $_smarty_tpl->tpl_vars['released']->value;?>
 ).jpg"/>
     <a href="album.php?name=<?php echo rawurlencode($_smarty_tpl->tpl_vars['albumName']->value);?>
@@ -89,7 +89,6 @@ $_smarty_tpl->tpl_vars['track']->_loop = true;
             </tr>
         <?php } ?>
     </table>
-
     <hr>
 </div>
 <?php }} ?>

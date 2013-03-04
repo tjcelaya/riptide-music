@@ -1,6 +1,6 @@
 <!-- album display -->
 <div class="full-album-listing">
-    <img width="150px" height="150px" src="img/{$artistName|escape} - {$albumName|escape}({$released}).jpg"/>
+    <img width="150" height="150" src="img/{$artistName|escape} - {$albumName|escape}({$released}).jpg"/>
     <a href="album.php?name={$albumName|escape:'url'}&artist={$artistName|escape:'url'}">
         <h1>{$albumName}</h1>
     </a>
