@@ -14,7 +14,7 @@
 
 			#signup input:focus:invalid{
 				border:1px solid blue;
-				background-color:#FFEFF0;
+				background-color:#1322e7;
 			}
 
 	</style>
