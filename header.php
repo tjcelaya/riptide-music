@@ -78,7 +78,7 @@ $smarty->debugging = true;
           </div>                     
         </li>
         <li id="signup">
-          <a href="">Sign up</a>
+          <a href="/~celaya/riptideMusic/signup.php">Sign up</a>
         </li>
       </ul>
     </nav>

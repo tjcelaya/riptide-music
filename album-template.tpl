@@ -1,8 +1,10 @@
 <!-- album display -->
 <div class="full-album-listing">
-    <img width="150px" height="150px" src="/~celaya/riptideMusic/img/{$artistName|escape} - {$albumName|escape}({$released}).jpg"/>
-    <h1>{$albumName}</h1>
-    <a href="/~celaya/riptideMusic/artist.php?name={$artistName|escape:'url'}">
+    <img width="150px" height="150px" src="img/{$artistName|escape} - {$albumName|escape}({$released}).jpg"/>
+    <a href="album.php?name={$albumName|escape:'url'}&artist={$artistName|escape:'url'}">
+        <h1>{$albumName}</h1>
+    </a>
+    <a href="artist.php?name={$artistName|escape:'url'}">
         <p class="artistName">{$artistName}</p>
     </a>
     <p>{$released}</p>
@@ -12,7 +14,7 @@
     <p>{$avgRating}</p>
     <div class="tags">
         {foreach $tags as $tag}
-            <a href="/~celaya/riptideMusic/tag.php?searchTags={$tag}">{$tag}</a>
+            <a href="tag.php?searchTags={$tag}">{$tag}</a>
         {/foreach}
     </div>
     <table>
@@ -24,6 +26,5 @@
             </tr>
         {/foreach}
     </table>
-
     <hr>
 </div>

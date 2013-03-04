@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2013-02-27 21:24:15
+<?php /* Smarty version Smarty-3.1.13, created on 2013-03-03 23:51:45
          compiled from "album-template.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:442836463511b08512a46d1-90512686%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '862023fa9ab5ebb8476826773f542c3406d69b8a' => 
     array (
       0 => 'album-template.tpl',
-      1 => 1362018253,
+      1 => 1362372701,
       2 => 'file',
     ),
   ),
@@ -34,13 +34,17 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_511b0851313a21_73440346')) {function content_511b0851313a21_73440346($_smarty_tpl) {?><!-- album display -->
 <div class="full-album-listing">
-    <img width="150px" height="150px" src="/~celaya/riptideMusic/img/<?php echo htmlspecialchars($_smarty_tpl->tpl_vars['artistName']->value, ENT_QUOTES, 'ISO-8859-1', true);?>
+    <img width="150px" height="150px" src="img/<?php echo htmlspecialchars($_smarty_tpl->tpl_vars['artistName']->value, ENT_QUOTES, 'ISO-8859-1', true);?>
  - <?php echo htmlspecialchars($_smarty_tpl->tpl_vars['albumName']->value, ENT_QUOTES, 'ISO-8859-1', true);?>
 (<?php echo $_smarty_tpl->tpl_vars['released']->value;?>
 ).jpg"/>
-    <h1><?php echo $_smarty_tpl->tpl_vars['albumName']->value;?>
+    <a href="album.php?name=<?php echo rawurlencode($_smarty_tpl->tpl_vars['albumName']->value);?>
+&artist=<?php echo rawurlencode($_smarty_tpl->tpl_vars['artistName']->value);?>
+">
+        <h1><?php echo $_smarty_tpl->tpl_vars['albumName']->value;?>
 </h1>
-    <a href="/~celaya/riptideMusic/artist.php?name=<?php echo rawurlencode($_smarty_tpl->tpl_vars['artistName']->value);?>
+    </a>
+    <a href="artist.php?name=<?php echo rawurlencode($_smarty_tpl->tpl_vars['artistName']->value);?>
 ">
         <p class="artistName"><?php echo $_smarty_tpl->tpl_vars['artistName']->value;?>
 </p>
@@ -64,7 +68,7 @@ $_smarty_tpl->tpl_vars['g']->_loop = true;
 foreach ($_from as $_smarty_tpl->tpl_vars['tag']->key => $_smarty_tpl->tpl_vars['tag']->value){
 $_smarty_tpl->tpl_vars['tag']->_loop = true;
 ?>
-            <a href="/~celaya/riptideMusic/tag.php?searchTags=<?php echo $_smarty_tpl->tpl_vars['tag']->value;?>
+            <a href="tag.php?searchTags=<?php echo $_smarty_tpl->tpl_vars['tag']->value;?>
 "><?php echo $_smarty_tpl->tpl_vars['tag']->value;?>
 </a>
         <?php } ?>
