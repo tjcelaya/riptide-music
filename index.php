@@ -12,9 +12,4 @@
           <p>recommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommendrecommend</p>
         </div>
       </div>
-    </div>
-    <script src="js/bootstrap.js"></script>
-    <script src="js/moment.js"></script>
-  </body>
-</html>
-
+<?php require "footer.php"; ?> 

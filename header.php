@@ -5,6 +5,9 @@ ini_set("display_errors", 1);
 date_default_timezone_set('America/New_York'); 
 // NOTE: Smarty has a capital 'S'
 require_once('../../libsmarty/Smarty.class.php');
+require_once("models/config.php");
+if (!securePage($_SERVER['PHP_SELF'])){die();}
+
 $smarty = new Smarty();
 
 $smarty->template_dir = "templates";
@@ -55,15 +58,20 @@ $smarty->debugging = true;
 
     <nav>
       <ul class= "login-nav">
+       <?php if(isUSerLoggedIn()) { ?>
+        <li id="signup">
+          <a href="logout.php">Logout</a>
+        </li>
+       <?php } else { ?>
         <li id="login">
           <a id="login-trigger" href="#">
             Log in <span>▼</span>
           </a>
           <div id="login-content">
-            <form>
+            <form action="login.php" method="post">
               <fieldset id="inputs">
-                <input id="username" type="email" name="Email" placeholder="Your email address" required>   
-                <input id="password" type="password" name="Password" placeholder="Password" required>
+                <input id="username" type="text" name="username" placeholder="Your username" required>   
+                <input id="password" type="password" name="password" placeholder="Password" required>
               </fieldset>
               <fieldset id="actions">
                 <input type="submit" id="submit" value="Log in">
@@ -75,6 +83,7 @@ $smarty->debugging = true;
         <li id="signup">
           <a href="/~celaya/riptideMusic/signup.php">Sign up</a>
         </li>
+       <?php } ?>
       </ul>
     </nav>
 
@@ -83,7 +92,8 @@ $smarty->debugging = true;
 
       <div class='navbar-inner'>
         <div class="container">
-          <a class="brand" href="/~celaya/riptideMusic/">riptide music</a>
+          <a class="brand" href="/~celaya/riptideMusic/">RIPTIDE MUSIC</a>
+          <span class="brand"><?php echo json_encode(isUserLoggedIn()); ?></span>
           <div class='pull-right'>
             <form action="/~celaya/riptideMusic/search.php" method='GET'>
                 <input 

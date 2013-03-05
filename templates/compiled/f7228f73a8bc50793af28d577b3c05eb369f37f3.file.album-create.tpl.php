@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2013-02-27 12:51:26
+<?php /* Smarty version Smarty-3.1.13, created on 2013-03-04 13:50:59
          compiled from "album-create.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:717180421512beaca7251a2-37132186%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'f7228f73a8bc50793af28d577b3c05eb369f37f3' => 
     array (
       0 => 'album-create.tpl',
-      1 => 1361945712,
+      1 => 1362417273,
       2 => 'file',
     ),
   ),
@@ -36,7 +36,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_512beaca7a1ee1_06225171')) {function content_512beaca7a1ee1_06225171($_smarty_tpl) {?><!-- album display -->
 <div class="full-album-listing">
-    <img width="150px" height="150px" src="<?php echo htmlspecialchars($_smarty_tpl->tpl_vars['imageURL']->value, ENT_QUOTES, 'ISO-8859-1', true);?>
+    <img width="150" height="150" src="<?php echo htmlspecialchars($_smarty_tpl->tpl_vars['imageURL']->value, ENT_QUOTES, 'ISO-8859-1', true);?>
 "/>
     <h1><?php echo $_smarty_tpl->tpl_vars['albumName']->value;?>
 </h1>
