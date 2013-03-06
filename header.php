@@ -62,6 +62,38 @@ $smarty->debugging = true;
           <nav>
             <ul class= "login-nav">
              <?php if(isUSerLoggedIn()) { ?>
+              
+              <li id="login">
+                <a id="login-trigger" href="#">
+                  Profile <span>▼</span>
+                </a>
+                <div  class="profile-content" id="login-content" >
+                 
+                    
+                    <fieldset id="actions">
+                      <form action="account.php" method="get">
+                      <input type="submit" id="profile-button" value="Profile">
+
+                      </form>
+                    </fieldset>
+
+                    <fieldset id="actions">
+                      <form action="account.php" method="get">
+                      <input type="submit" id="profile-button" value="Friends">
+                      </form>
+                    </fieldset>
+
+                    <fieldset id="actions">
+                      <form action="user_settings.php" method="get">
+                      <input type="submit" id="profile-button" value="Preferences">
+                      </form>
+                    </fieldset>
+            
+                </div>                     
+              </li>
+
+
+
               <li id="signup">
                 <a href="logout.php">Logout</a>
               </li>
@@ -96,15 +128,18 @@ $smarty->debugging = true;
           <a class="brand" href="/~celaya/riptideMusic/">RIPTIDE MUSIC</a>
           <span class="brand"><?php echo json_encode(isUserLoggedIn()); ?></span>
           <div class='pull-right'>
-            <form action="/~celaya/riptideMusic/search.php" method='GET'>
-                <input 
-                    tabindex='1' 
-                    value='' 
-                    name='q' 
-                    type="text"/>
-                <button tabindex='2' value='!' type="submit" class='search-button'>
-                  <i class="icon-search icon-white"></i>
-                </button>
+            <form class="form-search" action="/~celaya/riptideMusic/search.php" method='GET'>
+              <div class="input-append">
+                    <input 
+                        tabindex='1' 
+                        value='' 
+                        name='q' 
+                        type="text"
+                        class="search-query"/>
+                    <button tabindex='2' value='!' type="submit" class='btn'>
+                      <i class="icon-search"></i>
+                    </button>
+              </div>
             </form>
           </div>
         </div>

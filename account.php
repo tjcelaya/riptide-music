@@ -35,14 +35,14 @@ h2 { font-family: Georgia, Tahoma, sans-serif; font-style: italic; font-size: 1.
 .nobrdr { border: 0px !important; }
 
 
-.head { background: #589fc6; border: 1px solid #3e82a7; padding-left: 8px; width: 135px;}
+.head { background: #3eaef8; border: 1px solid #3e82a7; padding-left: 8px; width: 95%;}
 .head h1 { color: #fafcfd; font-weight: bold; font-size: 1.4em; }
 
 .boxy {  border: 1px ; border-top: 0px;  }
 .boxy span { font-size: 1.2em; display: block; margin-bottom: 7px; }
 
 .boxy .friendslist { display: block; margin-bottom: 15px; }
-.boxy .friend { border-top: 1px solid #3eaef8; float: left; height: 40px; padding: 5px 5px 5px 4px; width: 130px; }
+.boxy .friend { display: block; border-top: 1px solid #3eaef8; float: left; height: 40px; padding: 5px 5px 5px 4px; width: 95% }
 .boxy .friend img { border: 1px solid #3eaef8; float: left;  padding: 2px; margin-right: 4px; }
 .boxy .friend .friendly { position: relative; top: 16px; font-size: .7em; }
 
@@ -106,27 +106,27 @@ h2 { font-family: Georgia, Tahoma, sans-serif; font-style: italic; font-size: 1.
           
           <div class="friendslist clearfix">
             <div class="friend">
-              <a href="#"><img src="img/friend_avatar_default.jpg" width="30" height="30" alt="Friend" /></a><span class="friendly"><a href="#">Comrade</a></span>
+              <a href="#"><img src="img/friend_avatar_default.jpg" width="30" height="30" alt="Friend" /></a><span class="friendly"><a href="#">Rye</a></span>
             </div>
             
             <div class="friend">
-              <a href="#"><img src="img/friend_avatar_default.jpg" width="30" height="30" alt="Friend" /></a><span class="friendly"><a href="#">Associate</a></span>
+              <a href="#"><img src="img/friend_avatar_default.jpg" width="30" height="30" alt="Friend" /></a><span class="friendly"><a href="#">Pumpernickle</a></span>
             </div>
             
             <div class="friend">
-              <a href="#"><img src="img/friend_avatar_default.jpg" width="30" height="30" alt="Friend" /></a><span class="friendly"><a href="#">Tomodachi</a></span>
+              <a href="#"><img src="img/friend_avatar_default.jpg" width="30" height="30" alt="Friend" /></a><span class="friendly"><a href="#">Honey Oat</a></span>
             </div>
             
             <div class="friend">
-              <a href="#"><img src="img/friend_avatar_default.jpg" width="30" height="30" alt="Friend" /></a><span class="friendly"><a href="#">Kindred</a></span>
+              <a href="#"><img src="img/friend_avatar_default.jpg" width="30" height="30" alt="Friend" /></a><span class="friendly"><a href="#">Italian Herb</a></span>
             </div>
             
             <div class="friend">
-              <a href="#"><img src="img/friend_avatar_default.jpg" width="30" height="30" alt="Friend" /></a><span class="friendly"><a href="#">Thrall</a></span>
+              <a href="#"><img src="img/friend_avatar_default.jpg" width="30" height="30" alt="Friend" /></a><span class="friendly"><a href="#">White</a></span>
             </div>
             
             <div class="friend">
-              <a href="#"><img src="img/friend_avatar_default.jpg" width="30" height="30" alt="Friend" /></a><span class="friendly"><a href="#">Condidant</a></span>
+              <a href="#"><img src="img/friend_avatar_default.jpg" width="30" height="30" alt="Friend" /></a><span class="friendly"><a href="#">Sourdough</a></span>
             </div>
           </div>
           
@@ -139,10 +139,5 @@ h2 { font-family: Georgia, Tahoma, sans-serif; font-style: italic; font-size: 1.
 </div>
 
 
-
-
-
-
-           
        
 <?php require_once("footer.php"); ?>

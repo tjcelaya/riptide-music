@@ -90,13 +90,12 @@ label input {
   color: white;
 }
 
-.navbar form {
-  margin:0;
+.navbar .form-search {
+  margin: 0.3em 0.3em 0.3em 0.3em;
 }
 
-.navbar input {
-  box-shadow: 7px 7px 15px rgba(0,0,0,0.5);
-  margin-top: 0.7em;
+.navbar .form-search input {
+  /*box-shadow: 7px 7px 15px rgba(0,0,0,0.5);*/
   border-radius: 10em;
   width: 20em;
   /*height:auto;*/
@@ -167,7 +166,7 @@ label input {
 /* login dropdown styling----------*/
 
 .login-nav {
-margin-top: 0.7em;
+margin-top: 0.5em;
 margin-right: 0.3em;
 margin-left: 0.3em;
 
@@ -251,9 +250,17 @@ nav #login-content {
   border-radius: 3px 0 3px 3px;
 }
 
+
+
 nav li #login-content {
   right: 0;
   width: 250px;  
+}
+
+nav li .profile-content#login-content {
+  right: 0;
+  width: 110px;
+
 }
 
 /*--------------------*/
@@ -288,13 +295,13 @@ nav li #login-content {
 }
 
 #login #submit {    
-  background-color: #d14545;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#e97171), to(#d14545));
-  background-image: -webkit-linear-gradient(top, #e97171, #d14545);
-  background-image: -moz-linear-gradient(top, #e97171, #d14545);
-  background-image: -ms-linear-gradient(top, #e97171, #d14545);
-  background-image: -o-linear-gradient(top, #e97171, #d14545);
-  background-image: linear-gradient(top, #e97171, #d14545);
+  background-color: #3eaef8;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#0d99f6), to(#57b8f9));
+  background-image: -webkit-linear-gradient(top, #0d99f6, #57b8f9);
+  background-image: -moz-linear-gradient(top, #0d99f6, #57b8f9);
+  background-image: -ms-linear-gradient(top, #0d99f6, #57b8f9);
+  background-image: -o-linear-gradient(top, #0d99f6, #57b8f9);
+  background-image: linear-gradient(top, #0d99f6, #57b8f9);
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
@@ -312,15 +319,46 @@ nav li #login-content {
   color: #fff;
 }
 
+#login #profile-button {    
+  background-color: #3eaef8;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#0d99f6), to(#57b8f9));
+  background-image: -webkit-linear-gradient(top, #0d99f6, #57b8f9);
+  background-image: -moz-linear-gradient(top, #0d99f6, #57b8f9);
+  background-image: -ms-linear-gradient(top, #0d99f6, #57b8f9);
+  background-image: -o-linear-gradient(top, #0d99f6, #57b8f9);
+  background-image: linear-gradient(top, #0d99f6, #57b8f9);
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  text-shadow: 0 1px 0 rgba(0,0,0,.5);
+  -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+  -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;    
+  border: 1px solid #7e1515;
+  float: left;
+  height: 30px;
+  padding: 0;
+  width: 80%;
+  margin-left:10%;
+
+  cursor: pointer;
+  font: bold 14px Arial, Helvetica;
+  color: #fff;
+}
+
+
+
+
+
 #login #submit:hover,
 #login #submit:focus {    
-  background-color: #e97171;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#d14545), to(#e97171));
-  background-image: -webkit-linear-gradient(top, #d14545, #e97171);
-  background-image: -moz-linear-gradient(top, #d14545, #e97171);
-  background-image: -ms-linear-gradient(top, #d14545, #e97171);
-  background-image: -o-linear-gradient(top, #d14545, #e97171);
-  background-image: linear-gradient(top, #d14545, #e97171);
+  background-color: #3eaef8;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#0d99f6), to(#57b8f9));
+  background-image: -webkit-linear-gradient(top, #0d99f6, #57b8f9);
+  background-image: -moz-linear-gradient(top, #0d99f6, #57b8f9);
+  background-image: -ms-linear-gradient(top, #0d99f6, #57b8f9);
+  background-image: -o-linear-gradient(top, #0d99f6, #57b8f9);
+  background-image: linear-gradient(top, #0d99f6, #57b8f9);
 } 
 
 #login #submit:active {   
@@ -332,6 +370,7 @@ nav li #login-content {
 
 #login #submit::-moz-focus-inner {
   border: none;
+
 }
 
 #login label {
@@ -340,7 +379,8 @@ nav li #login-content {
 }
 
 #login label input {
-  position: relative;
+  display: inline-block;
+
   top: 2px;
   right: 2px;
 }
