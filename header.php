@@ -55,7 +55,9 @@ $smarty->debugging = true;
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class='navbar-inner'>
-        <!--Login dropdown begin-->
+
+        <div class="container">
+          <!--Login dropdown begin-->
 
           <nav>
             <ul class= "login-nav">
@@ -90,7 +92,7 @@ $smarty->debugging = true;
 
         <!--Login dropdown end-->
 
-        <div class="container">
+
           <a class="brand" href="/~celaya/riptideMusic/">RIPTIDE MUSIC</a>
           <span class="brand"><?php echo json_encode(isUserLoggedIn()); ?></span>
           <div class='pull-right'>
