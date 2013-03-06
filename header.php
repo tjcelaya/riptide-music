@@ -22,6 +22,7 @@ $smarty->debugging = true;
 <html lang="en">
   <head>
     <title>Riptide Music</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, max-scale=1.0">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
@@ -53,44 +54,42 @@ $smarty->debugging = true;
   
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
-
-<!--Login dropdown begin-->
-
-    <nav>
-      <ul class= "login-nav">
-       <?php if(isUSerLoggedIn()) { ?>
-        <li id="signup">
-          <a href="logout.php">Logout</a>
-        </li>
-       <?php } else { ?>
-        <li id="login">
-          <a id="login-trigger" href="#">
-            Log in <span>▼</span>
-          </a>
-          <div id="login-content">
-            <form action="login.php" method="post">
-              <fieldset id="inputs">
-                <input id="username" type="text" name="username" placeholder="Your username" required>   
-                <input id="password" type="password" name="password" placeholder="Password" required>
-              </fieldset>
-              <fieldset id="actions">
-                <input type="submit" id="submit" value="Log in">
-                <label><input type="checkbox" checked="checked"> Keep me signed in</label>
-              </fieldset>
-            </form>
-          </div>                     
-        </li>
-        <li id="signup">
-          <a href="/~celaya/riptideMusic/signup.php">Sign up</a>
-        </li>
-       <?php } ?>
-      </ul>
-    </nav>
-
-<!--Login dropdown end-->
-
-
       <div class='navbar-inner'>
+        <!--Login dropdown begin-->
+
+          <nav>
+            <ul class= "login-nav">
+             <?php if(isUSerLoggedIn()) { ?>
+              <li id="signup">
+                <a href="logout.php">Logout</a>
+              </li>
+             <?php } else { ?>
+              <li id="login">
+                <a id="login-trigger" href="#">
+                  Log in <span>▼</span>
+                </a>
+                <div id="login-content">
+                  <form action="login.php" method="post">
+                    <fieldset id="inputs">
+                      <input id="username" type="text" name="username" placeholder="Your username" required>   
+                      <input id="password" type="password" name="password" placeholder="Password" required>
+                    </fieldset>
+                    <fieldset id="actions">
+                      <input type="submit" id="submit" value="Log in">
+                      <label><input type="checkbox" checked="checked"> Keep me signed in</label>
+                    </fieldset>
+                  </form>
+                </div>                     
+              </li>
+              <li id="signup">
+                <a href="/~celaya/riptideMusic/signup.php">Sign up</a>
+              </li>
+             <?php } ?>
+            </ul>
+          </nav>
+
+        <!--Login dropdown end-->
+
         <div class="container">
           <a class="brand" href="/~celaya/riptideMusic/">RIPTIDE MUSIC</a>
           <span class="brand"><?php echo json_encode(isUserLoggedIn()); ?></span>
