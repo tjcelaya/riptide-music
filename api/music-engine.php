@@ -52,6 +52,51 @@ $app->get('/reviewp/:parameters+', function($parameters) use ($sqlConnection)
 	}
 });
 
+// get matching tags
+$app->get('/findtag/:parameters+', function($parameters) use ($sqlConnection)
+{
+
+});
+
+
+// save new tag
+$app->get('/findtag/:parameters+', function($parameters) use ($sqlConnection)
+{
+
+});
+
+
+// suggest new genre
+$app->get('/findtag/:parameters+', function($parameters) use ($sqlConnection)
+{
+
+});
+
+
+// save genre
+$app->get('/findtag/:parameters+', function($parameters) use ($sqlConnection)
+{
+
+});
+
+
+function editReview($param, $sqlConnection)
+{
+  $sqlSuccess = get_sql_results($result, $sqlConnection,
+    "UPDATE Reviews SET review='{$param['review']}' ".
+    "WHERE memName='{$param['memNam']}' AND ".
+    "albumID='{$param['albumID']}'");
+  return $sqlSuccess;
+}
+
+function addReview($param, $sqlConnection)
+{
+  $sqlSuccese = get_sql_results($result, $sqlConnection,
+    "INSERT INTO Reviews (memName, albumID, review) ".
+    "VALUES ('{$param['memName']}','{$param['albumID']}','{$param['review']}')");
+  return $sqlSuccess;
+}
+
 function getReviewByid(&$result,$parameters,$sqlConnection)
 {
 	$sqlSuccess = get_sql_results($result, $sqlConnection,
