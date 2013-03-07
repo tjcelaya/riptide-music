@@ -61,3 +61,44 @@ function get_discogs_albumdata(&$arrayToAppendResults, &$discogsMaster) {
   array_push($arrayToAppendResults, $tempResult);
   return;
 };
+
+function getAlbumById(&$arrayToAppendResults, $sqlC, $id) {
+
+  assert(0 < $id);
+  
+  $sqlSuccess =
+    get_sql_results(
+      $arrayToAppendResults,
+      $sqlC,
+      "select albumName, artistName, released, avgRating, tracklist, albumID ".
+      "from Albums natural join Artists ".
+      "where albumID=$id"
+    );
+
+  $arrayToAppendResults = $arrayToAppendResults[0];
+
+  $arrayToAppendResults['genres'] = array();
+  $arrayToAppendResults['tags'] = array();
+
+  $genreQuerySuccess =
+    get_sql_results(
+      $arrayToAppendResults['genres'],
+      $sqlC,
+      "select genreName from AlbumGenres where albumID=$id"
+    );
+  //compact array of arrays into single genres array
+  if($genreQuerySuccess)
+    foreach ($arrayToAppendResults['genres'] as $kk => $genre) {
+      $arrayToAppendResults['genres'][$kk] = $genre['genreName'];
+    }
+
+  $tagQuerySuccess =
+    get_sql_results(
+      $arrayToAppendResults['tags'],
+      $sqlC,
+      "select tagName from AlbumTags where albumID=$id"
+    );
+
+  return $sqlSuccess;
+
+};
