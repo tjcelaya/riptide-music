@@ -105,6 +105,11 @@ if(!empty($_POST))
         <div class='main-body span5 offset1'>
           <h1>Join Riptide Music</h1>
           <h4>Insert credentials, receive bacon.</h4>
+          <div class='signup-status'>
+          <?php
+          echo resultBlock($errors,$successes);
+          ?>
+          </div>
 
           <div class= "signup">
 
