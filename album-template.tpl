@@ -1,7 +1,7 @@
 <!-- album display -->
 <div class="full-album-listing">
     <img width="150" height="150" src="img/{$artistName|escape} - {$albumName|escape}({$released}).jpg"/>
-    <a href="album.php?name={$albumName|escape:'url'}&artist={$artistName|escape:'url'}">
+    <a href="album.php?id={$albumID}">
         <h1>{$albumName}</h1>
     </a>
     <a href="artist.php?name={$artistName|escape:'url'}">
@@ -9,7 +9,7 @@
     </a>
     <p>{$released}</p>
     {foreach $genres as $g}
-        <a style="margin-right:0.2em" href="genre/{$g}">{$g}</a>
+        <a class="genre-link" href="genre/{$g}">{$g}</a>
     {/foreach}
     <p>{$avgRating}</p>
     <div class="tags">

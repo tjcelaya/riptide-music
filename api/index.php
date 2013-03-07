@@ -31,13 +31,26 @@ $app = new \Slim\Slim(
 
 //this is a debugging route
 $app->get('/', function() use ($dbPassword) {
-  // this is actually /~celaya/api/ (or w/o the slash)
   // all paths the slim app defines are relative to itself,
-  // so this is "/riptideMusic/api/"
+  // so this is actually "~celaya/riptideMusic/api/"
   // its also here so that there is something returned if 
   // someone wanders to that url
   echo gettype($dbPassword);
 })->name('index');
+
+//this route retrieves search results from discogs
+$app->get('/i/:id', function($id) use ($sqlConnection) {
+
+  $sqlQueryResult = array();
+  
+  getAlbumById(
+    $sqlQueryResult,
+    $sqlConnection,
+    $id
+  );
+
+  echo json_encode($sqlQueryResult);
+});
 
 //this route retrieves search results from discogs
 $app->get('/dget/:params+', function($params) use ($discogs, $sqlConnection) {

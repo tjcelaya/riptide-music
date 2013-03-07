@@ -29,8 +29,13 @@ label input {
 
 .full-album-listing {
     float: left; 
-    margin: 1.5em;
+    margin: 1.5em 25.5em 1.5em 1.5em;
     width: 100%;
+
+}
+
+.full-album-listing .genre-link {
+  margin-right:1.3em;
 }
 
 .full-album-listing h1 {

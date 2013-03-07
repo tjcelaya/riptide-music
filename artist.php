@@ -40,7 +40,8 @@ require "header.php";
             }
         ?>
         </div>
-        <div class="main-body span2">
+        <div class="main-body span5">
+            <pre><code><?php print_r($artistRequest) ;?></code></pre>
             <p>recommendations will go here</p>
         </div>
     </div>
