@@ -1,15 +1,15 @@
 <?php
 // 
 // get album review test -- rick
-$app->get('/review/:parameters+',
-  function($parameters) use ($sqlConnection)
+$app->get('/review/:userID',
+  function($userID) use ($sqlConnection)
   {
-    if(!isset($parameters[0]))
+    if(!isset($userID))
     { echo json_encode(array('err'=>'NO params'));
       return;
     }
     $queryDetails = array();
-	$sqlSuccess = getReview($queryDetails, $parameters, $sqlConnection);
+	$sqlSuccess = getReviewByid($queryDetails, $userID, $sqlConnection);
     if ($sqlSuccess)
       echo json_encode($queryDetails);
     else
@@ -17,37 +17,35 @@ $app->get('/review/:parameters+',
 });
 
 // post a review
-$app->get('/reviewp/:parameters+', function($parameters) use ($sqlConnection)
-{
-	if (!isset($parameters[0]) & !isset($parameters[1]))
+$app->post('/reviewp', function() use ($sqlConnection)
+{  echo "testing post review...";
+	if (!(isset($_POST["albumID"]) & isset($_POST["memName"]) & isset($_POST["key"])))
 	{ echo json_encode(array('err'=>'NO params'));
 	  return;
 	}
-	if (checkuserlevel() > 4)
-	{ $resultid = array();
-	  $sqlSuccess = getAlbumId($resultid, $parameters, $sqlConnection); 
-	  if ($sqlSuccess)
-	  { $queryDetails = array();
-	    // !!needs to search by user id too!!
-	  	$sqlExistingreview = getReviewByid($queryDetails, $resultid[0], $sqlConnection);
-		if ($sqlExistingreview)
-		{ // replace existing review
-			echo json_encode(array('done'=>'Review Updated'));
-			return;
-		}
-		else 
-		{ // post new review
-			echo json_encode(array('done'=>'Review Added'));
-			return;
-		}	  	
+//	if (checkuserlevel($_POST) > 4)
+	if ((checkuserlevel($_POST) > 4) & 
+		isvalidAlbum($_POST["albumID"],$sqlConnection) & 
+	    isvalidUser($_POST["memName"],$sqlConnection) )	
+	{ $resultid = array("memName" => "1", "albumID" => "1");
+	  $resultid['memName'] = $_POST['memName'];
+	  $resultid['albumID'] = $_POST['albumID'];
+	  $queryDetails = array();
+	  // !!needs to search by user id too!!
+	  $sqlExistingreview = getReviewBymemid($queryDetails, $resultid, $sqlConnection);
+      if ($sqlExistingreview)
+	  { // replace existing review
+		echo json_encode(array('done'=>'Review Updated'));
+		return;
 	  }
-	  else
-	  	{ echo json_encode(array('err'=>'Invalid Album'));
-	  	return;
-	  	}	
+	    else 
+	  { // post new review
+		echo json_encode(array('done'=>'Review Added'));
+		return;
+	  }	  	
 	}
 	else
-	{ echo json_encode(array('err'=>'No User Privledges'));
+	{ echo json_encode(array('err'=>'Bad user, album, or privledges'));
 	  return;
 	}
 });
@@ -80,11 +78,28 @@ $app->get('/findtag/:parameters+', function($parameters) use ($sqlConnection)
 });
 
 
+function isvalidAlbum($aid, $sqlConnection)
+{ $result = array();
+	$sqlSuccess = get_sql_results($result, $sqlConnection,
+			"select * from Albums ".
+			"where albumID = '$aid'");
+	return $sqlSuccess;
+}
+
+function isvalidUser($uid, $sqlConnection)
+{  $result = array();
+	$sqlSuccess = get_sql_results($result, $sqlConnection,
+			"select * from Members ".
+			"where memName = '$uid'");
+	return $sqlSuccess;
+}
+
+
 function editReview($param, $sqlConnection)
 {
   $sqlSuccess = get_sql_results($result, $sqlConnection,
     "UPDATE Reviews SET review='{$param['review']}' ".
-    "WHERE memName='{$param['memNam']}' AND ".
+    "WHERE memName='{$param['memName']}' AND ".
     "albumID='{$param['albumID']}'");
   return $sqlSuccess;
 }
@@ -105,8 +120,16 @@ function getReviewByid(&$result,$parameters,$sqlConnection)
 	return $sqlSuccess;
 }
 
+function getReviewBymemid(&$result,$parameters,$sqlConnection)
+{
+	$sqlSuccess = get_sql_results($result, $sqlConnection,
+			"select * from Reviews ".
+			"where albumID = '{$parameters['albumID']}' ".
+			"AND memName = '{$parameters['memName']}'");
+	return $sqlSuccess;
+}
 
-function getReview(&$result,$parameters,$sqlConnection)
+function searchReview(&$result,$parameters,$sqlConnection)
 {
     $sqlSuccess = get_sql_results($result, $sqlConnection,
     "select R.* from Reviews R, Albums A, Artists B ".
@@ -128,8 +151,8 @@ function getAlbumId(&$result,$parameters,$sqlConnection)
 	return $sqlSuccess;
 }
 
-
-function checkuserlevel()
+// uses $_POST data in $params
+function checkuserlevel($params)
 { // verifies user is logged in and returns security level
   return 5;
 }
