@@ -58,21 +58,42 @@ $app->get('/findtag/:parameters+', function($parameters) use ($sqlConnection)
 
 
 // save new tag
-$app->get('/findtag/:parameters+', function($parameters) use ($sqlConnection)
+$app->post('/savetag', function($parameters) use ($sqlConnection)
+{
+
+});
+
+// view genre
+$app->get('/genre/:genreName', function($genreName) use ($sqlConnection)
+  { 
+    if(!isset($genreName))
+    { echo json_encode(array('err'=>'NO params'));
+      return;
+    }
+    $queryDetails = array();
+	$sqlSuccess = getGenre($queryDetails, $genreName, $sqlConnection);
+    if ($sqlSuccess)
+      echo json_encode($queryDetails);
+    else
+      echo json_encode(array('err'=>'SQLerr'));
+});
+
+
+// save suggest new genre
+$app->post('/newgenre/:parameters', function($parameters) use ($sqlConnection)
+{
+
+});
+
+// view new genre
+$app->get('/newgenre/:parameters', function($parameters) use ($sqlConnection)
 {
 
 });
 
 
-// suggest new genre
-$app->get('/findtag/:parameters+', function($parameters) use ($sqlConnection)
-{
-
-});
-
-
-// save genre
-$app->get('/findtag/:parameters+', function($parameters) use ($sqlConnection)
+// approve new genre
+$app->post('/savegenre', function($parameters) use ($sqlConnection)
 {
 
 });
@@ -117,6 +138,14 @@ function getReviewByid(&$result,$parameters,$sqlConnection)
 	$sqlSuccess = get_sql_results($result, $sqlConnection,
 			"select * from Reviews ".
 			"where albumID = '{$parameters['albumID']}'");
+	return $sqlSuccess;
+}
+
+function getGenre(&$result,$parameters,$sqlConnection)
+{
+	$sqlSuccess = get_sql_results($result, $sqlConnection,
+			"select * from Genres ".
+			"where genreName = '{$parameters}'");
 	return $sqlSuccess;
 }
 
