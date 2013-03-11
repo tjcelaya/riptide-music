@@ -1,5 +1,5 @@
 <?php
-// 
+require 'dataret.php';
 // get album review test -- rick
 $app->get('/review/:userID',
   function($userID) use ($sqlConnection)
@@ -80,9 +80,51 @@ $app->get('/genre/:genreName', function($genreName) use ($sqlConnection)
 
 
 // save suggest new genre
-$app->post('/newgenre/:parameters', function($parameters) use ($sqlConnection)
+$app->post('/newgenre', function() use ($sqlConnection)
 {
-
+	if (!(isset($_POST["genreName"]) & isset($_POST["description"]) & isset($_POST["uid"])) )
+	{ echo json_encode(array('err'=>'NO params'));
+	  return;
+	}
+	if (checkuserlevel($_POST) > 4) 
+	{ $queryDetails = array();
+	  $uid = intval($_POST["uid"]);
+	  $genreName = sqlsanitize($_POST["genreName"]);
+	  echo "changed:  ";
+	  $params = array("genreName" => "$genreName", "uid" => $uid);
+	  $sqlExistinggenre = getNewGenre($queryDetails, $params, $sqlConnection);
+	  $result = array();
+	  $gdesc = sqlsanitize($_POST["description"]);
+	  echo "$sqlExistinggenre : [$result] : $genreName, $gdesc, $uid   ::   ";
+      if ($sqlExistinggenre)
+	  { echo "// replace existing genre";
+			$sqlSuccess = aget_sql_results($result, $sqlConnection,
+			"update NewGenre set description='$gdesc' ".
+			"where genreName = '$genreName' ". 
+			"and uid = $uid");
+			
+			if ($sqlSuccess)
+	  		  echo json_encode(array('err'=>'Updated'));
+			else
+	  		  echo json_encode(array('err'=>'Error Updating'));
+			return;
+	  }
+	    else 
+	  { echo "// post new genre";
+			$sqlSuccess = aget_sql_results($result, $sqlConnection,
+					"insert into NewGenre (genreName, description, uid) ".
+					"values ('$genreName','$gdesc',$uid)");
+			if ($sqlSuccess)
+			  echo json_encode(array('err'=>'Added'));
+			else
+			  echo json_encode(array('err'=>'Error Adding'));
+			return;
+	  }
+	}
+	else
+	{ echo json_encode(array('err'=>'Bad user, album, or privledges'));
+	  return;
+	}
 });
 
 // view new genre
@@ -98,6 +140,11 @@ $app->post('/savegenre', function($parameters) use ($sqlConnection)
 
 });
 
+
+function sqlsanitize($s)
+{
+  return $s;
+}
 
 function isvalidAlbum($aid, $sqlConnection)
 { $result = array();
@@ -146,6 +193,15 @@ function getGenre(&$result,$parameters,$sqlConnection)
 	$sqlSuccess = get_sql_results($result, $sqlConnection,
 			"select * from Genres ".
 			"where genreName = '{$parameters}'");
+	return $sqlSuccess;
+}
+
+function getNewGenre(&$result,$parameters,$sqlConnection)
+{
+	$sqlSuccess = get_sql_results($result, $sqlConnection,
+			"select * from NewGenre ".
+			"where genreName = '{$parameters['genreName']}' ".
+			"and uid = {$parameters['uid']}");
 	return $sqlSuccess;
 }
 

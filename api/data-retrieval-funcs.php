@@ -15,10 +15,10 @@ function get_sql_results(&$arrayToAppendResults, $sqlC, $query) {
   if (mysqli_connect_errno()) {
     exit('Connect failed: '. mysqli_connect_error());
   }
-
-  if(!$queryResult)
-    return false;
-      
+  echo "its $queryResult : ";
+  if(is_bool($queryResult))
+    return $queryResult;
+  echo "too far";    
   //retrieve results into array
   if($queryResult->num_rows > 0) {
       while($row = $queryResult->fetch_assoc()) {
