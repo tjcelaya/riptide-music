@@ -1,5 +1,4 @@
 <?php
-require 'dataret.php';
 // get album review test -- rick
 $app->get('/review/:userID',
   function($userID) use ($sqlConnection)
@@ -51,16 +50,56 @@ $app->post('/reviewp', function() use ($sqlConnection)
 });
 
 // get matching tags
-$app->get('/findtag/:parameters+', function($parameters) use ($sqlConnection)
-{
-
+$app->get('/findtag/:tag', function($tag) use ($sqlConnection)
+  {
+    if(!isset($tag))
+    { echo json_encode(array('err'=>'NO params'));
+      return;
+    }
+    $tag = tagspaces($tag);
+    $tag = sqlsanitize($tag);
+    $queryDetails = array();
+    
+	$sqlSuccess = findTag($queryDetails, $tag, $sqlConnection);
+    if ($sqlSuccess)
+      echo json_encode($queryDetails);
+    else
+      echo json_encode(array('err'=>'SQLerr'));
 });
 
 
 // save new tag
-$app->post('/savetag', function($parameters) use ($sqlConnection)
+$app->post('/savetag', function() use ($sqlConnection)
 {
-
+	if (!(isset($_POST["tagName"]) & isset($_POST["key"])) )
+	{ echo json_encode(array('err'=>'NO params'));
+	  return;
+	}
+	if (checkuserlevel($_POST) > 6) 
+	{ $queryDetails = array();
+	  $tagName = sqlsanitize($_POST["tagName"]);
+	  $sqlExistingtag = isTag($tagName, $sqlConnection);
+	  $result = array();
+      if ($sqlExistingtag)
+	  {  echo json_encode(array('err'=>'Tag already exists!'));
+   	 	 return;
+	  }
+	    else 
+	  { 
+			$sqlSuccess = get_sql_results($result, $sqlConnection,
+					"insert into Tags (tagName) ".
+					"values ('$tagName')");
+			if ($sqlSuccess)
+			  echo json_encode(array('err'=>'Added'));
+			else
+			  echo json_encode(array('err'=>'Error Adding'));
+			return;
+	  }
+	}
+	else
+	{ echo json_encode(array('err'=>'No privledges'));
+	  return;
+	}
 });
 
 // view genre
@@ -98,7 +137,7 @@ $app->post('/newgenre', function() use ($sqlConnection)
 	  echo "$sqlExistinggenre : [$result] : $genreName, $gdesc, $uid   ::   ";
       if ($sqlExistinggenre)
 	  { echo "// replace existing genre";
-			$sqlSuccess = aget_sql_results($result, $sqlConnection,
+			$sqlSuccess = get_sql_results($result, $sqlConnection,
 			"update NewGenre set description='$gdesc' ".
 			"where genreName = '$genreName' ". 
 			"and uid = $uid");
@@ -111,7 +150,7 @@ $app->post('/newgenre', function() use ($sqlConnection)
 	  }
 	    else 
 	  { echo "// post new genre";
-			$sqlSuccess = aget_sql_results($result, $sqlConnection,
+			$sqlSuccess = get_sql_results($result, $sqlConnection,
 					"insert into NewGenre (genreName, description, uid) ".
 					"values ('$genreName','$gdesc',$uid)");
 			if ($sqlSuccess)
@@ -140,10 +179,34 @@ $app->post('/savegenre', function($parameters) use ($sqlConnection)
 
 });
 
+// replaces spaces and other non-characters with %
+function tagspaces($t)
+{
+  $tolkiens = array(' ', '(', ')', '-', '+');
+  $result = str_replace($tolkiens, '%', $t);
+  return $result;
+}
 
+// escapes special characters such as quotes
 function sqlsanitize($s)
 {
   return $s;
+}
+
+function isTag($tag, $sqlConnection)
+{ $result = array();
+$sqlSuccess = get_sql_results($result, $sqlConnection,
+		"select * from Tags ".
+		"where tagName = '%$tag%'");
+return $sqlSuccess;
+}
+
+function findTag(&$result,$tag,$sqlConnection)
+{
+	$sqlSuccess = get_sql_results($result, $sqlConnection,
+			"select * from Tags ".
+			"where tagName like '$tag'");
+	return $sqlSuccess;
 }
 
 function isvalidAlbum($aid, $sqlConnection)
@@ -239,5 +302,5 @@ function getAlbumId(&$result,$parameters,$sqlConnection)
 // uses $_POST data in $params
 function checkuserlevel($params)
 { // verifies user is logged in and returns security level
-  return 5;
+  return 7;
 }
