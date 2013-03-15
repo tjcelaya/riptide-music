@@ -15,12 +15,12 @@ function get_sql_results(&$arrayToAppendResults, $sqlC, $query) {
   if (mysqli_connect_errno()) {
     exit('Connect failed: '. mysqli_connect_error());
   }
-  echo "its $queryResult : ";
+
   if(is_bool($queryResult))
     return $queryResult;
-  echo "too far";    
+
   //retrieve results into array
-  if($queryResult->num_rows > 0) {
+  if($queryResult->num_rows > 0 && !is_null($arrayToAppendResults) ) {
       while($row = $queryResult->fetch_assoc()) {
           array_push($arrayToAppendResults, $row);
       }
@@ -74,6 +74,9 @@ function getAlbumById(&$arrayToAppendResults, $sqlC, $id) {
       "from Albums natural join Artists ".
       "where albumID=$id"
     );
+
+  if (!isset($arrayToAppendResults[0]))
+    return $sqlSuccess;
 
   $arrayToAppendResults = $arrayToAppendResults[0];
 

@@ -1,12 +1,6 @@
 <?php
 
 //route returns album info
-//if given artist, gets all albums by that artist, 
-//if given artist+album(expressed as /albuminfo/SOMEARTIST/SOMEALBUM[/], 
-//    gets that album info 
-//captures /api/albuminfo/x0/x1/x2... as
-// $params[0] => x0
-// $params[1] => x1 etc
 $app->get('/albumsByArtist/:parameters+', 
   function($parameters) use ($sqlConnection) {
   //first parameter is artist name  
@@ -63,12 +57,19 @@ $app->get('/albumsByArtist/:parameters+',
         $queryDetails[$k]['genres'][$kk] = $genre['genreName'];
       }
 
+    $queryDetails[$k]['tags'] = array();
+
     $tagQuerySuccess =
       get_sql_results(
         $queryDetails[$k]['tags'],
         $sqlConnection,
         "select tagName from AlbumTags where albumID={$queryDetails[$k]['albumID']}"
       );
+    //compact array of arrays into single tags array
+    if($tagQuerySuccess)
+      foreach ($queryDetails[$k]['tags'] as $kk => $tag) {
+        $queryDetails[$k]['tags'][$kk] = $tag['tagName'];
+      }
   }
 
   $queryDetails['artist'] = $exactArtistName;
