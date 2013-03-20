@@ -1,14 +1,14 @@
 <?php
 // get album review test -- rick
-$app->get('/review/:userID',
-  function($userID) use ($sqlConnection)
+$app->get('/review/:albumID',
+  function($albumID) use ($sqlConnection)
   {
-    if(!isset($userID))
+    if(!isset($albumID))
     { echo json_encode(array('err'=>'NO params'));
       return;
     }
     $queryDetails = array();
-	$sqlSuccess = getReviewByid($queryDetails, $userID, $sqlConnection);
+	$sqlSuccess = getReviewByid($queryDetails, $albumID, $sqlConnection);
     if ($sqlSuccess)
       echo json_encode($queryDetails);
     else
@@ -17,28 +17,31 @@ $app->get('/review/:userID',
 
 // post a review
 $app->post('/reviewp', function() use ($sqlConnection)
-{  echo "testing post review...";
-	if (!(isset($_POST["albumID"]) & isset($_POST["memName"]) & isset($_POST["key"])))
+{
+	if (!(isset($_POST["albumID"]) & isset($_POST["userID"]) & isset($_POST["key"])))
 	{ echo json_encode(array('err'=>'NO params'));
 	  return;
 	}
 //	if (checkuserlevel($_POST) > 4)
 	if ((checkuserlevel($_POST) > 4) & 
 		isvalidAlbum($_POST["albumID"],$sqlConnection) & 
-	    isvalidUser($_POST["memName"],$sqlConnection) )	
-	{ $resultid = array("memName" => "1", "albumID" => "1");
-	  $resultid['memName'] = $_POST['memName'];
+	    isvalidUser($_POST["userID"],$sqlConnection) )	
+	{ $resultid = array("userID" => "1", "albumID" => "1", "review" => "1");
+	  $resultid['userID'] = $_POST['userID'];
 	  $resultid['albumID'] = $_POST['albumID'];
+          $resultid['review'] = sqlsanitize($_POST['review']);
 	  $queryDetails = array();
 	  // !!needs to search by user id too!!
 	  $sqlExistingreview = getReviewBymemid($queryDetails, $resultid, $sqlConnection);
       if ($sqlExistingreview)
 	  { // replace existing review
+                editReview($resultid, $sqlConnection);
 		echo json_encode(array('done'=>'Review Updated'));
 		return;
 	  }
 	    else 
 	  { // post new review
+                addReview($resultid, $sqlConnection);
 		echo json_encode(array('done'=>'Review Added'));
 		return;
 	  }	  	
@@ -59,13 +62,42 @@ $app->get('/findtag/:tag', function($tag) use ($sqlConnection)
     $tag = tagspaces($tag);
     $tag = sqlsanitize($tag);
     $queryDetails = array();
-    
-	$sqlSuccess = findTag($queryDetails, $tag, $sqlConnection);
+    $result = array();
+    $tagsp = explode('%', $tag);
+    $tag = "%$tag%";
+    $sqlSuccess = findTag($queryDetails, $tag, $sqlConnection);
+	if (count($tagsp) > 1)
+	{
+	  foreach ($tagsp as $t)
+	  { $t1 = "%$t%";
+	  	$sqlSucc2 = findTag($result, $t1, $sqlConnection);
+  	    if ($sqlSucc2 == true)
+	    { $queryDetails = array_merge($queryDetails, $result);
+  	  	  $sqlSuccess = true;
+	    }
+	  }
+	}
+	removeduptags($queryDetails);
     if ($sqlSuccess)
       echo json_encode($queryDetails);
     else
       echo json_encode(array('err'=>'SQLerr'));
 });
+
+// test sql stuff
+$app->get('/fft', function() use ($sqlConnection)
+{
+	$result = array();
+
+	$sqlSuccess = get_sql_results($result, $sqlConnection,
+			"select * from Tags ".
+			"where tagName like '%dance party%'");
+	if ($sqlSuccess)
+		echo json_encode($result);
+	else
+		echo json_encode(array('err'=>'SQLerr'));
+});
+
 
 
 // save new tag
@@ -102,82 +134,6 @@ $app->post('/savetag', function() use ($sqlConnection)
 	}
 });
 
-// view genre
-$app->get('/genre/:genreName', function($genreName) use ($sqlConnection)
-  { 
-    if(!isset($genreName))
-    { echo json_encode(array('err'=>'NO params'));
-      return;
-    }
-    $queryDetails = array();
-	$sqlSuccess = getGenre($queryDetails, $genreName, $sqlConnection);
-    if ($sqlSuccess)
-      echo json_encode($queryDetails);
-    else
-      echo json_encode(array('err'=>'SQLerr'));
-});
-
-
-// save suggest new genre
-$app->post('/newgenre', function() use ($sqlConnection)
-{
-	if (!(isset($_POST["genreName"]) & isset($_POST["description"]) & isset($_POST["uid"])) )
-	{ echo json_encode(array('err'=>'NO params'));
-	  return;
-	}
-	if (checkuserlevel($_POST) > 4) 
-	{ $queryDetails = array();
-	  $uid = intval($_POST["uid"]);
-	  $genreName = sqlsanitize($_POST["genreName"]);
-	  echo "changed:  ";
-	  $params = array("genreName" => "$genreName", "uid" => $uid);
-	  $sqlExistinggenre = getNewGenre($queryDetails, $params, $sqlConnection);
-	  $result = array();
-	  $gdesc = sqlsanitize($_POST["description"]);
-	  echo "$sqlExistinggenre : [$result] : $genreName, $gdesc, $uid   ::   ";
-      if ($sqlExistinggenre)
-	  { echo "// replace existing genre";
-			$sqlSuccess = get_sql_results($result, $sqlConnection,
-			"update NewGenre set description='$gdesc' ".
-			"where genreName = '$genreName' ". 
-			"and uid = $uid");
-			
-			if ($sqlSuccess)
-	  		  echo json_encode(array('err'=>'Updated'));
-			else
-	  		  echo json_encode(array('err'=>'Error Updating'));
-			return;
-	  }
-	    else 
-	  { echo "// post new genre";
-			$sqlSuccess = get_sql_results($result, $sqlConnection,
-					"insert into NewGenre (genreName, description, uid) ".
-					"values ('$genreName','$gdesc',$uid)");
-			if ($sqlSuccess)
-			  echo json_encode(array('err'=>'Added'));
-			else
-			  echo json_encode(array('err'=>'Error Adding'));
-			return;
-	  }
-	}
-	else
-	{ echo json_encode(array('err'=>'Bad user, album, or privledges'));
-	  return;
-	}
-});
-
-// view new genre
-$app->get('/newgenre/:parameters', function($parameters) use ($sqlConnection)
-{
-
-});
-
-
-// approve new genre
-$app->post('/savegenre', function($parameters) use ($sqlConnection)
-{
-
-});
 
 // replaces spaces and other non-characters with %
 function tagspaces($t)
@@ -191,6 +147,17 @@ function tagspaces($t)
 function sqlsanitize($s)
 {
   return $s;
+}
+
+function removeduptags(&$queryDetails)
+{ $tagz = array();
+foreach ($queryDetails as $t => $tn)
+{
+	if (in_array($tn, $tagz))
+		unset($queryDetails[$t]);
+	else
+		array_push($tagz,$tn);
+}
 }
 
 function isTag($tag, $sqlConnection)
@@ -220,26 +187,30 @@ function isvalidAlbum($aid, $sqlConnection)
 function isvalidUser($uid, $sqlConnection)
 {  $result = array();
 	$sqlSuccess = get_sql_results($result, $sqlConnection,
-			"select * from Members ".
-			"where memName = '$uid'");
+			"select * from uc_users ".
+			"where id = '$uid'");
 	return $sqlSuccess;
 }
 
 
 function editReview($param, $sqlConnection)
 {
+  $uid = intval($param['userID']);
+  $aid = intval($param['albumID']);
   $sqlSuccess = get_sql_results($result, $sqlConnection,
     "UPDATE Reviews SET review='{$param['review']}' ".
-    "WHERE memName='{$param['memName']}' AND ".
+    "WHERE userID='{$param['userID']}' AND ".
     "albumID='{$param['albumID']}'");
   return $sqlSuccess;
 }
 
 function addReview($param, $sqlConnection)
 {
-  $sqlSuccese = get_sql_results($result, $sqlConnection,
-    "INSERT INTO Reviews (memName, albumID, review) ".
-    "VALUES ('{$param['memName']}','{$param['albumID']}','{$param['review']}')");
+  $uid = intval($param['userID']);
+  $aid = intval($param['albumID']);
+  $sqlSuccess = get_sql_results($result, $sqlConnection,
+    "INSERT INTO Reviews (userID, albumID, review) ".
+    "VALUES ($uid,$aid,'{$param['review']}')");
   return $sqlSuccess;
 }
 
@@ -251,29 +222,13 @@ function getReviewByid(&$result,$parameters,$sqlConnection)
 	return $sqlSuccess;
 }
 
-function getGenre(&$result,$parameters,$sqlConnection)
-{
-	$sqlSuccess = get_sql_results($result, $sqlConnection,
-			"select * from Genres ".
-			"where genreName = '{$parameters}'");
-	return $sqlSuccess;
-}
-
-function getNewGenre(&$result,$parameters,$sqlConnection)
-{
-	$sqlSuccess = get_sql_results($result, $sqlConnection,
-			"select * from NewGenre ".
-			"where genreName = '{$parameters['genreName']}' ".
-			"and uid = {$parameters['uid']}");
-	return $sqlSuccess;
-}
 
 function getReviewBymemid(&$result,$parameters,$sqlConnection)
 {
 	$sqlSuccess = get_sql_results($result, $sqlConnection,
 			"select * from Reviews ".
 			"where albumID = '{$parameters['albumID']}' ".
-			"AND memName = '{$parameters['memName']}'");
+			"AND userID = '{$parameters['userID']}'");
 	return $sqlSuccess;
 }
 
