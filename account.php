@@ -35,14 +35,14 @@ h2 { font-family: Georgia, Tahoma, sans-serif; font-style: italic; font-size: 1.
 .nobrdr { border: 0px !important; }
 
 
-.head { background: #3eaef8; border: 1px solid #3e82a7; padding-left: 8px; width: 95%;}
-.head h1 { color: #fafcfd; font-weight: bold; font-size: 1.4em; }
+.head { background: #3eaef8; border: 1px solid #3e82a7; padding-left: 8px; width: 100%;}
+.head h1 { color: #fafcfd; font-weight: bold; font-size: 1.0em; }
 
 .boxy {  border: 1px ; border-top: 0px;  }
 .boxy span { font-size: 1.2em; display: block; margin-bottom: 7px; }
 
 .boxy .friendslist { display: block; margin-bottom: 15px; }
-.boxy .friend { display: block; border-top: 1px solid #3eaef8; float: left; height: 40px; padding: 5px 5px 5px 4px; width: 95% }
+.boxy .friend { display: block; float: left; height: 40px; padding: 5px 5px 5px 4px; width: 95% }
 .boxy .friend img { border: 1px solid #3eaef8; float: left;  padding: 2px; margin-right: 4px; }
 .boxy .friend .friendly { position: relative; top: 16px; font-size: .7em; }
 
@@ -99,10 +99,9 @@ h2 { font-family: Georgia, Tahoma, sans-serif; font-style: italic; font-size: 1.
 <div class='span2 rec'>
 
 
-        <div class="head"><h1>Friends List</h1></div>
+        <div class="head"><h1>Recommendations</h1></div>
         <div class="boxy">
           <br>
-          <p>106 friends total</p>
           
           <div class="friendslist clearfix">
             <div class="friend">

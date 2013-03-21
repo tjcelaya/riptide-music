@@ -4,14 +4,13 @@
             <div class='main-body span5'>
                 <p>Artist</p>
                 <hr/>
-                <h1><?php  ?></h1>
             <?php
                 if (isset($_GET['id'])) {
                     // echo $_GET['id']."<BR>";
 
                     $apiUrl = 
                         "http://ww2.cs.fsu.edu/~celaya/".
-                        "riptideMusic/api/i/".urlencode($_GET['id']);
+                        "riptideMusic/api/albumByID/".urlencode($_GET['id']);
                     
                     // echo "<p>this page calls: \n".$apiUrl."</p>";
 
@@ -22,14 +21,7 @@
                     else {
                         foreach ($albumRequest as $k => $v)
                         {   
-                            echo $k.": ".$v."<BR>";
-                            if($k == 'tracklist') {
-                                $tracksArray = array();
-                                foreach (explode('|', $v) as $piece) {
-                                    $tracksArray[] = explode('~', $piece);
-                                }
-                                $v = $tracksArray;
-                            }
+                            // echo $k.": ".$v."<BR>";
                             $smarty->assign($k,$v);     
                         }
                         $smarty->display('album-template.tpl');
@@ -38,7 +30,17 @@
                     echo "noalbum";
                 }   
             ?>
-            <div class="review"></div>
+            <div class="review">
+                    <form>
+                      <fieldset>
+                        <legend>Review this Album</legend>
+                        <textarea rows="7" placeholder="Your review here" ></textarea>
+                        <br>
+                        <button type="submit" class="btn">Submit</button>
+                      </fieldset>
+                    </form>
+
+            </div>
 
 
             </div>
