@@ -12,7 +12,7 @@
                     "http://ww2.cs.fsu.edu/~celaya/".
                     "riptideMusic/api/albumsByArtist/".urlencode($_GET['name']);
                 
-                //echo "<p>this page calls: \n".$apiUrl."</p>";
+                echo "<p>this page calls: \n".$apiUrl."</p>";
 
                 $artistRequest = json_decode(file_get_contents($apiUrl), true);
                 
@@ -37,10 +37,10 @@
             }
         ?>
         </div>
-        <div class="main-body span5">
+<!--         <div class="main-body span5">
             <pre><code><?php print_r($artistRequest) ;?></code></pre>
             <p>recommendations will go here</p>
-        </div>
+        </div> -->
     </div>
 </div>
 <?php require "footer.php"; ?>

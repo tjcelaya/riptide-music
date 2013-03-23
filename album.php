@@ -1,7 +1,7 @@
 <?php require "header.php"; ?>
     <div class='inner-row-div row-fluid'>
         <div class='row-fluid'>
-            <div class='main-body span5'>
+            <div class='main-body span5 offset2'>
                 <p>Artist</p>
                 <hr/>
             <?php
@@ -44,9 +44,9 @@
 
 
             </div>
-            <div class="main-body span7">
+<!--             <div class="main-body span7">
                 <p> <pre><code><?php echo print_r($albumRequest); ?></code></pre> recommendations will go here</p>
-            </div>
+            </div> -->
         </div>
     </div>
 <?php require "footer.php"; ?>
