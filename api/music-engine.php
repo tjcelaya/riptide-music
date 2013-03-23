@@ -1,4 +1,7 @@
 <?php
+define("WEIGHTMIN", 0);
+define("WEIGHTMAX", 5);
+
 // get album review test -- rick
 $app->get('/review/:albumID',
   function($albumID) use ($sqlConnection)
@@ -38,7 +41,7 @@ $app->post('/reviewp', function() use ($sqlConnection)
                 editReview($resultid, $sqlConnection);
 		echo json_encode(array('done'=>'Review Updated'));
 		return;
-	  }
+	  } 
 	    else 
 	  { // post new review
                 addReview($resultid, $sqlConnection);
@@ -84,22 +87,6 @@ $app->get('/findtag/:tag', function($tag) use ($sqlConnection)
       echo json_encode(array('err'=>'SQLerr'));
 });
 
-// test sql stuff
-$app->get('/fft', function() use ($sqlConnection)
-{
-	$result = array();
-
-	$sqlSuccess = get_sql_results($result, $sqlConnection,
-			"select * from Tags ".
-			"where tagName like '%dance party%'");
-	if ($sqlSuccess)
-		echo json_encode($result);
-	else
-		echo json_encode(array('err'=>'SQLerr'));
-});
-
-
-
 // save new tag
 $app->post('/savetag', function() use ($sqlConnection)
 {
@@ -134,6 +121,71 @@ $app->post('/savetag', function() use ($sqlConnection)
 	}
 });
 
+// tag an album
+$app->post('/tag', function() use ($sqlConnection)
+{
+	if (!(isset($_POST["tagName"]) & isset($_POST["albumID"]) & isset($_POST["weight"]) & isset($_POST["key"])) )
+	{ echo json_encode(array('err'=>'NO params'));
+	return;
+	}
+	if (checkuserlevel($_POST) > 6)
+	{ $queryDetails = array();
+	  $tagName = sqlsanitize($_POST["tagName"]);
+	  $sqlExistingtag = isTag($tagName, $sqlConnection);
+	  $lbs = floatval($_POST["weight"]);
+	  if ($lbs < WEIGHTMIN || $lbs > WEIGHTMAX)  {  
+	  	 echo json_encode(array('err'=>'Out of range'));
+	  	 return;
+         }
+	  else
+	  if (!$sqlExistingtag)	  {  
+	     echo json_encode(array('err'=>'Tag doesn\'t exist!'));
+	     return;
+	  }
+	  else
+	  { // check if valid albumID
+
+	  	$aid = intval($_POST["albumID"]);
+	  	$sqlSuccess = isvalidAlbum($aid, $sqlConnection);
+	  	if (!$sqlSuccess)
+	  		echo json_encode(array('err'=>'AlbumID bad'));
+	  	else
+	  	{
+	  	  $tagged = array('albumID' => $aid, 'tagName' => $tagName, 'weight' => $lbs);
+//	  	  var_dump($tagged);
+//	  	  echo "<br>";
+	  	  $sqlSuccess = isTagged($tagged, $sqlConnection);
+	  	  if ($sqlSuccess)
+	  	  {
+ 			$sqlSuccess = get_sql_results($result, $sqlConnection,
+                "UPDATE AlbumTags SET weight=$lbs ".
+    			"WHERE albumID=$aid AND ".
+    			"tagName='$tagName'");
+ 			if ($sqlSuccess == FALSE)
+ 			  echo json_encode(array('err'=>'SQLerr'));
+ 			else
+ 			echo json_encode(array('err'=>'Album tagged updated'));
+	  	  }
+		  else
+	  	  {
+	  	  	$insertsql = "insert into AlbumTags (albumID, tagName, weight) ".
+				         "values ($aid, '$tagName', $lbs)";
+//	  	   echo "now: $insertsql<br>";
+ 			$sqlSuccess = get_sql_results($result, $sqlConnection, $insertsql);
+ 			if ($sqlSuccess == FALSE)
+ 			  echo json_encode(array('err'=>'SQLerr'));
+ 			else
+ 			  echo json_encode(array('err'=>'Album tagged'));
+	  	  }
+
+	    }
+	  }
+	}
+	else
+	{ echo json_encode(array('err'=>'No privledges'));
+	}
+	return;
+});
 
 // replaces spaces and other non-characters with %
 function tagspaces($t)
@@ -164,7 +216,18 @@ function isTag($tag, $sqlConnection)
 { $result = array();
 $sqlSuccess = get_sql_results($result, $sqlConnection,
 		"select * from Tags ".
-		"where tagName = '%$tag%'");
+		"where tagName = '$tag'");
+return $sqlSuccess;
+}
+
+// checks AlbumTags for the right one
+function isTagged($params, $sqlConnection)
+{ $result = array();
+$sqlrequest = "select tagName from AlbumTags ".
+		      "where tagName = '{$params['tagName']}' ".
+		      "AND albumID = {$params['albumID']}";
+// echo "trying $sqlrequest<br>...<br>"; 
+$sqlSuccess = get_sql_results($result, $sqlConnection, $sqlrequest);
 return $sqlSuccess;
 }
 

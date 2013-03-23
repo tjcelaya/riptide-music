@@ -91,7 +91,7 @@
         </form>
 
         
-        <form method="post" action="./api/tagalbum">
+        <form method="post" action="./api/tag">
 	    <input type='hidden' name='key' value='1' />
                 <table>
         <tr>
