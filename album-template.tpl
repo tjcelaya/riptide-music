@@ -9,16 +9,19 @@
     </a>
     <p>{$released}</p>
     {foreach $genres as $g}
-        <a class="genre-link" href="genre/{$g}">{$g}</a>
+        <a class="genre-link" href="genre.php?name={$g}">{$g}</a>
     {/foreach}
     <p>{$avgRating}</p>
     <div class="tags">
-        {foreach $tags as $tag}
+      {foreach $tags as $tag}
+        <div class='tag'>
+            <i class='icon-tag'></i>
             <a href="tag.php?searchTags={$tag}">{$tag}</a>
-        {/foreach}
+        </div>
+      {/foreach}
     </div>
     <table>
-        {foreach $tracklist as $track}
+        {foreach $tracks as $track}
             <tr>
                 <td>{$track[1]}</td>
                 <td>{$track[2]}</td>
