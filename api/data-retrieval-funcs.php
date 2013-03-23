@@ -62,7 +62,7 @@ function get_discogs_albumdata(&$arrayToAppendResults, &$discogsMaster) {
   return;
 };
 
-function getAlbumById(&$arrayToAppendResults, $sqlC, $id) {
+function getAlbumByID(&$arrayToAppendResults, $sqlC, $id) {
 
   assert(0 < $id);
   
@@ -80,6 +80,15 @@ function getAlbumById(&$arrayToAppendResults, $sqlC, $id) {
 
   $arrayToAppendResults = $arrayToAppendResults[0];
 
+  if(isset($arrayToAppendResults['tracklist'])) { 
+    $arrayToAppendResults['tracks'] = 
+      explode('|', $arrayToAppendResults['tracklist']);
+    foreach ($arrayToAppendResults['tracks'] as $k => $v) {
+      $arrayToAppendResults['tracks'][$k] = explode('~',$v);
+    }
+    unset($arrayToAppendResults['tracklist']);
+  }
+  
   $arrayToAppendResults['genres'] = array();
   $arrayToAppendResults['tags'] = array();
 
@@ -102,6 +111,36 @@ function getAlbumById(&$arrayToAppendResults, $sqlC, $id) {
       "select tagName from AlbumTags where albumID=$id"
     );
 
-  return $sqlSuccess;
+  if($tagQuerySuccess)
+    foreach ($arrayToAppendResults['tags'] as $kk => $tag) {
+      $arrayToAppendResults['tags'][$kk] = $tag['tagName'];
+    }
 
+  return $sqlSuccess;
+};
+
+
+function getAlbumsByName(&$arrayToAppendResults, $sqlC, $queryString) {
+
+  assert(0 < $id);
+
+  $sqlSuccessAlbums =
+    get_sql_results(
+      $arrayToAppendResults,
+      $sqlC,
+      "select albumName, artistName, released, avgRating, tracklist, albumID ".
+      "from Albums natural join Artists ".
+      "where albumName=$queryString;"
+    );
+  
+  $sqlSuccessArtists =
+    get_sql_results(
+      $arrayToAppendResults,
+      $sqlC,
+      "select albumName, artistName, released, avgRating, tracklist, albumID ".
+      "from Albums natural join Artists ".
+      "where artistName=$queryString;"
+    );
+
+  return $sqlSuccess;
 };

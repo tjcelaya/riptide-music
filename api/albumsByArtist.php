@@ -42,7 +42,19 @@ $app->get('/albumsByArtist/:parameters+',
     return;
   }
 
+  //here we need k because we are destructively modifying and creating arrays which
+  //doesnt work with the v in foreach $arr as $v for some reason
   foreach ($queryDetails as $k => $albumReturned) {
+
+    if(isset($queryDetails[$k]['tracklist'])) { 
+      $queryDetails[$k]['tracks'] = 
+        explode('|', $queryDetails[$k]['tracklist']);
+      foreach ($queryDetails[$k]['tracks'] as $kk => $v) {
+        $queryDetails[$k]['tracks'][$kk] = explode('~',$v);
+      }
+      unset($queryDetails[$k]['tracklist']);
+    }
+
     $queryDetails[$k]['genres'] = array();
 
     $genreQuerySuccess =

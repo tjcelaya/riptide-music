@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2013-03-04 17:27:21
+<?php /* Smarty version Smarty-3.1.13, created on 2013-03-23 17:52:42
          compiled from "album-template.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:442836463511b08512a46d1-90512686%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '862023fa9ab5ebb8476826773f542c3406d69b8a' => 
     array (
       0 => 'album-template.tpl',
-      1 => 1362417422,
+      1 => 1364075556,
       2 => 'file',
     ),
   ),
@@ -22,12 +22,13 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'artistName' => 0,
     'albumName' => 0,
     'released' => 0,
+    'albumID' => 0,
     'genres' => 0,
     'g' => 0,
     'avgRating' => 0,
     'tags' => 0,
     'tag' => 0,
-    'tracklist' => 0,
+    'tracks' => 0,
     'track' => 0,
   ),
   'has_nocache_code' => false,
@@ -38,8 +39,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
  - <?php echo htmlspecialchars($_smarty_tpl->tpl_vars['albumName']->value, ENT_QUOTES, 'ISO-8859-1', true);?>
 (<?php echo $_smarty_tpl->tpl_vars['released']->value;?>
 ).jpg"/>
-    <a href="album.php?name=<?php echo rawurlencode($_smarty_tpl->tpl_vars['albumName']->value);?>
-&artist=<?php echo rawurlencode($_smarty_tpl->tpl_vars['artistName']->value);?>
+    <a href="album.php?id=<?php echo $_smarty_tpl->tpl_vars['albumID']->value;?>
 ">
         <h1><?php echo $_smarty_tpl->tpl_vars['albumName']->value;?>
 </h1>
@@ -56,26 +56,29 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 foreach ($_from as $_smarty_tpl->tpl_vars['g']->key => $_smarty_tpl->tpl_vars['g']->value){
 $_smarty_tpl->tpl_vars['g']->_loop = true;
 ?>
-        <a style="margin-right:0.2em" href="genre/<?php echo $_smarty_tpl->tpl_vars['g']->value;?>
+        <a class="genre-link" href="genre.php?name=<?php echo $_smarty_tpl->tpl_vars['g']->value;?>
 "><?php echo $_smarty_tpl->tpl_vars['g']->value;?>
 </a>
     <?php } ?>
     <p><?php echo $_smarty_tpl->tpl_vars['avgRating']->value;?>
 </p>
     <div class="tags">
-        <?php  $_smarty_tpl->tpl_vars['tag'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['tag']->_loop = false;
+      <?php  $_smarty_tpl->tpl_vars['tag'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['tag']->_loop = false;
  $_from = $_smarty_tpl->tpl_vars['tags']->value; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
 foreach ($_from as $_smarty_tpl->tpl_vars['tag']->key => $_smarty_tpl->tpl_vars['tag']->value){
 $_smarty_tpl->tpl_vars['tag']->_loop = true;
 ?>
+        <div class='tag'>
+            <i class='icon-tag'></i>
             <a href="tag.php?searchTags=<?php echo $_smarty_tpl->tpl_vars['tag']->value;?>
 "><?php echo $_smarty_tpl->tpl_vars['tag']->value;?>
 </a>
-        <?php } ?>
+        </div>
+      <?php } ?>
     </div>
     <table>
         <?php  $_smarty_tpl->tpl_vars['track'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['track']->_loop = false;
- $_from = $_smarty_tpl->tpl_vars['tracklist']->value; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
+ $_from = $_smarty_tpl->tpl_vars['tracks']->value; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
 foreach ($_from as $_smarty_tpl->tpl_vars['track']->key => $_smarty_tpl->tpl_vars['track']->value){
 $_smarty_tpl->tpl_vars['track']->_loop = true;
 ?>
