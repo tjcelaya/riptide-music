@@ -39,9 +39,13 @@ $app->get('/', function() use ($dbPassword) {
 })->name('index');
 
 //this is a debugging route
-$app->get('/internalSearch/:query', function($query) use ($sqlConnection) {
-  $sqlQueryResult = array();
+$app->get('/internalSearch/:query+', function($query) use ($sqlConnection) {
   
+
+  $sqlQueryResult = array();
+  $query = implode('+', $query);
+
+
   $searchSuccess = 
     getAlbumsByName(
       $sqlQueryResult,
@@ -54,7 +58,7 @@ $app->get('/internalSearch/:query', function($query) use ($sqlConnection) {
     return;
   }
 
-  echo json_encode($sqlQueryResult);
+  echo json_encode(($sqlQueryResult));
 });
 
 require 'users.php';
