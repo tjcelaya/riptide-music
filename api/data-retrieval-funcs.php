@@ -122,15 +122,13 @@ function getAlbumByID(&$arrayToAppendResults, $sqlC, $id) {
 
 function getAlbumsByName(&$arrayToAppendResults, $sqlC, $queryString) {
 
-  assert(0 < $id);
-
   $sqlSuccessAlbums =
     get_sql_results(
       $arrayToAppendResults,
       $sqlC,
       "select albumName, artistName, released, avgRating, tracklist, albumID ".
       "from Albums natural join Artists ".
-      "where albumName=$queryString;"
+      "where INSTR(`albumName`, '$queryString') > 0 ;"
     );
   
   $sqlSuccessArtists =
@@ -139,8 +137,8 @@ function getAlbumsByName(&$arrayToAppendResults, $sqlC, $queryString) {
       $sqlC,
       "select albumName, artistName, released, avgRating, tracklist, albumID ".
       "from Albums natural join Artists ".
-      "where artistName=$queryString;"
+      "where INSTR(`artistName`, '$queryString') > 0 ;"
     );
 
-  return $sqlSuccess;
+  return $sqlSuccessAlbums | $sqlSuccessArtists;
 };

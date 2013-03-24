@@ -25,8 +25,10 @@ $smarty->error_unassigned = false;
     <meta name="viewport" content="width=device-width, initial-scale=1.0, max-scale=1.0">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+    <style type="text/css">
+      body { background-color: #00B7FF; }
+    </style>
     <link rel="stylesheet" href="css/style.css" type="text/css">
-    <link rel="stylesheet" href="hook/hook.css" type="text/css" />
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script src="js/login.js" type="text/javascript"></script>
     <!-- <link rel="stylesheet/less" href="css/style.less" type="text/css"> -->
@@ -34,21 +36,7 @@ $smarty->error_unassigned = false;
     <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700italic' rel='stylesheet' type='text/css'>  
     <!-- // <script src="js/agility.js"></script> -->
     <!-- // <script src="js/less.js"></script> -->
-    <style>
-      body { 
-        background: url("img/bg/<?php 
-          echo array_rand(
-              array_slice(
-                  scandir(
-                      dirname(__FILE__)."/img/bg"
-                  )
-                  ,2));
-        ?>.jpg"); 
-        background-size: cover;
-        background-attachment: fixed;
 
-      }
-    </style>
 
   </head>
   
