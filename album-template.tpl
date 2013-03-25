@@ -16,17 +16,23 @@
         </div>
       {/foreach}
     </div>
-    <table>
+    <table class='shown-tracks'>
         {foreach $tracks as $track}
-            {if $track@iteration > 3 && is_null($templatetype)}
-                <tr><td>...</td></tr>
-                {break}
-            {/if} 
-            <tr>
-                <td>{$track[1]}</td>
-                <td>{$track[2]}</td>
-                <td>{$track[0]}</td>
-            </tr>
+            {if $track@iteration == 3 && is_null($templatetype)}
+                <tr class='tracks-ellipsis'><td></td><td>...</td><td></td></tr>
+                </table>
+                <table class='hidden-tracks'>
+                <tr><td>{$track[1]}</td><td>{$track[2]}</td><td>{$track[0]}</td></tr>
+            {elseif $track@iteration > 3 && is_null($templatetype)}
+                <tr><td>{$track[1]}</td><td>{$track[2]}</td><td>{$track[0]}</td></tr>
+            {else}
+                <tr>
+                    <td>{$track[1]}</td>
+                    <td>{$track[2]}</td>
+                    <td>{$track[0]}</td>
+                </tr>
+            {/if}
+
         {/foreach}
     </table>
     <hr>
