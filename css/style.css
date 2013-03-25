@@ -33,7 +33,7 @@ label input {
 
 .full-album-listing {
     float: left; 
-    margin: 1.5em 25.5em 1.5em 1.5em;
+    margin: 0.5em 0.5em 0.5em 0.5em;
     width: 100%;
 
 }
@@ -78,6 +78,14 @@ label input {
     /*text-align: right;*/
 }
 
+.full-album-listing .tracks-ellipsis {
+
+}
+
+.full-album-listing .hidden-tracks {
+  display: none;
+}
+
 .navbar {
   /*background: #ffff00; *//* Old browsers */
   /*background: -moz-linear-gradient(top, #ffff00 0%, #febf01 100%); *//* FF3.6+ */
@@ -115,10 +123,22 @@ label input {
   /*box-shadow: 7px 7px 15px rgba(0,0,0,0.5);*/
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 900px) {
   .navbar .pull-right {
     float:left !important;
   }
+  .navbar .form-search {
+    margin: 0.3em 0.3em 0.3em 0.3em;
+  }
+
+  .navbar .form-search input {
+    /*box-shadow: 7px 7px 15px rgba(0,0,0,0.5);*/
+    border-radius: 10em;
+    width: 5em;
+    /*height:auto;*/
+    /*font-size: 1.25em;*/
+  }
+
 }
 
 .space-div {

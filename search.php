@@ -1,13 +1,27 @@
 <?php require "header.php"; ?>
 <!-- div container -->
 <div class="row-fluid inner-row-div">
-  <div class='main-body span5 offset1'>
+  <div class='main-body span6'>
     <h1>Search Results</h1>
     <?php
       if (isset($_GET["q"]))
       {
 
         $_GET['q'] = urldecode($_GET['q']);
+
+        echo $internalSearchUrl =   
+          "http://ww2.cs.fsu.edu/~celaya/".
+          "riptideMusic/api/internalSearch/".urlencode($_GET['q']);
+
+        $internalSearchResponse = 
+            json_decode(file_get_contents($internalSearchUrl), true);
+
+        foreach ($internalSearchResponse as $album) {
+          foreach ($album as $k => $v) {
+            $smarty->assign($k, $v);
+          }
+          $smarty->display('album-template.tpl');
+        }
 
         echo $apiUrl =   
           "http://ww2.cs.fsu.edu/~celaya/".
@@ -30,5 +44,6 @@
       }
     ?>
   </div>
+  <div class='span6'></div>
 </div>
 <?php require "footer.php"; ?>

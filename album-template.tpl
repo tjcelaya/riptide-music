@@ -18,6 +18,10 @@
     </div>
     <table>
         {foreach $tracks as $track}
+            {if $track@iteration > 3 && is_null($templatetype)}
+                <tr><td>...</td></tr>
+                {break}
+            {/if} 
             <tr>
                 <td>{$track[1]}</td>
                 <td>{$track[2]}</td>

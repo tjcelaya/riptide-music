@@ -8,6 +8,8 @@
                 if (isset($_GET['id'])) {
                     // echo $_GET['id']."<BR>";
 
+                    $smarty->assign('templatetype', 'album');
+
                     $apiUrl = 
                         "http://ww2.cs.fsu.edu/~celaya/".
                         "riptideMusic/api/albumByID/".urlencode($_GET['id']);

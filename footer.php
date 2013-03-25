@@ -2,71 +2,61 @@
       <script src="js/bootstrap.js"></script>
       <!-- // <script src="js/less.js"></script> -->
       <div>admin pass is 55artjo55</div>
-      <script type="text/javascript">
-      $(function(){
-        
-        // $('form').submit(function(){
-
-        // });
-      });
-      </script>
     </div>
     <script type="text/javascript">
       $(function(){
-
+        //ajaxificate ALL THE LINKS
         $(".main-container a").live("click", function() {
             $('.main-container').fadeTo('fast', 0.3);
             $.ajax({
                 url: $(this).attr('href'),
                 dataType: "html",
+                context: this,
                 success: function(html) {
-                  console.log($(html).filter('.main-container'));
-                    window.history.pushState({"html": $(html).filter('.main-container') },"", $(this).attr('href'));
-                    // $(".main-container").html($(html).filter('.main-container')).fadeTo('slow', 1);
+                    window.history.pushState({"html": html }, $(this).text() ,$(this).attr('href'));
+                    $(".main-container").html($(html).filter('.main-container')).fadeTo('slow', 1);
                 }
             });
             return false;
         });
-
+        //react to clicking back, cant go forward yet
         window.onpopstate = function(e){
-            console.log(e);
-              // if(e.state){
-
-              // }
+            $(function() {
+              console.log(e);
+              if(e.state){
+                $('.main-container').html($(e.state.html).filter('.main-container'));
+              }
+            });
         };
 
-        // $('a').click(function(){
-        //   console.log('ajaxCLICK!');
-        //   $('.main-container').load($(this).attr('href')+" .main-container", function(){ 
-        //     $('a').click(function(){
-        //       console.log('TWOCLICKS!');
-        //       $('.main-container').load($(this).attr('href')+" .main-container", function(){ console.log('AJAX!'); });
-        //       return false;
-        //     }); 
-        //   });
-        //   return false;
-        // });
+        $('.tracks-ellipsis').live('mouseenter', function() {
+          if($(this).parentsUntil('.full-album-listing').next().children().is('tbody'))
+          { console.log($(this).parentsUntil('.full-album-listing').next().wrapAll('<div>').attr('class','')); }
 
+          $(this).parentsUntil('.full-album-listing').next('div').slideDown('normal');
+        });
+        $('.tracks-ellipsis').live('mouseleave', function() {
+          $(this).parentsUntil('.full-album-listing').next('div').slideUp('slow');
+        });
 
-        $('body').fadeTo('fast', 0.3, function()
-        {
-          $(this).css('background-image', 'url("img/bg/<?php 
-                                            echo array_rand(
-                                                array_slice(
-                                                    scandir(
-                                                    dirname(__FILE__)."/img/bg"
-                                                    )
-                                                    ,2));
-                                          ?>.jpg")');
-        }).fadeTo('fast', 1);
+          $('body').fadeTo('fast', 0.3, function()
+          {
+            $(this).css('background-image', 'url("img/bg/<?php 
+                                              echo array_rand(
+                                                  array_slice(
+                                                      scandir(
+                                                      dirname(__FILE__)."/img/bg"
+                                                      )
+                                                      ,2));
+                                            ?>.jpg")');
+          }).fadeTo('fast', 1);
 
-        $('body').css({ 'background-color': 'rgba(0,183,255,1);' });
-        $('body').css({
-          'background': 'url',
-          'background-size': 'cover',
-          'background-attachment': 'fixed'
-        }, 300);
-      });
+          $('body').css({
+            'background': 'url',
+            'background-size': 'cover',
+            'background-attachment': 'fixed'
+          }, 300);
+        });
     </script>
   </body>
 </html>
