@@ -29,15 +29,21 @@
             });
         };
 
-        $('.tracks-ellipsis').live('mouseenter', function() {
-          if($(this).parentsUntil('.full-album-listing').next().children().is('tbody'))
-          { console.log($(this).parentsUntil('.full-album-listing').next().wrapAll('<div>').attr('class','')); }
+        $('.tracks-ellipsis').live('click touchstart', function(){
+            $('.tracks-ellipsis').fadeOut('fast');
+            $('.hidden-tracks').fadeToggle();
+        });
 
-          $(this).parentsUntil('.full-album-listing').next('div').slideDown('normal');
-        });
-        $('.tracks-ellipsis').live('mouseleave', function() {
-          $(this).parentsUntil('.full-album-listing').next('div').slideUp('slow');
-        });
+//        $('.tracks-ellipsis').live('mouseenter touchstart click', function() {
+//          if($(this).parentsUntil('.full-album-listing').next().children().is('tbody'))
+//          { console.log($(this).parentsUntil('.full-album-listing').next().wrapAll('<div>').attr('class','')); }
+//          $(this).parentsUntil('.full-album-listing').next('div').slideDown('normal');
+        
+//        });
+//        $('.tracks-ellipsis').live('mouseleave click', function() {
+//            $(this).parentsUntil('.full-album-listing').next('div').slideUp('slow');
+//           showToggle = false;
+//        });
 
           $('body').fadeTo('fast', 0.3, function()
           {

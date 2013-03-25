@@ -35,5 +35,4 @@
 
         {/foreach}
     </table>
-    <hr>
 </div>

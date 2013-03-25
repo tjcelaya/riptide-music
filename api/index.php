@@ -39,6 +39,24 @@ $app->get('/', function() use ($dbPassword) {
 })->name('index');
 
 //this is a debugging route
+$app->get('/getLatest/', function() use ($sqlConnection) {
+  $sqlQueryResult = array();
+
+  $searchSuccess = 
+    get_sql_results(
+      $sqlQueryResult,
+      $sqlConnection,
+      "select albumName, artistName, released, avgRating, tracklist, albumID ".
+      "from Albums natural join Artists ".
+      "where albumID!=-1 ".
+      "order by albumID desc"
+    );
+
+  echo json_encode($sqlQueryResult);
+});
+
+
+//this is a debugging route
 $app->get('/internalSearch/:query+', function($query) use ($sqlConnection) {
   
 

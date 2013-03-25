@@ -1,7 +1,7 @@
 <?php require "header.php"; ?>
     <div class='inner-row-div row-fluid'>
         <div class='row-fluid'>
-            <div class='main-body span5 offset2'>
+            <div class='main-body span7 offset1'>
                 <p>Album</p>
                 <hr/>
             <?php
@@ -32,6 +32,7 @@
                     echo "noalbum";
                 }   
             ?>
+            <?php if (isUSerLoggedIn()) { ?>
             <div class="review-form">
                 <form>
                   <fieldset>
@@ -44,7 +45,9 @@
                   </fieldset>
                 </form>
             </div>
-
+            <?php } else { ?>
+            <h2>you need an account to review things :(</h2>
+            <?php } ?>
 
             </div>
 <!--<div class="main-body span7">

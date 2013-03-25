@@ -15,7 +15,7 @@ $smarty->cache_dir = "templates/cached";
 $smarty->config_dir = "smarty-config";
 $smarty->error_unassigned = false;
 // $smarty->debugging = true;
-// $smarty->error_reporting = 0;
+$smarty->error_reporting = 0;
 
 ?>
 <!DOCTYPE html>
