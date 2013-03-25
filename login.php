@@ -64,7 +64,7 @@ if(!empty($_POST))
 					$_SESSION["userCakeUser"] = $loggedInUser;
 					
 					//Redirect to user account page
-					header("Location: account.php");
+					header("Location: ".$_SERVER['HTTP_REFERER']);
 					die();
 				}
 			}

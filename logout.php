@@ -8,7 +8,7 @@ if(isUserLoggedIn())
 	$loggedInUser->userLogOut();
 }
 
-header("Location: http://ww2.cs.fsu.edu/~celaya/riptideMusic/");
+header("Location: ".$_SERVER['HTTP_REFERER']);
 die();
 ?>
 
