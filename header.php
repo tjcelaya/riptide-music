@@ -30,6 +30,7 @@ $smarty->error_reporting = 0;
     </style>
     <link rel="stylesheet" href="css/style.css" type="text/css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type='text/javascript' src='js/jq-masonry.js'></script>
     <script src="js/login.js" type="text/javascript"></script>
     <!-- <link rel="stylesheet/less" href="css/style.less" type="text/css"> -->
     <link href="http://fonts.googleapis.com/css?family=Oxygen:700,300,400" rel="stylesheet">

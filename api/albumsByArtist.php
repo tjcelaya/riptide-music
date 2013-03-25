@@ -1,40 +1,27 @@
 <?php
 
 //route returns album info
-$app->get('/albumsByArtist/:parameters+', 
-  function($parameters) use ($sqlConnection) {
+$app->get('/albumsByArtist/:artist', 
+  function($artist) use ($sqlConnection) {
   //first parameter is artist name  
   //second parameter is album
 
   // var_dump($parameters); 
   //make sure there is at least one param
-  if(!isset($parameters[0]))
+  if(!isset($artist))
   {
     echo json_encode(array('err'=>'NO params'));
     return;
   }
-
-  $nameCheck = array();
-
-  $nameCheckSql =
-    get_sql_results(
-      $nameCheck,
-      $sqlConnection,
-      "select artistName from Artists where ". 
-          "artistName='{$parameters[0]}';"
-    );
-
-  $exactArtistName = $nameCheck[0]['artistName'];
 
   $queryDetails = array();
   $sqlSuccess =
     get_sql_results(
       $queryDetails,
       $sqlConnection,
-      "select albumName, released, avgRating, tracklist, albumID from Albums ".
-      "where artistID in ".
-        "(select artistID from Artists where ". 
-          "artistName='{$exactArtistName}');"
+      "select albumName, released, avgRating, tracklist, albumID ".
+      "from Albums natural join Artists".
+      "where INSTR(`artistName`, '$artist') > 0 ;"
     );
 
   if(!$sqlSuccess){

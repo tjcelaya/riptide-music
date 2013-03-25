@@ -59,7 +59,6 @@ $app->get('/getLatest/', function() use ($sqlConnection) {
 //this is a debugging route
 $app->get('/internalSearch/:query+', function($query) use ($sqlConnection) {
   
-
   $sqlQueryResult = array();
   $query = implode('+', $query);
 

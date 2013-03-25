@@ -1,7 +1,7 @@
 <?php require "header.php"; ?>
 <!-- div container -->
 <div class="row-fluid inner-row-div">
-    <div class='main-body span10'>
+    <div class='main-body span8 offset2'>
         <h1>Latest Albums added</h1>
         <div class='big-list'>
         <?php
@@ -38,15 +38,18 @@
 
 
     </style>
-  <script type='text/javascript' src='js/jq-masonry.js'></script>
   <script type='text/javascript'>
-//    $(function(){
-  //      $('.big-list').masonry({
-    //        itemSelector: ".full-album-listing",
-      //      columnWidth: 210,
-        //    isAnimated: true
-    //    });
-  //  })
+    $(document).load(function(){
+        $('.big-list').masonry({
+            itemSelector: ".full-album-listing",
+                isAnimated: true,
+                columnWidth: 40,
+                isFitWidth: true
+//            columnWidth: function( containerWidth ) {
+//                    return containerWidth / 3;
+//            }
+        });
+    })
   </script>
 </div>
 <?php require "footer.php"; ?>
