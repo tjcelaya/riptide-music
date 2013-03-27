@@ -19,9 +19,9 @@ $app->get('/albumsByArtist/:artist',
     get_sql_results(
       $queryDetails,
       $sqlConnection,
-      "select albumName, released, avgRating, tracklist, albumID ".
-      "from Albums natural join Artists".
-      "where INSTR(`artistName`, '$artist') > 0 ;"
+      "select albumName, artistName, released, avgRating, tracklist, albumID, artistID ".
+      "from Albums natural join Artists ".
+      "where artistID=$artist;"
     );
 
   if(!$sqlSuccess){
@@ -30,8 +30,11 @@ $app->get('/albumsByArtist/:artist',
   }
 
   //here we need k because we are destructively modifying and creating arrays which
-  //doesnt work with the v in foreach $arr as $v for some reason
+  //doesnt work with the v in (foreach $arr as $v) for some reason
   foreach ($queryDetails as $k => $albumReturned) {
+
+    if(!isset($queryDetails['artist']))
+      $queryDetails['artist'] = $albumReturned['artistName'];
 
     if(isset($queryDetails[$k]['tracklist'])) { 
       $queryDetails[$k]['tracks'] = 
@@ -70,8 +73,6 @@ $app->get('/albumsByArtist/:artist',
         $queryDetails[$k]['tags'][$kk] = $tag['tagName'];
       }
   }
-
-  $queryDetails['artist'] = $exactArtistName;
 
   if ($sqlSuccess)
     echo json_encode($queryDetails);

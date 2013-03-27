@@ -46,7 +46,7 @@ $app->get('/getLatest/', function() use ($sqlConnection) {
     get_sql_results(
       $sqlQueryResult,
       $sqlConnection,
-      "select albumName, artistName, released, avgRating, tracklist, albumID ".
+      "select albumName, artistName, released, avgRating, tracklist, albumID, artistID ".
       "from Albums natural join Artists ".
       "where albumID!=-1 ".
       "order by albumID desc"
