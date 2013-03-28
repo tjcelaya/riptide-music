@@ -36,7 +36,7 @@ h2 { font-family: Georgia, Tahoma, sans-serif; font-style: italic; font-size: 1.
 
 
 .head { background: #3eaef8; border: 1px solid #3e82a7; padding-left: 8px; width: 100%;}
-.head h1 { color: #fafcfd; font-weight: bold; font-size: 1.0em; }
+.head h1 { color: #fafcfd; font-weight: bold; font-size: .9em; }
 
 .boxy {  border: 1px ; border-top: 0px;  }
 .boxy span { font-size: 1.2em; display: block; margin-bottom: 7px; }
@@ -76,9 +76,25 @@ h2 { font-family: Georgia, Tahoma, sans-serif; font-style: italic; font-size: 1.
               
               
               <div class="sepBorderless"></div>
+
               <br>
-              <input type='button' value='Edit Tags'  />
-          
+              
+              <p>
+                <button class="btn btn-mini btn-info" type="button"><i class="icon-tag icon-white"></i>Indie-Rock</button>
+                <button  class="btn btn-mini btn-info" type="button"><i class="icon-tag icon-white"></i>Baroque</button>
+                <button  class="btn btn-mini btn-info" type="button"><i class="icon-tag icon-white"></i>House</button>
+                <button  class="btn btn-mini btn-info" type="button"><i class="icon-tag icon-white"></i>Garage</button>
+                
+              </p>
+              <p>
+                <button  class="btn btn-mini btn-info" type="button"><i class="icon-tag icon-white"></i>Post-rock</button>
+                <button  class="btn btn-mini btn-info" type="button"><i class="icon-tag icon-white"></i>Jazz</button>
+                <button  class="btn btn-mini btn-info" type="button"><i class="icon-tag icon-white"></i>Experimental</button>
+                <button  class="btn btn-mini btn-info" type="button"><i class="icon-tag icon-white"></i>Noise</button>
+                
+              </p>
+              <a href="#"><button  class="btn btn-mini btn-info" type="button"><i class="icon-tag icon-white"> </i> ...</button> </a>
+  
               <div class="sep"></div>
               <ul class="numbers clearfix">
                 <li>Reviews<strong>11</strong></li>
