@@ -1,8 +1,16 @@
 <?php
+// music-engine.php
+// author: Rick Tilley
+// date: 3/28/2013
+// uses slim framework
+// facilitates api calls to database 
+// such as looking up reviews and tags,
+// or updating/inserting data.
+
 define("WEIGHTMIN", 0);
 define("WEIGHTMAX", 5);
 
-// get album review test -- rick
+// get review by album ID
 $app->get('/review/:albumID',
   function($albumID) use ($sqlConnection)
   {
@@ -21,20 +29,20 @@ $app->get('/review/:albumID',
 // post a review
 $app->post('/reviewp', function() use ($sqlConnection)
 {
+//	first make sure post data is there and valid
 	if (!(isset($_POST["albumID"]) & isset($_POST["userID"]) & isset($_POST["key"])))
 	{ echo json_encode(array('err'=>'NO params'));
 	  return;
 	}
-//	if (checkuserlevel($_POST) > 4)
 	if ((checkuserlevel($_POST) > 4) & 
 		isvalidAlbum($_POST["albumID"],$sqlConnection) & 
 	    isvalidUser($_POST["userID"],$sqlConnection) )	
 	{ $resultid = array("userID" => "1", "albumID" => "1", "review" => "1");
 	  $resultid['userID'] = $_POST['userID'];
 	  $resultid['albumID'] = $_POST['albumID'];
-          $resultid['review'] = sqlsanitize($_POST['review']);
+      $resultid['review'] = sqlsanitize($_POST['review']);
 	  $queryDetails = array();
-	  // !!needs to search by user id too!!
+	  // search to see if review exists already and is being updated
 	  $sqlExistingreview = getReviewBymemid($queryDetails, $resultid, $sqlConnection);
       if ($sqlExistingreview)
 	  { // replace existing review
@@ -55,7 +63,71 @@ $app->post('/reviewp', function() use ($sqlConnection)
 	}
 });
 
-// get matching tags
+// get review by album ID
+$app->get('/rating/:albumID/:userID',
+		function($albumID, $userID) use ($sqlConnection)
+		{
+			if(!(isset($albumID) & isset($userID)) )
+			{ echo json_encode(array('err'=>'NO params'));
+			return;
+			}
+			$params = array('userID' => "{$userID}", 'albumID' => "{$albumID}");
+//			$params['userID'] = "$userID";
+//			$params['albumID'] = "$albumID";
+//			var_dump($params);
+			$queryDetails = array();
+			$sqlSuccess = getRating($queryDetails, $params, $sqlConnection);
+			if ($sqlSuccess)
+				echo json_encode($queryDetails);
+			else
+				echo json_encode(array('err'=>'SQLerr'));
+		});
+
+
+$app->post('/rate', function() use ($sqlConnection)
+{ 
+	if (!(isset($_POST["albumID"]) & isset($_POST["userID"]) & isset($_POST["key"]) & isset($_POST["rating"])) )
+	{ echo json_encode(array('err'=>'NO params'));
+	return;
+	}
+	if ((checkuserlevel($_POST) > 4) &
+			isvalidAlbum($_POST["albumID"],$sqlConnection) &
+			isvalidUser($_POST["userID"],$sqlConnection) )
+	{ $resultid = array("userID" => "1", "albumID" => "1", "rating" => "1");
+	$resultid['userID'] = $_POST['userID'];
+	$resultid['albumID'] = $_POST['albumID'];
+	$resultid['rating'] = $_POST['rating'];
+	$queryDetails = array();
+	// search to see if review exists already and is being updated
+	$sqlExistingreview = getRating($queryDetails, $resultid, $sqlConnection);
+	if ($sqlExistingreview)
+	{ // replace existing review
+	  editRating($resultid, $sqlConnection);
+	echo json_encode(array('done'=>'Rating Updated'));
+	return; 
+	}
+	else
+	{ // post new review
+	  addRating($resultid, $sqlConnection);
+	  echo json_encode(array('done'=>'Rating Added'));
+	return;
+	}
+	}
+	else
+	{ echo json_encode(array('err'=>'Bad user, album, or privledges'));
+	return;
+	}
+	
+}
+);
+
+// GET matching tags
+// description:
+// searches for a literal match, then 
+// breaks tag search into individual words 
+// and searches for each word invididually
+// all searches including literal match allow for
+// extraneous characters before or after the match
 $app->get('/findtag/:tag', function($tag) use ($sqlConnection)
   {
     if(!isset($tag))
@@ -90,6 +162,7 @@ $app->get('/findtag/:tag', function($tag) use ($sqlConnection)
 // save new tag
 $app->post('/savetag', function() use ($sqlConnection)
 {
+	// ensure post data is there, check validity of post via key
 	if (!(isset($_POST["tagName"]) & isset($_POST["key"])) )
 	{ echo json_encode(array('err'=>'NO params'));
 	  return;
@@ -124,12 +197,14 @@ $app->post('/savetag', function() use ($sqlConnection)
 // tag an album
 $app->post('/tag', function() use ($sqlConnection)
 {
+	// ensure post data is there, and verify access level
 	if (!(isset($_POST["tagName"]) & isset($_POST["albumID"]) & isset($_POST["weight"]) & isset($_POST["key"])) )
 	{ echo json_encode(array('err'=>'NO params'));
 	return;
 	}
 	if (checkuserlevel($_POST) > 6)
-	{ $queryDetails = array();
+	{ // now check to make sure tag exists and weight is valid
+	  $queryDetails = array();
 	  $tagName = sqlsanitize($_POST["tagName"]);
 	  $sqlExistingtag = isTag($tagName, $sqlConnection);
 	  $lbs = floatval($_POST["weight"]);
@@ -144,7 +219,6 @@ $app->post('/tag', function() use ($sqlConnection)
 	  }
 	  else
 	  { // check if valid albumID
-
 	  	$aid = intval($_POST["albumID"]);
 	  	$sqlSuccess = isvalidAlbum($aid, $sqlConnection);
 	  	if (!$sqlSuccess)
@@ -152,11 +226,9 @@ $app->post('/tag', function() use ($sqlConnection)
 	  	else
 	  	{
 	  	  $tagged = array('albumID' => $aid, 'tagName' => $tagName, 'weight' => $lbs);
-//	  	  var_dump($tagged);
-//	  	  echo "<br>";
 	  	  $sqlSuccess = isTagged($tagged, $sqlConnection);
 	  	  if ($sqlSuccess)
-	  	  {
+	  	  { // change weight on an existing album tag
  			$sqlSuccess = get_sql_results($result, $sqlConnection,
                 "UPDATE AlbumTags SET weight=$lbs ".
     			"WHERE albumID=$aid AND ".
@@ -167,10 +239,9 @@ $app->post('/tag', function() use ($sqlConnection)
  			echo json_encode(array('err'=>'Album tagged updated'));
 	  	  }
 		  else
-	  	  {
+	  	  { // tag an album, new album tag
 	  	  	$insertsql = "insert into AlbumTags (albumID, tagName, weight) ".
 				         "values ($aid, '$tagName', $lbs)";
-//	  	   echo "now: $insertsql<br>";
  			$sqlSuccess = get_sql_results($result, $sqlConnection, $insertsql);
  			if ($sqlSuccess == FALSE)
  			  echo json_encode(array('err'=>'SQLerr'));
@@ -187,7 +258,7 @@ $app->post('/tag', function() use ($sqlConnection)
 	return;
 });
 
-// replaces spaces and other non-characters with %
+// replaces spaces and other non-characters with wildcard %
 function tagspaces($t)
 {
   $tolkiens = array(' ', '(', ')', '-', '+');
@@ -196,11 +267,16 @@ function tagspaces($t)
 }
 
 // escapes special characters such as quotes
+// not implemented yet, this is to prevent
+// sql injection attacks
 function sqlsanitize($s)
 {
   return $s;
 }
 
+// tag searches usually have duplicates
+// this function removes the duplicates
+// pass by reference, modifies array $queryDetails
 function removeduptags(&$queryDetails)
 { $tagz = array();
 foreach ($queryDetails as $t => $tn)
@@ -212,6 +288,7 @@ foreach ($queryDetails as $t => $tn)
 }
 }
 
+// returns true or false, if a tag exists
 function isTag($tag, $sqlConnection)
 { $result = array();
 $sqlSuccess = get_sql_results($result, $sqlConnection,
@@ -220,7 +297,8 @@ $sqlSuccess = get_sql_results($result, $sqlConnection,
 return $sqlSuccess;
 }
 
-// checks AlbumTags for the right one
+// checks to see if an AlbumTags already exists
+// returns true or false
 function isTagged($params, $sqlConnection)
 { $result = array();
 $sqlrequest = "select tagName from AlbumTags ".
@@ -231,6 +309,8 @@ $sqlSuccess = get_sql_results($result, $sqlConnection, $sqlrequest);
 return $sqlSuccess;
 }
 
+// similar to isTag, returns Tag data
+// depreciated
 function findTag(&$result,$tag,$sqlConnection)
 {
 	$sqlSuccess = get_sql_results($result, $sqlConnection,
@@ -239,6 +319,7 @@ function findTag(&$result,$tag,$sqlConnection)
 	return $sqlSuccess;
 }
 
+// returns true or false if album ID is a valid one
 function isvalidAlbum($aid, $sqlConnection)
 { $result = array();
 	$sqlSuccess = get_sql_results($result, $sqlConnection,
@@ -247,6 +328,7 @@ function isvalidAlbum($aid, $sqlConnection)
 	return $sqlSuccess;
 }
 
+// returns true or false if user ID is a valid one
 function isvalidUser($uid, $sqlConnection)
 {  $result = array();
 	$sqlSuccess = get_sql_results($result, $sqlConnection,
@@ -255,18 +337,19 @@ function isvalidUser($uid, $sqlConnection)
 	return $sqlSuccess;
 }
 
-
+// updates an existing review
 function editReview($param, $sqlConnection)
 {
   $uid = intval($param['userID']);
   $aid = intval($param['albumID']);
   $sqlSuccess = get_sql_results($result, $sqlConnection,
     "UPDATE Reviews SET review='{$param['review']}' ".
-    "WHERE userID='{$param['userID']}' AND ".
-    "albumID='{$param['albumID']}'");
+    "WHERE userID=$uid AND ".
+    "albumID=$aid");
   return $sqlSuccess;
 }
 
+// creates a new review
 function addReview($param, $sqlConnection)
 {
   $uid = intval($param['userID']);
@@ -277,6 +360,33 @@ function addReview($param, $sqlConnection)
   return $sqlSuccess;
 }
 
+// updates an existing Rating
+function editRating($param, $sqlConnection)
+{
+	$uid = intval($param['userID']);
+	$aid = intval($param['albumID']);
+	$rating = floatval($param['rating']);
+	$sqlSuccess = get_sql_results($result, $sqlConnection,
+			"UPDATE Rates SET rating=$rating ".
+			"WHERE userID=$uid' AND ".
+			"albumID=$aid");
+	return $sqlSuccess;
+}
+
+// creates a new Rating
+function addRating($param, $sqlConnection)
+{
+	$uid = intval($param['userID']);
+	$aid = intval($param['albumID']);
+	$rating = floatval($param['rating']);
+	$sqlSuccess = get_sql_results($result, $sqlConnection,
+			"INSERT INTO Rates (userID, albumID, rating) ".
+			"VALUES ($uid,$aid,$rating)");
+	return $sqlSuccess;
+}
+
+
+// retrieve all reviews of an album by albumID
 function getReviewByid(&$result,$parameters,$sqlConnection)
 {
 	$sqlSuccess = get_sql_results($result, $sqlConnection,
@@ -285,7 +395,8 @@ function getReviewByid(&$result,$parameters,$sqlConnection)
 	return $sqlSuccess;
 }
 
-
+// retrieve a specific review of an album by albumID and userID
+// returns false if none exists
 function getReviewBymemid(&$result,$parameters,$sqlConnection)
 {
 	$sqlSuccess = get_sql_results($result, $sqlConnection,
@@ -295,6 +406,18 @@ function getReviewBymemid(&$result,$parameters,$sqlConnection)
 	return $sqlSuccess;
 }
 
+// retrieve a specific rating of an album by albumID and userID
+// returns false if none exists
+function getRating(&$result,$parameters,$sqlConnection)
+{
+	$sqlSuccess = get_sql_results($result, $sqlConnection,
+			"select * from Rates ".
+			"where albumID = '{$parameters['albumID']}' ".
+			"AND userID = '{$parameters['userID']}'");
+	return $sqlSuccess;
+}
+
+// searches for a review by artist and album, returns any results
 function searchReview(&$result,$parameters,$sqlConnection)
 {
     $sqlSuccess = get_sql_results($result, $sqlConnection,
@@ -306,7 +429,7 @@ function searchReview(&$result,$parameters,$sqlConnection)
 	return $sqlSuccess;
 }
 
-
+// returns albumID number by artist and album search
 function getAlbumId(&$result,$parameters,$sqlConnection)
 {
 	$sqlSuccess = get_sql_results($result, $sqlConnection,
@@ -318,6 +441,9 @@ function getAlbumId(&$result,$parameters,$sqlConnection)
 }
 
 // uses $_POST data in $params
+// not implemented yet, should check validity
+// of post request either by userID or $_POST['key']
+// returns an integer security level
 function checkuserlevel($params)
 { // verifies user is logged in and returns security level
   return 7;
