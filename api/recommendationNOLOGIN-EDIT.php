@@ -8,7 +8,8 @@ $app->get('/recommendation/album/:id', function($id) use ($sqlConnection) {//use
     get_sql_results(
 		    $sqlQueryResult,
 		    $sqlConnection,
-      "select tagName, weight from AlbumTags where albumID=$id group by weight limit 0, 6"
+      "select tagName, weight"." from AlbumTags"." where albumID=$id".
+		    " group by weight limit 0, 6"
 		    ); // gets the album from the database                                                                                        
 
   $results= array(); // creates a place for results                                                                                
