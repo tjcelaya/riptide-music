@@ -32,6 +32,8 @@ $app->get('/recommendation/album/:id', function($id) use ($sqlConnection) {
   }
       //    var_dump($results);                                                             
       $dups = array();
+      $first = array("albumID" => "{$id}");
+      array_push($dups, $first);
       foreach ($results as $t => $tn)
 	{
 	  if (in_array($tn, $dups))
@@ -39,7 +41,6 @@ $app->get('/recommendation/album/:id', function($id) use ($sqlConnection) {
 	  else
 	    array_push($dups,$tn);
 	}
-
     if(!$query){ //if no result                                                                                                       
       echo json_encode(array('err'=>'no RESULTS'));
       return;}
