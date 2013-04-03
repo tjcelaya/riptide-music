@@ -14,7 +14,7 @@ $app->get('/recommendation/album/:id', function($id) use ($sqlConnection) {//use
   $results= array(); // creates a place for results                                                                                
 
   if($album)// If it exists find album with same tag                                                                             
-    {foreach $sqlQueryResult['tag'] as $kk => $tag) {
+    {foreach $sqlQueryResult as $kk => $tag) {
     $query= get_sql_results(
 			    $results,
 			    $sqlConnection,
