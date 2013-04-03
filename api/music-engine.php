@@ -9,7 +9,7 @@
 
 define("WEIGHTMIN", 0);
 define("WEIGHTMAX", 5);
-
+require 'recommendationNOLOGIN-EDIT.php';
 // get review by album ID
 $app->get('/review/:albumID',
   function($albumID) use ($sqlConnection)
@@ -46,14 +46,20 @@ $app->post('/reviewp', function() use ($sqlConnection)
 	  $sqlExistingreview = getReviewBymemid($queryDetails, $resultid, $sqlConnection);
       if ($sqlExistingreview)
 	  { // replace existing review
-                editReview($resultid, $sqlConnection);
-		echo json_encode(array('done'=>'Review Updated'));
+        $sqlSuccess = editReview($resultid, $sqlConnection);
+		if ($sqlSuccess)
+              echo json_encode(array('done'=>'Review Updated'));
+	    else
+    		  echo json_encode(array('err'=>'SQLerr'));
 		return;
 	  } 
 	    else 
 	  { // post new review
-                addReview($resultid, $sqlConnection);
-		echo json_encode(array('done'=>'Review Added'));
+          $sqlSuccess = addReview($resultid, $sqlConnection);
+		if ($sqlSuccess)
+          echo json_encode(array('done'=>'Review Added'));
+	    else
+    		  echo json_encode(array('err'=>'SQLerr'));
 		return;
 	  }	  	
 	}
@@ -72,9 +78,6 @@ $app->get('/rating/:albumID/:userID',
 			return;
 			}
 			$params = array('userID' => "{$userID}", 'albumID' => "{$albumID}");
-//			$params['userID'] = "$userID";
-//			$params['albumID'] = "$albumID";
-//			var_dump($params);
 			$queryDetails = array();
 			$sqlSuccess = getRating($queryDetails, $params, $sqlConnection);
 			if ($sqlSuccess)
@@ -102,15 +105,21 @@ $app->post('/rate', function() use ($sqlConnection)
 	$sqlExistingreview = getRating($queryDetails, $resultid, $sqlConnection);
 	if ($sqlExistingreview)
 	{ // replace existing review
-	  editRating($resultid, $sqlConnection);
-	echo json_encode(array('done'=>'Rating Updated'));
-	return; 
+	  $sqlSuccess = editRating($resultid, $sqlConnection);
+	  if ($sqlSuccess)
+		  echo json_encode(array('done'=>'Rating Updated'));
+	  else
+     	  echo json_encode(array('err'=>'SQLerr'));
+	  return; 
 	}
 	else
 	{ // post new review
-	  addRating($resultid, $sqlConnection);
-	  echo json_encode(array('done'=>'Rating Added'));
-	return;
+	  $sqlSuccess = addRating($resultid, $sqlConnection);
+	  if ($sqlSuccess)
+	  	echo json_encode(array('done'=>'Rating Added'));
+	  else
+    	echo json_encode(array('err'=>'SQLerr'));
+	  return;
 	}
 	}
 	else
@@ -368,7 +377,7 @@ function editRating($param, $sqlConnection)
 	$rating = floatval($param['rating']);
 	$sqlSuccess = get_sql_results($result, $sqlConnection,
 			"UPDATE Rates SET rating=$rating ".
-			"WHERE userID=$uid' AND ".
+			"WHERE userID=$uid AND ".
 			"albumID=$aid");
 	return $sqlSuccess;
 }
