@@ -26,12 +26,26 @@ $smarty->error_reporting = 0;
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
     <style type="text/css">
-      body { background-color: #00B7FF; }
+      body { 
+            background-color: #00B7FF;  
+            background-image: url("img/bg/<?php 
+                                  echo array_rand(
+                                      array_slice(
+                                          scandir(
+                                          dirname(__FILE__)."/img/bg"
+                                          )
+                                          ,2));
+                                           ?>.jpg");
+            background-size: cover;
+            background-attachment: fixed;
+        }
     </style>
     <link rel="stylesheet" href="css/style.css" type="text/css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script type='text/javascript' src='js/jq-masonry.js'></script>
     <script src="js/login.js" type="text/javascript"></script>
+    <script src="js/jquery.raty.js" type="text/javascript"></script>
+    <script src="js/jquery.raty.min.js" type="text/javascript"></script>
     <!-- <link rel="stylesheet/less" href="css/style.less" type="text/css"> -->
     <link href="http://fonts.googleapis.com/css?family=Oxygen:700,300,400" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700italic' rel='stylesheet' type='text/css'>  
@@ -125,7 +139,10 @@ $smarty->error_reporting = 0;
                         name='q' 
                         type="text"
                         class="search-query"/>
-                    <button tabindex='2' value='!' type="submit" class='btn'>
+                    <a value='!' href="tag-search.php" class='btn tag-search-button'>
+                      <i class="icon-tags"></i>
+                    </a>
+                    <button value='!' type="submit" class='btn'>
                       <i class="icon-search"></i>
                     </button>
               </div>
