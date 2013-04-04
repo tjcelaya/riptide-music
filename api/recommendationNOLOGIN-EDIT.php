@@ -1,5 +1,6 @@
 <?php
   //Recommendation for a non logged in user based off an albums page                                                                
+require 'recommendation-EDIT.php';
 $app->get('/recommendation/album/:id', function($id) use ($sqlConnection) {
 //uses slim framework                                  
 
