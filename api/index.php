@@ -3,7 +3,9 @@ require 'vendor/autoload.php';
 // use this to send json explicitly if the browser isnt interpreting the response correctly
 // header("Content-Type: application/json");
 error_reporting(E_ALL);
+date_default_timezone_set('America/New_York'); 
 ini_set("display_errors", 1);
+require(dirname(__FILE__)."/../models/config.php");
 
 //file include
 ob_start();
@@ -29,13 +31,13 @@ $app = new \Slim\Slim(
 require 'data-retrieval-funcs.php';
 
 //this is a debugging route
-$app->get('/', function() use ($dbPassword) {
+$app->get('/', function() use ($app) {
   // this is actually /~celaya/api/ (or w/o the slash)
   // all paths the slim app defines are relative to itself,
   // so this is "/riptideMusic/api/"
   // its also here so that there is something returned if 
   // someone wanders to that url
-  echo gettype($dbPassword);
+    $app->redirect('http://ww2.cs.fsu.edu/~celaya/riptideMusic/');
 })->name('index');
 
 //this is a debugging route

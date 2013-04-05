@@ -28,6 +28,8 @@
       {
         echo "no request";
       }
+      //output internal results immediately before 
+      //beginning slower discogs search
       flush();
     ?>
 

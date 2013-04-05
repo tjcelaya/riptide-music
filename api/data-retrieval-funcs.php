@@ -70,7 +70,7 @@ function getAlbumByID(&$arrayToAppendResults, $sqlC, $id) {
     get_sql_results(
       $arrayToAppendResults,
       $sqlC,
-      "select albumName, artistName, released, avgRating, tracklist, albumID ".
+      "select albumName, artistName, released, avgRating, tracklist, artistID, albumID ".
       "from Albums natural join Artists ".
       "where albumID=$id"
     );

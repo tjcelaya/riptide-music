@@ -1,7 +1,6 @@
     
       <script src="js/bootstrap.js"></script>
       <!-- // <script src="js/less.js"></script> -->
-      <div>admin pass is 55artjo55</div>
     </div>
     <script type="text/javascript">
       $(function(){
@@ -64,5 +63,7 @@
           }, 300);
         });
     </script>
+
   </body>
+  
 </html>

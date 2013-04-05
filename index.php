@@ -5,8 +5,7 @@
         <h1>Latest Albums added</h1>
         <div class='big-list'>
         <?php
-
-            echo $internalSearchUrl =   
+            $internalSearchUrl =   
               "http://ww2.cs.fsu.edu/~celaya/".
               "riptideMusic/api/getLatest/";
 
@@ -23,9 +22,7 @@
         </div>
     </div>
     <style>
-        .big-list {
-            overflow: auto;
-        }
+
         .full-album-listing {
             width: 150px;
             float: left;
@@ -39,16 +36,14 @@
 
     </style>
   <script type='text/javascript'>
-    $(document).load(function(){
-        $('.big-list').masonry({
+    $(function(){
+        console.log($('.full-album-listing').height());
+
+          $('.big-list').masonry({
             itemSelector: ".full-album-listing",
-                isAnimated: true,
-                columnWidth: 40,
-                isFitWidth: true
-//            columnWidth: function( containerWidth ) {
-//                    return containerWidth / 3;
-//            }
-        });
+            columnWidth: 40,
+            isAnimated: true
+          });
     })
   </script>
 </div>
