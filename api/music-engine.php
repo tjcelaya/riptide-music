@@ -6,7 +6,6 @@
 // facilitates api calls to database 
 // such as looking up reviews and tags,
 // or updating/inserting data.
-
 define("WEIGHTMIN", 0);
 define("WEIGHTMAX", 5);
 require 'recommendationNOLOGIN-EDIT.php';
@@ -273,14 +272,31 @@ function tagspaces($t)
   $tolkiens = array(' ', '(', ')', '-', '+');
   $result = str_replace($tolkiens, '%', $t);
   return $result;
-}
+} 
 
 // escapes special characters such as quotes
-// not implemented yet, this is to prevent
 // sql injection attacks
-function sqlsanitize($s)
+function sqlsanitize($sql)
 {
-  return $s;
+	$trysan = str_replace("\\", "\\\\", $sql);
+	$trysan = str_replace("\"", "\"\"", $trysan);
+	$trysan = str_replace("'", "''", $trysan);
+	return $trysan;
+}
+function sql_sanitize_total($sql)
+{
+	$trysan = str_replace("\\", "", $sql);
+	$trysan = str_replace("\"", "", $trysan);
+	$trysan = str_replace("'", "", $trysan);
+	return $trysan;
+}
+// changes back to regular?
+function sql_desanitize($sql)
+{
+	$trysan = str_replace("\\\\", "\\", $sql);
+	$trysan = str_replace("\"\"", "\"", $trysan);
+	$trysan = str_replace("''", "'", $trysan);
+	return $trysan;
 }
 
 // tag searches usually have duplicates
@@ -455,5 +471,6 @@ function getAlbumId(&$result,$parameters,$sqlConnection)
 // returns an integer security level
 function checkuserlevel($params)
 { // verifies user is logged in and returns security level
+  
   return 7;
 }
