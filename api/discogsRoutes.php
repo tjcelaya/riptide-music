@@ -192,6 +192,12 @@ $app->post('/dimport/:discogsID', function ($discogsID) use ($app, $sqlConnectio
             "({$albumCheck[0]['albumID']},'$g');";
         mysqli_real_query($sqlConnection, $albumGenresInsert);
 
+        $albumGenresInsert = 'INSERT INTO Genres '.
+            '(genreName)'.
+            'VALUES '.
+            "('$g');";
+        mysqli_real_query($sqlConnection, $albumGenresInsert);
+        
         $albumTagsInsert = 'INSERT INTO AlbumTags '.
             '(albumID, tagName)'.
             'VALUES '.
