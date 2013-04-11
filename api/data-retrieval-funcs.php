@@ -91,7 +91,8 @@ function getAlbumByID(&$arrayToAppendResults, $sqlC, $id) {
   
   $arrayToAppendResults['genres'] = array();
   $arrayToAppendResults['tags'] = array();
-
+  $arrayToAppendResults['weight'] = array();
+  
   $genreQuerySuccess =
     get_sql_results(
       $arrayToAppendResults['genres'],
@@ -108,14 +109,17 @@ function getAlbumByID(&$arrayToAppendResults, $sqlC, $id) {
     get_sql_results(
       $arrayToAppendResults['tags'],
       $sqlC,
-      "select tagName from AlbumTags where albumID=$id"
+      "select tagName, weight from AlbumTags where albumID=$id"
     );
 
   if($tagQuerySuccess)
     foreach ($arrayToAppendResults['tags'] as $kk => $tag) {
-      $arrayToAppendResults['tags'][$kk] = $tag['tagName'];
-    }
+      $arrayToAppendResults['tags'][$kk] = $tag;  
+//      $arrayToAppendResults['tags'][$kk] = $tag['tagName'];
+//      $arrayToAppendResults['weight'][$kk] = $tag['weight'];
+  }
 
+   
   return $sqlSuccess;
 };
 
