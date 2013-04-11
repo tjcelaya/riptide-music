@@ -17,7 +17,7 @@ $app->get('/recommendation/album/:id', function($id) use ($sqlConnection) {
     {foreach ($sqlQueryResult as $kk => $tag) {
 	//var_dump($tag);
     // echo "<br>";
-      $myq = "select albumID from AlbumTags where tagName ='{$tag['tagName']}' limit 0, 3";
+      $myq = "select albumID,albumName,artistName,released from AlbumTags natural Join Albums natural Join Artists where tagName ='{$tag['tagName']}' limit 0, 4";
       //  $myq = "select albumID"." from AlbumTags"." where tagName ='Jackson'";
       // echo "trying $myq<br>";
     $query= get_sql_results(
