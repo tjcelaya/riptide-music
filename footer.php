@@ -3,7 +3,7 @@
       <!-- // <script src="js/less.js"></script> -->
     </div>
     <script type="text/javascript">
-      $(function(){
+      /*$(function(){
         //ajaxificate ALL THE LINKS
         $(".main-container a").live("click", function() {
             $('.main-container').fadeTo('fast', 0.3);
@@ -61,7 +61,7 @@
             'background-size': 'cover',
             'background-attachment': 'fixed'
           }, 300);
-        });
+      });*/
     </script>
 
   </body>

@@ -14,7 +14,7 @@ $smarty->compile_dir = "templates/compiled";
 $smarty->cache_dir = "templates/cached";
 $smarty->config_dir = "smarty-config";
 $smarty->error_unassigned = false;
-// $smarty->debugging = true;
+//$smarty->debugging = true;
 $smarty->error_reporting = 0;
 
 ?>
@@ -25,6 +25,8 @@ $smarty->error_reporting = 0;
     <meta name="viewport" content="width=device-width, initial-scale=1.0, max-scale=1.0">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+   
+    
     <style type="text/css">
       body { 
             background-color: #00B7FF;  
@@ -41,17 +43,17 @@ $smarty->error_reporting = 0;
         }
     </style>
     <link rel="stylesheet" href="css/style.css" type="text/css">
+    
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="js/jquery.raty.min.js" type="text/javascript"></script>
     <script type='text/javascript' src='js/jq-masonry.js'></script>
     <script src="js/login.js" type="text/javascript"></script>
-    <script src="js/jquery.raty.js" type="text/javascript"></script>
-    <script src="js/jquery.raty.min.js" type="text/javascript"></script>
     <!-- <link rel="stylesheet/less" href="css/style.less" type="text/css"> -->
     <link href="http://fonts.googleapis.com/css?family=Oxygen:700,300,400" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700italic' rel='stylesheet' type='text/css'>  
     <!-- // <script src="js/agility.js"></script> -->
     <!-- // <script src="js/less.js"></script> -->
-
+    
 
   </head>
   
