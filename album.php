@@ -23,7 +23,7 @@
                     else {
                         foreach ($albumRequest as $k => $v)
                         {   
-                             echo $k.": ".$v."<BR>";
+//                             echo $k.": ".$v."<BR>";
                             $smarty->assign($k,$v);     
                         }
                         $smarty->display('album-template.tpl');
@@ -86,7 +86,7 @@
                 </form> 
                                 <?php 
                 if (isset($_GET['id'])) {
-                     echo $_GET['id']."<BR>";
+ //                    echo $_GET['id']."<BR>";
 
                     $smarty->assign('templatetype', 'review');
  
@@ -94,9 +94,8 @@
                         "http://ww2.cs.fsu.edu/~celaya/".
                       "riptideMusic/api/review/".urlencode($_GET['id']);
                     
-                    
                                          
-                     echo "<p>this page calls: \n".$apiUrl."</p>";
+//                     echo "<p>this page calls: \n".$apiUrl."</p>";
 
                     $aReview = json_decode(file_get_contents($apiUrl), true);
  
