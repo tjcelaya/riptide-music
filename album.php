@@ -23,7 +23,7 @@
                     else {
                         foreach ($albumRequest as $k => $v)
                         {   
-                            // echo $k.": ".$v."<BR>";
+                             echo $k.": ".$v."<BR>";
                             $smarty->assign($k,$v);     
                         }
                         $smarty->display('album-template.tpl');
@@ -79,11 +79,11 @@
                 
                 <td colspan="2" style="padding-bottom:8px; padding-top:10px; padding-left:25px;">
                 <input type="hidden" name="rating" size="10" value="" >
-                
+                 
                 <input id= "ratesubmit" type="submit" name="submit" value="Rate" style="display: none;"  >
                 </td>
                 </tr>        </table>
-                </form>
+                </form> 
                                 <?php 
                 if (isset($_GET['id'])) {
                      echo $_GET['id']."<BR>";
@@ -99,21 +99,29 @@
                      echo "<p>this page calls: \n".$apiUrl."</p>";
 
                     $aReview = json_decode(file_get_contents($apiUrl), true);
-
+ 
                     if (isset($aReview['err']))
                         echo "retrieval error";
                     else {
                         foreach ($aReview as $k => $v)
                         {   
-                             echo $k.": ";
-                             var_dump($v);
-                             echo "<BR>"; 
-                            $smarty->assign($k,$v);     
+//                             echo $k.": ";
+//                             var_dump($v);
+//                             echo "<BR>";
+							$vkey = array();  
+                             $vkey = array_keys($v);
+//                            foreach ($vkey as $vk=>$vesa)  
+//                            {
+//                            	$smarty->assign($vk,$vesa]); 
+//                            }      
+                            $smarty->assign($vkey[0],$v[$vkey[0]]);     
+                            $smarty->assign($vkey[1],$v[$vkey[1]]);     
+                            $smarty->assign($vkey[2],$v[$vkey[2]]);     
+                            $smarty->display('review-template.tpl');
                         }
-                        $smarty->display('review-template.tpl');
                     
                     }  
-                } else {
+                } else { 
                     echo "noreview";
                 }   
             ?>

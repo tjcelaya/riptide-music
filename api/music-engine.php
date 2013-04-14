@@ -400,7 +400,7 @@ function editRating($param, $sqlConnection)
 
 // creates a new Rating
 function addRating($param, $sqlConnection)
-{
+{  
 	$uid = intval($param['userID']);
 	$aid = intval($param['albumID']);
 	$rating = floatval($param['rating']);
@@ -412,22 +412,24 @@ function addRating($param, $sqlConnection)
 
 
 // retrieve all reviews of an album by albumID
-function getReviewByid(&$result,$parameters,$sqlConnection)
-{
+function getReviewByid(&$result,$albumID,$sqlConnection)
+{   
 	$sqlSuccess = get_sql_results($result, $sqlConnection,
-			"select * from Reviews ".
-			"where albumID = '{$parameters['albumID']}'");
-	return $sqlSuccess;
-}
+			"select R.review, U.display_name, U.id from Reviews R, uc_users U ".
+			"where R.albumID = {$albumID} ".
+			"AND U.id = R.userID");
+	return $sqlSuccess;  
+}       
 
 // retrieve a specific review of an album by albumID and userID
 // returns false if none exists
 function getReviewBymemid(&$result,$parameters,$sqlConnection)
 {
 	$sqlSuccess = get_sql_results($result, $sqlConnection,
-			"select * from Reviews ".
-			"where albumID = '{$parameters['albumID']}' ".
-			"AND userID = '{$parameters['userID']}'");
+			"select R.review, U.uc_name from Reviews R, uc_users U".
+			"where R.albumID = '{$parameters['albumID']}' ".
+			"AND R.userID = '{$parameters['userID']}'".
+			"AND U.id = R.userID");
 	return $sqlSuccess;
 }
 
