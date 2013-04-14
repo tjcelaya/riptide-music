@@ -3,7 +3,7 @@
         <div class='row-fluid'>
             <div class='main-body span7 offset1'>
                 <p>Album</p>
-                <hr/>
+                <hr>
             <?php
                 if (isset($_GET['id'])) {
                     // echo $_GET['id']."<BR>";
@@ -34,16 +34,90 @@
             ?>
             <?php if (isUSerLoggedIn()) { ?>
             <div class="review-form">
-                <form>
-                  <fieldset>
-                    <legend>Review this Album</legend>
-                    <textarea 
-                        rows="7"
-                        placeholder="Review this album..." ></textarea>
-                    <br>
-                    <button type="submit" class="btn pull-right">Submit</button>
-                  </fieldset>
+                <!--<?php echo urlencode($_GET['id']) ?> -->
+
+                <form method="post" action="./api/reviewp">
+                <input type='hidden' name='key' value='1,kqed4017g' >
+                <table>
+                <tr>
+                <td colspan="2" style="padding-bottom:8px; padding-top:10px; padding-left:25px;">
+                <strong>Review this Album</strong>
+                </td>
+                </tr>
+                <tr>
+                <input type="hidden" name="userID" size="30" value="<?php echo $loggedInUser->user_id; ?>">
+                <input type="hidden" name="albumID" size="30" value="<?php echo urlencode($_GET['id']) ?>">
+                </tr>
+                
+                <tr>
+                
+                <td>
+                <textarea name="review" cols="100" rows="10" wrap="virtual"></textarea>
+                
+                </td>
+                </tr>
+                <tr>
+                <td style="padding-left:30px;">
+                 <input type="submit" name="submit" value="Submit Review" >
+                 </td> 
+                </tr>
+                
+                </table>
                 </form>
+                    
+
+            
+                <form  method="post" action="./api/rate">
+                <input type='hidden' name='key' value='1,kqed4017g' >
+                <table>
+                
+                <input type="hidden" name="userID" size="30" value="<?php echo $loggedInUser->user_id; ?>">
+                <input type="hidden" name="albumID" size="30" value="<?php echo urlencode($_GET['id']) ?>">
+                
+
+                <tr>
+                
+                <td colspan="2" style="padding-bottom:8px; padding-top:10px; padding-left:25px;">
+                <input type="hidden" name="rating" size="10" value="" >
+                
+                <input id= "ratesubmit" type="submit" name="submit" value="Rate" style="display: none;"  >
+                </td>
+                </tr>        </table>
+                </form>
+                                <?php 
+                if (isset($_GET['id'])) {
+                     echo $_GET['id']."<BR>";
+
+                    $smarty->assign('templatetype', 'review');
+ 
+                    $apiUrl = 
+                        "http://ww2.cs.fsu.edu/~celaya/".
+                      "riptideMusic/api/review/".urlencode($_GET['id']);
+                    
+                    
+                                         
+                     echo "<p>this page calls: \n".$apiUrl."</p>";
+
+                    $aReview = json_decode(file_get_contents($apiUrl), true);
+
+                    if (isset($aReview['err']))
+                        echo "retrieval error";
+                    else {
+                        foreach ($aReview as $k => $v)
+                        {   
+                             echo $k.": ";
+                             var_dump($v);
+                             echo "<BR>"; 
+                            $smarty->assign($k,$v);     
+                        }
+                        $smarty->display('review-template.tpl');
+                    
+                    }  
+                } else {
+                    echo "noreview";
+                }   
+            ?>
+                    
             </div>
             <?php } else { ?>
             <h2>you need an account to review things :(</h2>

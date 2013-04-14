@@ -7,7 +7,7 @@
 // such as looking up reviews and tags,
 // or updating/inserting data.
 define("WEIGHTMIN", 0);
-define("WEIGHTMAX", 5);
+define("WEIGHTMAX", 10000);
 require 'recommendationNOLOGIN-EDIT.php';
 // get review by album ID
 $app->get('/review/:albumID',
@@ -190,7 +190,7 @@ $app->post('/savetag', function() use ($sqlConnection)
 					"insert into Tags (tagName) ".
 					"values ('$tagName')");
 			if ($sqlSuccess)
-			  echo json_encode(array('err'=>'Added'));
+			  echo json_encode(array('done'=>'Added'));
 			else
 			  echo json_encode(array('err'=>'Error Adding'));
 			return;
@@ -244,7 +244,7 @@ $app->post('/tag', function() use ($sqlConnection)
  			if ($sqlSuccess == FALSE)
  			  echo json_encode(array('err'=>'SQLerr'));
  			else
- 			echo json_encode(array('err'=>'Album tagged updated'));
+ 			echo json_encode(array('done'=>'Album tagged updated'));
 	  	  }
 		  else
 	  	  { // tag an album, new album tag
@@ -254,7 +254,7 @@ $app->post('/tag', function() use ($sqlConnection)
  			if ($sqlSuccess == FALSE)
  			  echo json_encode(array('err'=>'SQLerr'));
  			else
- 			  echo json_encode(array('err'=>'Album tagged'));
+ 			  echo json_encode(array('done'=>'Album tagged'));
 	  	  }
 
 	    }
@@ -273,7 +273,7 @@ function tagspaces($t)
   $result = str_replace($tolkiens, '%', $t);
   return $result;
 } 
-
+ 
 // escapes special characters such as quotes
 // sql injection attacks
 function sqlsanitize($sql)
