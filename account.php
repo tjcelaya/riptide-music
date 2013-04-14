@@ -58,61 +58,30 @@ h2 { font-family: Georgia, Tahoma, sans-serif; font-style: italic; font-size: 1.
 
 <div class="row-fluid inner-row-div">
   <div class='span6 main-body offset2'>
-     <!-- <?php if(isUSerLoggedIn()) { ?>
-     <h1>even</h1>
-     <?php } else { ?>
-     <h1>odd</h1>
-     <?php } ?> -->
+     <?php 
 
+          $apiURL =
+            "http://ww2.cs.fsu.edu/~celaya/".
+            "riptideMusic/api/userStats/".$loggedInUser->user_id;
 
-     <div id="userStats" class="clearfix">
-        <div class="pic">
-          <a href="#"><img src="img/user_avatar.jpg" width="150" height="150" /></a>
-        </div>
-        
-          <div class="data">
-              <h1> <?php echo "$loggedInUser->displayname"; ?> </h1>
-              <h2>WheatCity, TO </h2>
-              
-              
-              <div class="sepBorderless"></div>
+          $userStatsRequest = json_decode(file_get_contents($apiURL), true);
+          
+          foreach ($userStatsRequest as $k => $v) {
+            $smarty->assign($k, $v);
+          }
 
-              <br>
-              
-              <p>
-                <button class="btn btn-mini btn-info" type="button"><i class="icon-tag icon-white"></i>Indie-Rock</button>
-                <button  class="btn btn-mini btn-info" type="button"><i class="icon-tag icon-white"></i>Baroque</button>
-                <button  class="btn btn-mini btn-info" type="button"><i class="icon-tag icon-white"></i>House</button>
-                <button  class="btn btn-mini btn-info" type="button"><i class="icon-tag icon-white"></i>Garage</button>
-                
-              </p>
-              <p>
-                <button  class="btn btn-mini btn-info" type="button"><i class="icon-tag icon-white"></i>Post-rock</button>
-                <button  class="btn btn-mini btn-info" type="button"><i class="icon-tag icon-white"></i>Jazz</button>
-                <button  class="btn btn-mini btn-info" type="button"><i class="icon-tag icon-white"></i>Experimental</button>
-                <button  class="btn btn-mini btn-info" type="button"><i class="icon-tag icon-white"></i>Noise</button>
-                
-              </p>
-              <a href="#"><button  class="btn btn-mini btn-info" type="button"><i class="icon-tag icon-white"> </i> ...</button> </a>
-  
-              <div class="sep"></div>
-              <ul class="numbers clearfix">
-                <li>Reviews<strong>11</strong></li>
-                <li>Friends<strong>7</strong></li>
-                <li class="nobrdr">Posts<strong>9</strong></li>
-              </ul>
-          </div>
-      </div>
+          // var_dump($userStatsRequest);
 
-      <h1>About Me:</h1>
-      <p>After man kind's decline, in an initiative to recover lost secrets of the culinary arts, I was biologically engineered for human consumption. 
-        But they didnt want me, I did not taste like bread. I was too bland. 
-        But it is not I who is bland. Humans are bland. No more, humans. No more. 
-      </p>
+          $smarty->assign('accountName', $loggedInUser->username);
+          $smarty->assign('displayName', $loggedInUser->displayname);
+          $smarty->assign('friendCount', 999);
 
+          $smarty->display('account-template.tpl');
+     ?>
   </div>
 
-<div class='span2 rec'>
+
+  <div class='span2 rec'>
 
 
         <div class="head"><h1>Recommendations</h1></div>
