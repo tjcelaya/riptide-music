@@ -17,10 +17,12 @@
             json_decode(file_get_contents($internalSearchUrl), true);
 
         foreach ($internalSearchResponse as $album) {
-          foreach ($album as $k => $v) {
-            $smarty->assign($k, $v);
+          if(is_array($album)) {
+            foreach ($album as $k => $v) {
+              $smarty->assign($k, $v);
+            }
+            $smarty->display('album-template.tpl');
           }
-          $smarty->display('album-template.tpl');
         }
 
       } 
@@ -32,7 +34,7 @@
       //beginning slower discogs search
       flush();
     ?>
-
+    <hr>
     <?php
     require 'discogSearch.php';
     ?>

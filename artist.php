@@ -11,13 +11,13 @@
                     "http://ww2.cs.fsu.edu/~celaya/".
                     "riptideMusic/api/albumsByArtist/".urlencode($_GET['id']);
                 
-                echo "<p>this page calls: \n".$apiUrl."</p>";
+                // echo "<p>this page calls: \n".$apiUrl."</p>";
 
                 $artistRequest = json_decode(file_get_contents($apiUrl), true);
                 
                 $smarty->assign('artistName', $artistRequest['artist']);
                 unset($artistRequest['artist']);
-                
+
                 foreach ($artistRequest as $anAlbum)
                 {
                     foreach ($anAlbum as $k => $v)

@@ -51,12 +51,11 @@ $app->get('/getLatest/', function() use ($sqlConnection) {
       "select albumName, artistName, released, avgRating, tracklist, albumID, artistID ".
       "from Albums natural join Artists ".
       "where albumID!=-1 ".
-      "order by albumID desc"
+      "order by albumID desc limit 30;"
     );
 
   echo json_encode($sqlQueryResult);
 });
-
 
 //this is a debugging route
 $app->get('/internalSearch/:query+', function($query) use ($sqlConnection) {

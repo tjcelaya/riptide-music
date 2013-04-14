@@ -130,7 +130,7 @@ function getAlbumsByName(&$arrayToAppendResults, $sqlC, $queryString) {
     get_sql_results(
       $arrayToAppendResults,
       $sqlC,
-      "select albumName, artistName, released, avgRating, tracklist, albumID ".
+      "select albumName, artistName, released, avgRating, tracklist, albumID, artistID ".
       "from Albums natural join Artists ".
       "where INSTR(`albumName`, '$queryString') > 0 ;"
     );
@@ -139,7 +139,7 @@ function getAlbumsByName(&$arrayToAppendResults, $sqlC, $queryString) {
     get_sql_results(
       $arrayToAppendResults,
       $sqlC,
-      "select albumName, artistName, released, avgRating, tracklist, albumID ".
+      "select albumName, artistName, released, avgRating, tracklist, albumID, artistID ".
       "from Albums natural join Artists ".
       "where INSTR(`artistName`, '$queryString') > 0 ;"
     );
