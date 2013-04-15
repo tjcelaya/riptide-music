@@ -1,9 +1,12 @@
-<?php require "header.php"; ?>
+<?php require "header.php"; ?> 
     <div class='inner-row-div row-fluid'>
         <div class='row-fluid'>
             <div class='main-body span7 offset1'>
-                <p>Album</p>
+                <p>Album</p> 
                 <hr>
+
+                 
+                
             <?php
                 if (isset($_GET['id'])) {
                     // echo $_GET['id']."<BR>";
@@ -23,7 +26,7 @@
                     else {
                         foreach ($albumRequest as $k => $v)
                         {   
-//                             echo $k.": ".$v."<BR>";
+           //                  echo $k.": ".$v."<BR>";
                             $smarty->assign($k,$v);     
                         }
                         $smarty->display('album-template.tpl');
@@ -31,8 +34,24 @@
                 } else {
                     echo "noalbum";
                 }   
-            ?>
-            <?php if (isUSerLoggedIn()) { ?>
+            ?> 
+            
+            <?php if (isUSerLoggedIn()) {  
+
+          $apiURL = "http://ww2.cs.fsu.edu/~celaya/".
+                  "riptideMusic/api/rating/".
+                  $_GET['id'] . "/" . $loggedInUser->user_id;
+
+          $userrating = json_decode(file_get_contents($apiURL), true);
+          $urating = $userrating[0]['rating'];
+//          echo "rating $urating <br>"; 
+//          var_dump($userrating);
+          echo "<script>$('#albumstars').html('User Rating: $urating');</script>";		  
+//		  $html->getElementById('albumstars')->value = $userrating['rating']; 
+ ?>
+ 
+            
+            
             <div class="review-form">
                 <!--<?php echo urlencode($_GET['id']) ?> -->
 
@@ -84,9 +103,14 @@
                 </td>
                 </tr>        </table>
                 </form> 
-                                <?php 
+                    
+            </div>
+            <?php } else { ?>
+            <h2>you need an account to review things :(</h2>
+            <?php } ?>
+
+            <?php 
                 if (isset($_GET['id'])) {
- //                    echo $_GET['id']."<BR>";
 
                     $smarty->assign('templatetype', 'review');
  
@@ -95,7 +119,6 @@
                       "riptideMusic/api/review/".urlencode($_GET['id']);
                     
                                          
-//                     echo "<p>this page calls: \n".$apiUrl."</p>";
 
                     $aReview = json_decode(file_get_contents($apiUrl), true);
  
@@ -104,15 +127,8 @@
                     else {
                         foreach ($aReview as $k => $v)
                         {   
-//                             echo $k.": ";
-//                             var_dump($v);
-//                             echo "<BR>";
 							$vkey = array();  
                              $vkey = array_keys($v);
-//                            foreach ($vkey as $vk=>$vesa)  
-//                            {
-//                            	$smarty->assign($vk,$vesa]); 
-//                            }      
                             $smarty->assign($vkey[0],$v[$vkey[0]]);     
                             $smarty->assign($vkey[1],$v[$vkey[1]]);     
                             $smarty->assign($vkey[2],$v[$vkey[2]]);     
@@ -124,16 +140,101 @@
                     echo "noreview";
                 }   
             ?>
-                    
+            
             </div>
-            <?php } else { ?>
-            <h2>you need an account to review things :(</h2>
-            <?php } ?>
+
+<?php
+
+        $recBoxInfo = array();
+
+        //If user is logged in...
+        if(isUserLoggedIn())
+        {
+          $apiURL = "http://ww2.cs.fsu.edu/~celaya/".
+                  "riptideMusic/api/recommendation/album/".
+                  $_GET['id'] . "/" . $loggedInUser->user_id;
+
+          $RecommendationRequest = json_decode(file_get_contents($apiURL), true);
+
+          foreach($RecommendationRequest as $anAlbum)
+            foreach($anAlbum as $key => $value)
+                array_push($recBoxInfo, $value);
+
+        }
+
+      ?>
+
+        </div>
+
+
+<style type="text/css">
+
+.clearfix { display: inline-block; }
+#button1 {top: 0; left: 55px;}
+
+h1 { font-family: Helvetica, Arial, Verdana, sans-serif; color: #444; font-weight: bold; font-size: 1.5em; line-height: 2.0em; }
+h2 { font-family: Georgia, Tahoma, sans-serif; font-style: italic; font-size: 1.0em; letter-spacing: -0.04em; line-height: 1.8em; }
+
+
+.head { background: #3eaef8; border: 1px solid #3e82a7; padding-left: 8px; width: 100%;}
+.head h1 { color: #fafcfd; font-weight: bold; font-size: .9em; }
+
+.boxy {  border: 1px ; border-top: 0px;  }
+.boxy span { font-size: 1.2em; display: block; margin-bottom: 7px; }
+
+.boxy .friendslist { display: block; margin-bottom: 15px; }
+.boxy .friend { display: block; float: left; height: 80px; padding: 5px 5px 5px 4px; width: 95% }
+.boxy .friend img { border: 1px solid #3eaef8; float: left;  padding: 2px; margin-right: 4px; }
+.boxy .friend .friendly { position: relative; top: 16px; font-size: 1.0em; }
+
+</style>
+ 
+
+      <div class='span3 rec offset7' style="position:absolute; top:75px; right: 25px; float:right">
+
+        <div class="head"><h1>Recommendations</h1></div>
+        <div class="boxy">
+          <br>
+
+          <div class="friendslist clearfix">
+            <div class="friend">
+              <img src="img/<?php echo $recBoxInfo[2];?> - <?php echo $recBoxInfo[1]; ?>(<?php echo $recBoxInfo[3]; ?>).jpg" width="60" height="60" alt="Friend" /></a><span class="friendly"><a href="album.php?id=<?php echo $recBoxInfo[0];?>"><?php echo $recBoxInfo[1]; ?></a></span>
+            </div>
+
+          <?php            for($i = 0; $i < 4; $i++)
+              array_shift($recBoxInfo);
+          ?>
+
+            <div class="friend">              <img src="img/<?php echo $recBoxInfo[2];?> - <?php echo $recBoxInfo[1]; ?>(<?php echo $recBoxInfo[3]; ?>).jpg" width="60" height="60" alt="Friend" /></a><span class="friendly"><a href="album.php?id=<?php echo $recBoxInfo[0];?>"><?php echo $recBoxInfo[1]; ?></a></span>
+            </div>
+
+
+          <?php            for($i = 0; $i < 4; $i++)
+              array_shift($recBoxInfo);
+          ?>
+
+            <div class="friend">              <img src="img/<?php echo $recBoxInfo[2];?> - <?php echo $recBoxInfo[1]; ?>(<?php echo $recBoxInfo[3]; ?>).jpg" width="60" height="60" alt="Friend" /></a><span class="friendly"><a href="album.php?id=<?php echo $recBoxInfo[0];?>"><?php echo $recBoxInfo[1]; ?></a></span>
+            </div>
+
+          <?php
+            for($i = 0; $i < 4; $i++)
+              array_shift($recBoxInfo);          ?>
+            <div class="friend">              <img src="img/<?php echo $recBoxInfo[2];?> - <?php echo $recBoxInfo[1]; ?>(<?php echo $recBoxInfo[3]; ?>).jpg" width="60" height="60" alt="Friend" /></a><span class="friendly"><a href="album.php?id=<?php echo $recBoxInfo[0];?>"><?php echo $recBoxInfo[1]; ?></a></span>
+            </div>
+
+
+          <?php
+            for($i = 0; $i < 4; $i++)
+              array_shift($recBoxInfo);          ?>            <div class="friend">
+              <img src="img/<?php echo $recBoxInfo[2];?> - <?php echo $recBoxInfo[1]; ?>(<?php echo $recBoxInfo[3]; ?>).jpg" width="60" height="60" alt="Friend" /></a><span class="friendly"><a href="album.php?id=<?php echo $recBoxInfo[0];?>"><?php echo $recBoxInfo[1]; ?></a></span>
+            </div>
+
+          </div>
+
+          <span><a href="#">See all...</a></span>
+        </div>
 
             </div>
-<!--<div class="main-body span7">
-                <p> <pre><code><?php echo print_r($albumRequest); ?></code></pre> recommendations will go here</p>
-            </div> -->
         </div>
     </div>
 <?php require "footer.php"; ?>

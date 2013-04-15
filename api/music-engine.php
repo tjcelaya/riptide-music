@@ -68,7 +68,7 @@ $app->post('/reviewp', function() use ($sqlConnection)
 	}
 });
 
-// get review by album ID
+// get rating by album ID and user ID
 $app->get('/rating/:albumID/:userID',
 		function($albumID, $userID) use ($sqlConnection)
 		{
@@ -86,7 +86,7 @@ $app->get('/rating/:albumID/:userID',
 		});
 
 
-$app->post('/rate', function() use ($sqlConnection)
+$app->post('/rate', function() use ($sqlConnection, $app)
 { 
 	if (!(isset($_POST["albumID"]) & isset($_POST["userID"]) & isset($_POST["key"]) & isset($_POST["rating"])) )
 	{ echo json_encode(array('err'=>'NO params'));
@@ -106,7 +106,7 @@ $app->post('/rate', function() use ($sqlConnection)
 	{ // replace existing review
 	  $sqlSuccess = editRating($resultid, $sqlConnection);
 	  if ($sqlSuccess)
-		  echo json_encode(array('done'=>'Rating Updated'));
+		  $app->redirect($_SERVER['HTTP_REFERER']);
 	  else
      	  echo json_encode(array('err'=>'SQLerr'));
 	  return; 
@@ -115,7 +115,7 @@ $app->post('/rate', function() use ($sqlConnection)
 	{ // post new review
 	  $sqlSuccess = addRating($resultid, $sqlConnection);
 	  if ($sqlSuccess)
-	  	echo json_encode(array('done'=>'Rating Added'));
+	  	$app->redirect($_SERVER['HTTP_REFERER']);
 	  else
     	echo json_encode(array('err'=>'SQLerr'));
 	  return;
