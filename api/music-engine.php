@@ -425,12 +425,12 @@ function getReviewByid(&$result,$albumID,$sqlConnection)
 // returns false if none exists
 function getReviewBymemid(&$result,$parameters,$sqlConnection)
 {
-	$sqlSuccess = get_sql_results($result, $sqlConnection,
-			"select R.review, U.uc_name from Reviews R, uc_users U".
-			"where R.albumID = '{$parameters['albumID']}' ".
-			"AND R.userID = '{$parameters['userID']}'".
-			"AND U.id = R.userID");
-	return $sqlSuccess;
+	$qtry = "select review from Reviews ".
+			"where albumID='{$parameters['albumID']}' ".
+			"AND userID='{$parameters['userID']}'";
+	 
+	$sqlSuccess = get_sql_results($result, $sqlConnection, $qtry);
+	return $sqlSuccess; 
 }
 
 // retrieve a specific rating of an album by albumID and userID
