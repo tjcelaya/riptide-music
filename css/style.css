@@ -63,6 +63,16 @@ label input {
     margin: 0em 1em 1em 0em;
 }
 
+.full-album-listing .star {
+  float: left;
+}
+
+.full-album-listing .star img {
+  display: inline;
+  float: none;
+  margin: 0 0 0 0;
+}
+
 .full-album-listing table {
     width: 90%;
 }
@@ -445,4 +455,18 @@ nav li .profile-content#login-content {
   -moz-box-shadow: 0 0 5px #fff;
   -webkit-box-shadow: 0 0 5px #fff;
   box-shadow: 0px 0px 5px #fff;
+}
+
+.reviewtitle {
+    font-family: Verdana, Tahoma, Sans-Serif;
+    font-size: 11pt;
+    line-height: normal;
+    font-weight: bold;
+}
+
+.reviewcopy {
+    font-family: Verdana, Tahoma, Sans-Serif;
+    font-size: 11pt;
+    line-height: normal;
+
 }

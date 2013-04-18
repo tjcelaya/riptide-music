@@ -49,6 +49,9 @@
                         foreach ($albumRequest as $k => $v)
                         {   
            //                  echo $k.": ".$v."<BR>";
+           					if ($k == 'avgRating')
+           						$avgrating = intval($v); 
+            						// echo "found it! $k : $v ..";
                             $smarty->assign($k,$v);     
                         }
                         $smarty->display('album-template.tpl');
@@ -65,8 +68,14 @@
                       $_GET['id'] . "/" . $loggedInUser->user_id;
 
               $userrating = json_decode(file_get_contents($apiURL), true);
-              $urating = $userrating[0]['rating'];
-
+              if (!isset($userrating['err']))
+                $urating = $userrating[0]['rating'];
+              else
+              {
+              //	$urating = $avgrating;
+              	$urating = 0;
+              } 
+               
             ?>
  
             <script type="text/javascript">
@@ -146,7 +155,7 @@ $('#reviewsubmit').click(function()
             <?php } ?>
 
             <?php 
-                if (isset($_GET['id'])) {
+                if (isset($_GET['id'])) { 
 
                     $smarty->assign('templatetype', 'review');
  
@@ -158,9 +167,8 @@ $('#reviewsubmit').click(function()
 
                     $aReview = json_decode(file_get_contents($apiUrl), true);
  
-                    if (isset($aReview['err']))
-                        echo "retrieval error";
-                    else {
+                    if (!isset($aReview['err']))
+                    { 
                         foreach ($aReview as $k => $v)
                         {   
 							$vkey = array();  
@@ -196,6 +204,20 @@ $('#reviewsubmit').click(function()
                 array_push($recBoxInfo, $value);
 
         }
+        else
+        if (isset($_GET['id']))
+        	{
+        		$apiURL = "http://ww2.cs.fsu.edu/~celaya/".
+        				"riptideMusic/api/recommendation/album/".
+        				$_GET['id'];
+        	
+        		$RecommendationRequest = json_decode(file_get_contents($apiURL), true);
+        	
+        		foreach($RecommendationRequest as $anAlbum)
+        			foreach($anAlbum as $key => $value)
+        			array_push($recBoxInfo, $value);
+        	
+        	}       	
 
       ?>
 

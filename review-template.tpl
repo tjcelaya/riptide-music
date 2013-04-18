@@ -1,7 +1,12 @@
 <!-- album display -->
  
-<div class="full-album-listing">
-    <h1>Name: <a href="profile.php?id={$display_name}">{$display_name}</a></h1>
-    <p class="artistName">Review: {$review}</p>
+<div class="review"> 
+    <p>
+    <span class="reviewtitle">Name: <a href="profile.php?id={$display_name}">{$display_name}</a></span><br>
+    <span class="reviewtitle">Review:</span>
+    <span class="reviewcopy">{$review}</span>
+    </p>
+    <br>
 </div> 
 
+ 
