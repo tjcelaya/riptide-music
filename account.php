@@ -74,49 +74,79 @@ h2 { font-family: Georgia, Tahoma, sans-serif; font-style: italic; font-size: 1.
 
           $smarty->assign('accountName', $loggedInUser->username);
           $smarty->assign('displayName', $loggedInUser->displayname);
-          $smarty->assign('friendCount', 999);
+          $smarty->assign('friendCount', 0);
 
           $smarty->display('account-template.tpl');
      ?>
   </div>
 
+      <?php
 
-  <div class='span2 rec'>
+        $recBoxInfo = array();
+
+        //If user is logged in...
+        if(isUserLoggedIn())
+        {
+          $apiURL = "http://ww2.cs.fsu.edu/~celaya/".
+                  "riptideMusic/api/recommendation/user/".
+                  $loggedInUser->user_id;
+
+          $RecommendationRequest = json_decode(file_get_contents($apiURL), true);
+
+          foreach($RecommendationRequest as $anAlbum)
+            foreach($anAlbum as $key => $value)
+                array_push($recBoxInfo, $value);
+
+        } 
+
+      ?>
+  
+  
+  
+          <div class='span3 rec'>
+
+            <div><h1>Recommendations</h1></div>
+            <div>
+                <br>
+   
+              <div>
+                <div>
+                  <img src="img/<?php echo $recBoxInfo[2];?> - <?php echo $recBoxInfo[1]; ?>(<?php echo $recBoxInfo[3]; ?>).jpg" width="60" height="60" alt="Friend" /></a><span class="friendly"><a href="album.php?id=<?php echo $recBoxInfo[0];?>"><?php echo $recBoxInfo[1]; ?></a></span>
+                </div>
+
+              <?php            for($i = 0; $i < 4; $i++)
+                  array_shift($recBoxInfo);
+              ?>
+
+                <div class="friend">              <img src="img/<?php echo $recBoxInfo[2];?> - <?php echo $recBoxInfo[1]; ?>(<?php echo $recBoxInfo[3]; ?>).jpg" width="60" height="60" alt="Friend" /></a><span class="friendly"><a href="album.php?id=<?php echo $recBoxInfo[0];?>"><?php echo $recBoxInfo[1]; ?></a></span>
+                </div>
 
 
-        <div class="head"><h1>Recommendations</h1></div>
-        <div class="boxy">
-          <br>
-          
-          <div class="friendslist clearfix">
-            <div class="friend">
-              <a href="#"><img src="img/friend_avatar_default.jpg" width="30" height="30" alt="Friend" /></a><span class="friendly"><a href="#">Rye</a></span>
-            </div>
-            
-            <div class="friend">
-              <a href="#"><img src="img/friend_avatar_default.jpg" width="30" height="30" alt="Friend" /></a><span class="friendly"><a href="#">Pumpernickle</a></span>
-            </div>
-            
-            <div class="friend">
-              <a href="#"><img src="img/friend_avatar_default.jpg" width="30" height="30" alt="Friend" /></a><span class="friendly"><a href="#">Honey Oat</a></span>
-            </div>
-            
-            <div class="friend">
-              <a href="#"><img src="img/friend_avatar_default.jpg" width="30" height="30" alt="Friend" /></a><span class="friendly"><a href="#">Italian Herb</a></span>
-            </div>
-            
-            <div class="friend">
-              <a href="#"><img src="img/friend_avatar_default.jpg" width="30" height="30" alt="Friend" /></a><span class="friendly"><a href="#">White</a></span>
-            </div>
-            
-            <div class="friend">
-              <a href="#"><img src="img/friend_avatar_default.jpg" width="30" height="30" alt="Friend" /></a><span class="friendly"><a href="#">Sourdough</a></span>
-            </div>
-          </div>
-          
-          <span><a href="#">See all...</a></span>
-        </div>
+              <?php            for($i = 0; $i < 4; $i++)
+                  array_shift($recBoxInfo);
+              ?>
 
+                <div class="friend">              <img src="img/<?php echo $recBoxInfo[2];?> - <?php echo $recBoxInfo[1]; ?>(<?php echo $recBoxInfo[3]; ?>).jpg" width="60" height="60" alt="Friend" /></a><span class="friendly"><a href="album.php?id=<?php echo $recBoxInfo[0];?>"><?php echo $recBoxInfo[1]; ?></a></span>
+                </div>
+
+              <?php
+                for($i = 0; $i < 4; $i++)
+                  array_shift($recBoxInfo);          ?>
+                <div class="friend">              <img src="img/<?php echo $recBoxInfo[2];?> - <?php echo $recBoxInfo[1]; ?>(<?php echo $recBoxInfo[3]; ?>).jpg" width="60" height="60" alt="Friend" /></a><span class="friendly"><a href="album.php?id=<?php echo $recBoxInfo[0];?>"><?php echo $recBoxInfo[1]; ?></a></span>
+                </div>
+
+
+              <?php
+                for($i = 0; $i < 4; $i++)
+                  array_shift($recBoxInfo);          ?>            <div class="friend">
+                  <img src="img/<?php echo $recBoxInfo[2];?> - <?php echo $recBoxInfo[1]; ?>(<?php echo $recBoxInfo[3]; ?>).jpg" width="60" height="60" alt="Friend" /></a><span class="friendly"><a href="album.php?id=<?php echo $recBoxInfo[0];?>"><?php echo $recBoxInfo[1]; ?></a></span>
+                </div>
+
+              </div>
+
+              <span><a href="#">See all...</a></span>
+            </div>
+ 
   
 </div>
 
