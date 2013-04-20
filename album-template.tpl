@@ -31,15 +31,20 @@
 $('#binc{$tagcnt}').click(function()
  {literal} {   {/literal}
     var str = $('#inc{$tagcnt}').serialize();
+    alert(str);
+    str = str.replace("'", "\\'"); 
  {literal}  
      $.post('./api/tag',
           str,
           function(data)
      {     
 {/literal} 
+           if ({$uid} != -1)
+           { 
               $('#incw{$tagcnt}').html({$tag['weight']+1});
               {$tag['weight'] = $tag['weight'] + 1}
               $('#iweight{$tagcnt}').value({$tag['weight']+1});
+           }
                   
 {literal}  
           });

@@ -48,12 +48,18 @@
                     else {
                         foreach ($albumRequest as $k => $v)
                         {   
-           //                  echo $k.": ".$v."<BR>";
+                             echo $k.": ".$v."<BR>";
            					if ($k == 'avgRating')
            						$avgrating = intval($v); 
             						// echo "found it! $k : $v ..";
                             $smarty->assign($k,$v);     
                         }
+                        if (isUSerLoggedIn()) {
+							$smarty->assign('uid', $loggedInUser->user_id);
+							}
+							else
+								$smarty->assign('uid', -1);
+									
                         $smarty->display('album-template.tpl');
                     }
                 } else {
@@ -235,14 +241,14 @@ $('#reviewsubmit').click(function()
 
               <div>
                 <div>
-                  <img src="img/<?php echo $recBoxInfo[2];?> - <?php echo $recBoxInfo[1]; ?>(<?php echo $recBoxInfo[3]; ?>).jpg" width="60" height="60" alt="Friend" /></a><span class="friendly"><a href="album.php?id=<?php echo $recBoxInfo[0];?>"><?php echo $recBoxInfo[1]; ?></a></span>
+                  <img src="img/<?php echo $recBoxInfo[2];?> - <?php echo $recBoxInfo[1]; ?>(<?php echo $recBoxInfo[3]; ?>).jpg" width="60" height="60"  /></a><span class="friendly"><a href="album.php?id=<?php echo $recBoxInfo[0];?>"><?php echo $recBoxInfo[1]; ?></a></span>
                 </div>
 
               <?php            for($i = 0; $i < 4; $i++)
                   array_shift($recBoxInfo);
               ?>
 
-                <div class="friend">              <img src="img/<?php echo $recBoxInfo[2];?> - <?php echo $recBoxInfo[1]; ?>(<?php echo $recBoxInfo[3]; ?>).jpg" width="60" height="60" alt="Friend" /></a><span class="friendly"><a href="album.php?id=<?php echo $recBoxInfo[0];?>"><?php echo $recBoxInfo[1]; ?></a></span>
+                <div class="friend">              <img src="img/<?php echo $recBoxInfo[2];?> - <?php echo $recBoxInfo[1]; ?>(<?php echo $recBoxInfo[3]; ?>).jpg" width="60" height="60"  /></a><span class="friendly"><a href="album.php?id=<?php echo $recBoxInfo[0];?>"><?php echo $recBoxInfo[1]; ?></a></span>
                 </div>
 
 
@@ -250,20 +256,20 @@ $('#reviewsubmit').click(function()
                   array_shift($recBoxInfo);
               ?>
 
-                <div class="friend">              <img src="img/<?php echo $recBoxInfo[2];?> - <?php echo $recBoxInfo[1]; ?>(<?php echo $recBoxInfo[3]; ?>).jpg" width="60" height="60" alt="Friend" /></a><span class="friendly"><a href="album.php?id=<?php echo $recBoxInfo[0];?>"><?php echo $recBoxInfo[1]; ?></a></span>
+                <div class="friend">              <img src="img/<?php echo $recBoxInfo[2];?> - <?php echo $recBoxInfo[1]; ?>(<?php echo $recBoxInfo[3]; ?>).jpg" width="60" height="60" /></a><span class="friendly"><a href="album.php?id=<?php echo $recBoxInfo[0];?>"><?php echo $recBoxInfo[1]; ?></a></span>
                 </div>
 
               <?php
                 for($i = 0; $i < 4; $i++)
                   array_shift($recBoxInfo);          ?>
-                <div class="friend">              <img src="img/<?php echo $recBoxInfo[2];?> - <?php echo $recBoxInfo[1]; ?>(<?php echo $recBoxInfo[3]; ?>).jpg" width="60" height="60" alt="Friend" /></a><span class="friendly"><a href="album.php?id=<?php echo $recBoxInfo[0];?>"><?php echo $recBoxInfo[1]; ?></a></span>
+                <div class="friend">              <img src="img/<?php echo $recBoxInfo[2];?> - <?php echo $recBoxInfo[1]; ?>(<?php echo $recBoxInfo[3]; ?>).jpg" width="60" height="60"  /></a><span class="friendly"><a href="album.php?id=<?php echo $recBoxInfo[0];?>"><?php echo $recBoxInfo[1]; ?></a></span>
                 </div>
 
 
               <?php
                 for($i = 0; $i < 4; $i++)
                   array_shift($recBoxInfo);          ?>            <div class="friend">
-                  <img src="img/<?php echo $recBoxInfo[2];?> - <?php echo $recBoxInfo[1]; ?>(<?php echo $recBoxInfo[3]; ?>).jpg" width="60" height="60" alt="Friend" /></a><span class="friendly"><a href="album.php?id=<?php echo $recBoxInfo[0];?>"><?php echo $recBoxInfo[1]; ?></a></span>
+                  <img src="img/<?php echo $recBoxInfo[2];?> - <?php echo $recBoxInfo[1]; ?>(<?php echo $recBoxInfo[3]; ?>).jpg" width="60" height="60"  /></a><span class="friendly"><a href="album.php?id=<?php echo $recBoxInfo[0];?>"><?php echo $recBoxInfo[1]; ?></a></span>
                 </div>
 
               </div>
