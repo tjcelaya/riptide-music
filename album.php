@@ -48,7 +48,7 @@
                     else {
                         foreach ($albumRequest as $k => $v)
                         {   
-                             echo $k.": ".$v."<BR>";
+                //             echo $k.": ".$v."<BR>";
            					if ($k == 'avgRating')
            						$avgrating = intval($v); 
             						// echo "found it! $k : $v ..";
