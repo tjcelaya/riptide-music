@@ -9,8 +9,8 @@
     {foreach $genres as $g}
         <a class="genre-link" href="genre.php?name={$g}">{$g}</a>
     {/foreach}
-  
-    <p> <div class="star"> </div> </p>
+    {if !is_null($templatetype) && $templatetype != 'index'}
+      <p> <div class="star"> </div> </p>
 
     <div class="tags">
      {foreach $tags as $tag}
@@ -83,6 +83,8 @@ $('#binc{$tagcnt}').click(function()
 
 
     </div>
+    {/if}
+    
     <table class='shown-tracks'>
         {foreach $tracks as $track}
             {if !is_null($templatetype)}

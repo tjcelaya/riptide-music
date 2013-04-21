@@ -11,7 +11,8 @@
 
             $internalSearchResponse = 
                 json_decode(file_get_contents($internalSearchUrl), true);
-
+            $smarty->assign('templatetype', 'index');
+            
             foreach ($internalSearchResponse as $album) {
               foreach ($album as $k => $v) {
                 $smarty->assign($k, $v);
@@ -44,6 +45,9 @@
             columnWidth: 40,
             isAnimated: true
           });
+
+          var home = 'index.php';
+          history.pushState({html:home}, null, home);
     })
   </script>
 </div>
